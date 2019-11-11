@@ -1,5 +1,5 @@
 {
-  "name": "gemfire-node-sample",
+  "name": "book-service",
   "version": "1.0.0",
   "description": "A book service.",
   "main": "src/server.js",
@@ -15,7 +15,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/charliemblack/gemfire-node-sample.git"
+    "url": "git+https://github.com/gemfire/node-examples.git"
   },
   "engines": {
     "node": "10.16.3"
