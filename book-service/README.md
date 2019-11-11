@@ -1,48 +1,65 @@
-Example book service
+# The Book Service Example
 
-# Install 
-In the future the download location one would go to either the GemFire
-or Cloud Cache product download pages at https://network.pivotal.io.
-Since we are currently in a phase where the binaries aren't offically
-available, I can't post directionf for how to download.
+This Node.js example provides a simple book service,
+which uses REST endpoints to allow a user to look up books by ISBN
+or put new books into the service.
 
+This app may be run a local Apache Geode/Pivotal GemFire cluster,
+or with a PCC service instance.
+A common development path runs locally first to iterate quickly on feature
+development prior to pushing the app to a PAS environment to run with
+Pivotal Cloud Cache.
 
-* GemFire - https://network.pivotal.io/products/pivotal-gemfire
-* Cloud Cache - https://network.pivotal.io/products/p-cloudcache
+# Prerequisites
 
+- Examples source code.  Acquire this repository:
 
-Once you have downloaded the right artifact,
-copy it to your own `<project>` directory.
-This is important for the pushing the app to PCF.
+```
+$ git clone git@github.com:gemfire/node-examples.git
+```
 
+- Node.js client library. Acquire the Node.js client library from PivNet.
+Find and download the Node.JS Client 2.0.0 Beta version, 
+`gemfire-nodejs-client-2.0.0-beta.tgz`,
+under [Pivotal GemFire](https://network.pivotal.io/products/pivotal-gemfire/).
+or [Pivotal Cloud Cache](https://network.pivotal.io/products/p-cloudcache/).
+
+- `npm`, minimum version of xx.x
+
+# Build the App
+ 
+With a current working directory of `node-examples/book-service`
 ```bash
-$ git clone <examples repo>
-$ cd <project>/scripts
-$ ./startGemFire.sh
-$ cd ..
-$ npm install gemfire-nodejs-all-v2.0.0-build.3.tgz 
+$ npm install gemfire-nodejs-client-2.0.0-beta.tgz 
 $ npm install
 ```
 
-# Run Locally
 
-It is very common for developers to run locally,
-so they can iterate quickly on the features that they are working on.
-Since we are going to eventually push the app to Pivotal Cloud Foundry,
-we are going to target our local environment to mock a Cloud Foundry environment.
+# Run the App Locally
 
-Cloud Foundry injects the services binding through a `VCAP_SERVICES` environment varible.    So we are going to mock that environment varible to do local testing so our application doesn't have to handle any environment differently.
+The local environment mocks the services binding that would exist
+for a PAS environment.
+A PAS environment injects the services binding through a `VCAP_SERVICES`
+environment varible.
+This is the one that the app assumes:
 
-## Expose the VCAP_SERVICES to the application through the environment 
 ```
 export VCAP_SERVICES='{"p-cloudcache":[{"label":"p-cloudcache","provider":null,"plan":"dev-plan","name":"pcc-dev","tags":["gemfire","cloudcache","database","pivotal"],"instance_name":"pcc-dev","binding_name":null,"credentials":{"distributed_system_id":"0","gfsh_login_string":"connect --url=https://localhost:7070/gemfire/v1 --user=super-user --password=1234567 --skip-ssl-validation","locators":["localhost[10334]"],"urls":{"gfsh":"https://localhost:7070/gemfire/v1","pulse":"https://localhost:7070/pulse"},"users":[{"password":"1234567","roles":["cluster_operator"],"username":"super-user"},{"password":"1234567","roles":["developer"],"username":"app"}],"wan":{"sender_credentials":{"active":{"password":"no-password","username":"no-user"}}}},"syslog_drain_url":null,"volume_mounts":[]}]}'
 ```
+
+Bash scripts in the `book-service/scripts` directory 
+
+```bash
+$ cd <project>/scripts
+$ ./startGemFire.sh
+```
+
 ## Run some servers 
 
-The scripts directory contains `startGemFire.sh`, which will start up
-two locators and two cache servers.
+The `startGemFire.sh` script starts up two locators and two cache servers.
 The locators allow clients to find the cache servers.
-To simplify local development, script also creates the regions.
+To simplify local development, script also creates the single
+region that the app uses.
 
 ## Run the NodeJS server 
 
