@@ -1,0 +1,9 @@
+---
+applications:
+- name: cloudcache-node-sample
+  memory: 512M
+  instances: 1
+  buildpack: nodejs_buildpack
+  timeout: 180
+  services:
+   - cloudcache-dev

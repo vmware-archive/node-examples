@@ -1,0 +1,51 @@
+{
+  "roles": [
+    {
+      "name": "cluster",
+      "operationsAllowed": [
+        "CLUSTER:MANAGE",
+        "CLUSTER:WRITE",
+        "CLUSTER:READ"
+      ]
+    },
+    {
+      "name": "data",
+      "operationsAllowed": [
+        "DATA:MANAGE",
+        "DATA:WRITE",
+        "DATA:READ"
+      ]
+    },
+    {
+      "name": "region1&2Reader",
+      "operationsAllowed": [
+        "DATA:READ"
+      ],
+      "regions": ["region1", "region2"]
+    }
+  ],
+  "users": [
+    {
+      "name": "failuser",
+      "password": "1234567",
+      "roles": [
+        "region1&2Reader"
+      ]
+    },
+    {
+      "name": "super-user",
+      "password": "1234567",
+      "roles": [
+        "cluster",
+        "data"
+      ]
+    },
+    {
+      "name": "app",
+      "password": "1234567",
+      "roles": [
+        "data"
+      ]
+    }
+  ]
+}
