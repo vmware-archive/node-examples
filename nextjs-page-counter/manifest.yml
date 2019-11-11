@@ -1,7 +1,6 @@
 ---
 applications:
-- name: gemfire-nextjs-page-counter-example
-  memory: 512M
+- memory: 512M
   instances: 1
   buildpack: nodejs_buildpack
   command: next start -p $PORT
