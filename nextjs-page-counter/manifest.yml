@@ -1,6 +1,7 @@
 ---
 applications:
-- memory: 512M
+- name: nextjs-page-counter
+  memory: 512M
   instances: 1
   buildpack: nodejs_buildpack
   command: next start -p $PORT

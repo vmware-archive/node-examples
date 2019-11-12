@@ -25,7 +25,7 @@ function initCloudFoundryConfig(){
   if ((cfenv !== undefined) && (Object.keys(cfenv.getAppEnv().services).length > 0)) {
 
     /* Default to the first p-cloudcache service */
-    let vcap_pcc = cfenv.getAppEnv().services["p-cloudcache"][0];
+    let vcap_pcc = cfenv.getAppEnv().services["p-cloudcache"][0]
 
     /* Configure the locator address and port */
     var locatorStringParts = vcap_pcc.credentials.locators[0].split(/[\[\]]+/)
