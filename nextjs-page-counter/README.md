@@ -54,5 +54,5 @@ The site displays a simple page-counter backed either locally by GemFire or by P
     cf push
     ```
 1. View your site! 
-    - View your site by entering the route returned by the cf push into your browser
+    - View your site by entering the route returned from the `cf push` into your browser
 
