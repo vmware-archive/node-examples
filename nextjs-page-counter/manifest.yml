@@ -1,0 +1,10 @@
+---
+applications:
+- name: nextjs-page-counter
+  memory: 512M
+  instances: 1
+  buildpack: nodejs_buildpack
+  command: next start -p $PORT
+  timeout: 180
+  services:
+   - mypcc

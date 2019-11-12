@@ -1,11 +1,10 @@
 {
-  "name": "gemfire-node-sample",
+  "name": "book-service",
   "version": "1.0.0",
   "description": "A book service.",
   "main": "src/server.js",
   "dependencies": {
     "express": "^4.17.1",
-    "gemfire": "gemfire-nodejs-all-v2.0.0-build.3.tgz",
     "jsonpath": "^1.0.2",
     "jsonpath-plus": "^1.1.0"
   },
@@ -16,15 +15,15 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/charliemblack/gemfire-node-sample.git"
+    "url": "git+https://github.com/gemfire/node-examples.git"
   },
-   "engines" : { 
-     "node" : "10.16.3"  
+  "engines": {
+    "node": "10.16.3"
   },
   "author": "",
   "license": "Apache",
   "bugs": {
-    "url": "https://github.com/charliemblack/gemfire-node-sample/issues"
+    "url": "https://github.com/gemfire/node-examples/issues"
   },
-  "homepage": "https://github.com/charliemblack/gemfire-node-sample#readme"
+  "homepage": "https://github.com/gemfire/node-examples#readme"
 }
