@@ -5,7 +5,7 @@ which uses the data service as a system of record.
 REST endpoints allow an app user to look up books by ISBN
 or put new books into the service.
 
-This app may be run a local Apache Geode or Pivotal GemFire cluster,
+This app may be run with a local Apache Geode or Pivotal GemFire cluster,
 or with a PCC service instance.
 A common development path runs locally first to iterate quickly on feature
 development prior to pushing the app to a PAS environment to run with
@@ -15,15 +15,14 @@ Pivotal Cloud Cache.
 
 - Examples source code.  Acquire the repository:
 
-```
-$ git clone git@github.com:gemfire/node-examples.git
-```
+    ```
+    $ git clone git@github.com:gemfire/node-examples.git
+    ```
 
-- Node.js client library. Acquire the Node.js client library from PivNet.
+- Pivotal GemFire and the Node.js client library. Acquire the Node.js client library from PivNet.
 Find and download the Node.JS Client 2.0.0 Beta version, 
 `gemfire-nodejs-client-2.0.0-beta.tgz`,
 under [Pivotal GemFire](https://network.pivotal.io/products/pivotal-gemfire/).
-or [Pivotal Cloud Cache](https://network.pivotal.io/products/p-cloudcache/).
 
 - Node.js, minimum version of 10.0
 
@@ -31,7 +30,8 @@ or [Pivotal Cloud Cache](https://network.pivotal.io/products/p-cloudcache/).
 
 # Build the App
  
-With a current working directory of `node-examples/book-service`
+With a current working directory of `node-examples/book-service`,
+build the app:
 
 ```bash
 $ npm install gemfire-nodejs-client-2.0.0-beta.tgz 
@@ -53,11 +53,11 @@ export VCAP_SERVICES='{"p-cloudcache":[{"label":"p-cloudcache","provider":null,"
 
 ## Start a Cluster
 
-There are bash scripts in the `book-service/scripts` directory 
+There are bash scripts in the `book-service/scripts` directory.
 The `startGemFire.sh` script starts up two locators and two cache servers.
 The locators allow clients to find the cache servers.
-To simplify local development, script also creates the single
-region that the app uses.
+To simplify local development,
+the script also creates the single region that the app uses.
 
 With a current working directory of `node-examples/book-service`:
 
@@ -80,7 +80,7 @@ $ node src/server.js
 To add a book to the data service, use a curl command:
 
 ```
-curl -X PUT \
+$ curl -X PUT \
   'http://localhost:8080/book/put?isbn=0525565329' \
   -H 'Content-Type: application/json' \
   -d '{
@@ -97,7 +97,7 @@ To look up a book in the data service, use a curl command,
 specifying the ISBN as a key:
 
 ```
-curl -X GET \
+$ curl -X GET \
   'http://localhost:8080/book/get?isbn=0525565329' 
 ```
 
@@ -165,7 +165,7 @@ used when running with a local cluster.
 Replace `localhost:8080` with the app route:
 
 ```
-curl -X PUT \
+$ curl -X PUT \
   'http://PAS-name.cf-app.com/book/put?isbn=0525565329' \
   -H 'Content-Type: application/json' \
   -d '{
@@ -186,6 +186,6 @@ Replace `localhost:8080` with the app route,
 specifying the ISBN as a key:
 
 ```
-curl -X GET \
+$ curl -X GET \
   'http://PAS-name.cf-app.com/book/get?isbn=0525565329' 
 ```
