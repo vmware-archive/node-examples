@@ -19,14 +19,23 @@ Pivotal Cloud Cache.
     $ git clone git@github.com:gemfire/node-examples.git
     ```
 
-- Pivotal GemFire and the Node.js client library. Acquire the Node.js client library from PivNet.
+- Node.js client library. Acquire the Node.js client library from PivNet.
 Find and download the Node.JS Client 2.0.0 Beta version, 
 `gemfire-nodejs-client-2.0.0-beta.tgz`,
 under [Pivotal GemFire](https://network.pivotal.io/products/pivotal-gemfire/).
 
+- Pivotal GemFire (to have gfsh, the command line interface for GemFire).
+Acquire Pivotal GemFire from PivNet
+at [Pivotal GemFire](https://network.pivotal.io/products/pivotal-gemfire/).
+Choose your GemFire version based on the version of Cloud Cache
+in your PAS environment.
+See the [Product Snapshot](https://docs.pivotal.io/p-cloud-cache/product-snapshot.html) for your Pivotal Cloud Cache version.
+
 - Node.js, minimum version of 10.0
 
 - `npm`, the Node.js package manager
+
+- Cloud Foundry Command Line Interface (cf CLI).  See [Installing the cf CLI](https://docs.cloudfoundry.org/cf-cli/install-go-cli.html).
 
 # Build the App
  
@@ -64,7 +73,6 @@ With a current working directory of `node-examples/book-service`:
 ```bash
 $ cd scripts
 $ ./startGemFire.sh
-$ cd ..
 ```
 
 ## Run the App
@@ -134,7 +142,7 @@ labeled as `gfsh_login_string`:
 
 ## Create the Region Used by the Book Service
 
-- Run gfsh
+- Run gfsh.
 
 - Use the captured gfsh connect command to connect to the PCC service instance.
 Use the return key when prompted for keystore and truststore values.
