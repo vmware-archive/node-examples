@@ -1,10 +1,11 @@
 # The Book Service Example
 
-This Node.js example provides a simple book service,
-which uses REST endpoints to allow a user to look up books by ISBN
+This Node.js example provides a simple book service app,
+which uses the data service as a system of record.
+REST endpoints allow an app user to look up books by ISBN
 or put new books into the service.
 
-This app may be run a local Apache Geode/Pivotal GemFire cluster,
+This app may be run a local Apache Geode or Pivotal GemFire cluster,
 or with a PCC service instance.
 A common development path runs locally first to iterate quickly on feature
 development prior to pushing the app to a PAS environment to run with
@@ -12,7 +13,7 @@ Pivotal Cloud Cache.
 
 # Prerequisites
 
-- Examples source code.  Acquire this repository:
+- Examples source code.  Acquire the repository:
 
 ```
 $ git clone git@github.com:gemfire/node-examples.git
@@ -24,14 +25,17 @@ Find and download the Node.JS Client 2.0.0 Beta version,
 under [Pivotal GemFire](https://network.pivotal.io/products/pivotal-gemfire/).
 or [Pivotal Cloud Cache](https://network.pivotal.io/products/p-cloudcache/).
 
-- `npm`, minimum version of xx.x
+- Node.js, minimum version of 10.0
+
+- `npm`, the Node.js package manager
 
 # Build the App
  
 With a current working directory of `node-examples/book-service`
+
 ```bash
 $ npm install gemfire-nodejs-client-2.0.0-beta.tgz 
-$ npm install
+$ npm update
 ```
 
 
@@ -41,33 +45,39 @@ The local environment mocks the services binding that would exist
 for a PAS environment.
 A PAS environment injects the services binding through a `VCAP_SERVICES`
 environment varible.
-This is the one that the app assumes:
+This is the one that the app mocks:
 
 ```
 export VCAP_SERVICES='{"p-cloudcache":[{"label":"p-cloudcache","provider":null,"plan":"dev-plan","name":"pcc-dev","tags":["gemfire","cloudcache","database","pivotal"],"instance_name":"pcc-dev","binding_name":null,"credentials":{"distributed_system_id":"0","gfsh_login_string":"connect --url=https://localhost:7070/gemfire/v1 --user=super-user --password=1234567 --skip-ssl-validation","locators":["localhost[10334]"],"urls":{"gfsh":"https://localhost:7070/gemfire/v1","pulse":"https://localhost:7070/pulse"},"users":[{"password":"1234567","roles":["cluster_operator"],"username":"super-user"},{"password":"1234567","roles":["developer"],"username":"app"}],"wan":{"sender_credentials":{"active":{"password":"no-password","username":"no-user"}}}},"syslog_drain_url":null,"volume_mounts":[]}]}'
 ```
 
-Bash scripts in the `book-service/scripts` directory 
+## Start a Cluster
 
-```bash
-$ cd <project>/scripts
-$ ./startGemFire.sh
-```
-
-## Run some servers 
-
+There are bash scripts in the `book-service/scripts` directory 
 The `startGemFire.sh` script starts up two locators and two cache servers.
 The locators allow clients to find the cache servers.
 To simplify local development, script also creates the single
 region that the app uses.
 
-## Run the NodeJS server 
+With a current working directory of `node-examples/book-service`:
+
+```bash
+$ cd scripts
+$ ./startGemFire.sh
+$ cd ..
+```
+
+## Run the App
+
+With a current working directory of `node-examples/book-service`:
 
 ```
 $ node src/server.js
 ```
 
-## Add a book locally 
+## Add a Book to the Book Service
+
+To add a book to the data service, use a curl command:
 
 ```
 curl -X PUT \
@@ -81,64 +91,82 @@ curl -X PUT \
   "Authors": "Stephen King"
 }'
 ```
-## Lookup a book locally
+## Look Up a Book
+
+To look up a book in the data service, use a curl command,
+specifying the ISBN as a key:
 
 ```
 curl -X GET \
   'http://localhost:8080/book/get?isbn=0525565329' 
 ```
 
-# Push the app
+# Run the App with PCC as the Data Service
 
-Edit the `manifest.yml` file to update the service instance
+## Create a Pivotal Cloud Cache Service Instance
+
+- After using the cf CLI to log in and target your org and space,
+create a Pivotal Cloud Cache service instance that disables
+TLS encryption: 
+
+    ```
+    $ cf create-service p-cloudcache dev-plan PCC-noTLS  -c '{"tls": false}'
+    ```
+
+- Create a Service Key
+
+   ```
+   $ cf create-service-key PCC-noTLS PCC-noTLS-service-key
+   ```
+
+- Output the service key, and make note of the gfsh connect command 
+labeled as `gfsh_login_string`:
+
+    ```
+    $ cf service-key PCC-noTLS PCC-noTLS-service-key
+    ```
+
+    The `gfsh_login_string` will be of the form:
+
+    ```
+    connect --url=https://PAS-name.cf-app.com/gemfire/v1 --user=cluster_operator_XXXXXXXXX --password=XXXXXXXX --skip-ssl-validation
+    ```
+
+## Create the Region Used by the Book Service
+
+- Run gfsh
+
+- Use the captured gfsh connect command to connect to the PCC service instance.
+Use the return key when prompted for keystore and truststore values.
+
+- Once connected, create the region that the book service expects to find:
+
+    ```
+    gfsh> create region --name=test --type=PARTITION
+    ```
+
+## Push and Run the App
+
+- Edit the `manifest.yml` file to identify the service instance
 that the app will be bound to.
 Prior to editing, the service instance is called `cloudcache-dev`.
 
-Push the app:
+- With a current working directory of `node-examples/book-service`,
+push the app and make note of the route assigned for the app:
 
-```
-$ cf push
-```
+    ```
+    $ cf push
+    ```
 
-## Create the Cloud Cache service instance
+## Add a Book to the Book Service
 
-1 -  Create a cloud cache instance in Pivotal Cloud Foundry.   The manifest assumes that the cloud cache instance is called `cloudcache-dev`.
-```
-$ cf create-service p-cloudcache dev-plan cloudcache-dev
-```
-2 - Create the service key 
-```
-$ cf create-service-key cloudcache-dev cloudcache-dev_service_key
-```
-3 - Using the GemFire command line tool ``gfsh`` create the region with the policy that we want for the data.
+To add a book to the Cloud Cache data service, use a curl command similar to the one
+used when running with a local cluster.
+Replace `localhost:8080` with the app route:
 
-```
-voltron:gemfire cblack$ gfsh
-    _________________________     __
-   / _____/ ______/ ______/ /____/ /
-  / /  __/ /___  /_____  / _____  / 
- / /__/ / ____/  _____/ / /    / /  
-/______/_/      /______/_/    /_/  
-
-Monitor and Manage Pivotal GemFire
-gfsh>connect --use-http=true --url=https://somehost/gemfire/v1 --user=cluster_operator --password=*****
-
-Successfully connected to: GemFire Manager HTTP service @ https://somehost/gemfire/v1
-gfsh>create region --name=test --type=PARTITION
-                     Member                      | Status
------------------------------------------------- | -----------------------------------------------------------------------------------
-cacheserver-7541bb25-71b2-4ae7-ad80-9d518e18facd | Region "/test" created on "cacheserver-7541bb25-71b2-4ae7-ad80-9d518e18facd"
-
-Cluster-0 gfsh>exit
-```
-Note: The version of Cloud Cache I am using is backed by GemFire version 9.8.3 - make sure you are using the same versions of GemFire as your cloud cache instance.
-
-4 -`cf push` the application and give it a try using postman or curl.
-
-## Add a book 
 ```
 curl -X PUT \
-  'https://cloudcache-node-sample.apps.pcfone.io/book/put?isbn=0525565329' \
+  'http://PAS-name.cf-app.com/book/put?isbn=0525565329' \
   -H 'Content-Type: application/json' \
   -d '{
   "FullTitle": "The Shining",
@@ -149,9 +177,15 @@ curl -X PUT \
 }'
 ```
 
-## Get a book by ISBN
+## Look Up a Book
+
+To look up a book in the Cloud Cache data service,
+use a curl command similar to the one
+used when running with a local cluster.
+Replace `localhost:8080` with the app route,
+specifying the ISBN as a key:
 
 ```
 curl -X GET \
-  'https://cloudcache-node-sample.apps.pcfone.io/book/get?isbn=0525565329' 
+  'http://PAS-name.cf-app.com/book/get?isbn=0525565329' 
 ```
