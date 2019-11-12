@@ -6,10 +6,10 @@ REST endpoints allow an app user to look up books by ISBN
 or put new books into the service.
 
 This app may be run with a local Apache Geode or Pivotal GemFire cluster,
-or with a PCC service instance.
+or with a Pivotal Cloud Cache (PCC) service instance.
 A common development path runs locally first to iterate quickly on feature
 development prior to pushing the app to a PAS environment to run with
-Pivotal Cloud Cache.
+PCC.
 
 # Prerequisites
 
@@ -29,7 +29,7 @@ Acquire Pivotal GemFire from PivNet
 at [Pivotal GemFire](https://network.pivotal.io/products/pivotal-gemfire/).
 Choose your GemFire version based on the version of Cloud Cache
 in your PAS environment.
-See the [Product Snapshot](https://docs.pivotal.io/p-cloud-cache/product-snapshot.html) for your Pivotal Cloud Cache version.
+See the [Product Snapshot](https://docs.pivotal.io/p-cloud-cache/product-snapshot.html) for your PCC version.
 
 - Node.js, minimum version of 10.0
 
@@ -111,11 +111,10 @@ $ curl -X GET \
 
 # Run the App with PCC as the Data Service
 
-## Create a Pivotal Cloud Cache Service Instance
+## Create and Configure a PCC Service Instance
 
 - After using the cf CLI to log in and target your org and space,
-create a Pivotal Cloud Cache service instance that disables
-TLS encryption: 
+create a PCC service instance that disables TLS encryption: 
 
     ```
     $ cf create-service p-cloudcache dev-plan PCC-noTLS  -c '{"tls": false}'
@@ -168,7 +167,7 @@ push the app and make note of the route assigned for the app:
 
 ## Add a Book to the Book Service
 
-To add a book to the Cloud Cache data service, use a curl command similar to the one
+To add a book to the data service, use a curl command similar to the one
 used when running with a local cluster.
 Replace `localhost:8080` with the app route:
 
@@ -187,7 +186,7 @@ $ curl -X PUT \
 
 ## Look Up a Book
 
-To look up a book in the Cloud Cache data service,
+To look up a book in the data service,
 use a curl command similar to the one
 used when running with a local cluster.
 Replace `localhost:8080` with the app route,
