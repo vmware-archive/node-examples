@@ -10,6 +10,7 @@ or with a Pivotal Cloud Cache (PCC) service instance.
 A common development path runs locally first to iterate quickly on feature
 development prior to pushing the app to a PAS environment to run with
 PCC.
+This app has been tested with PCC version 1.8.1.
 
 # Prerequisites
 
