@@ -55,4 +55,4 @@ The site displays a simple page-counter backed either locally by GemFire or by P
     - View your site by entering the route returned from the `cf push` into your browser
 
 ##### Example Site
-![Pivotal Cloud Cache + Next.js Example Site](/screenshot.png)
+![Pivotal Cloud Cache + Next.js Example Site](./screenshot.png)
