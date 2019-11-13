@@ -21,7 +21,7 @@ async function init(){
     console.log("username - >" + username + "< password - >" + password + "<")
     console.log("locators - " + locators)
 
-    cacheFactory = gemfire.createCacheFactory("", "workaround.xml");
+    cacheFactory = gemfire.createCacheFactory();
     cacheFactory.setAuthentication((properties, server) => {
         console.log("Set auth called!")
         console.log("username - >" + username + "< password - >" + password + "<")
