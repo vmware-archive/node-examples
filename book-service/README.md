@@ -53,11 +53,11 @@ $ npm update
 The local environment mocks the services binding that would exist
 for a PAS environment.
 A PAS environment injects the services binding through a `VCAP_SERVICES`
-environment varible.
-This is the one that the app mocks:
+environment variable.
+Set this environment variable:
 
 ```
-export VCAP_SERVICES='{"p-cloudcache":[{"label":"p-cloudcache","provider":null,"plan":"dev-plan","name":"pcc-dev","tags":["gemfire","cloudcache","database","pivotal"],"instance_name":"pcc-dev","binding_name":null,"credentials":{"distributed_system_id":"0","gfsh_login_string":"connect --url=https://localhost:7070/gemfire/v1 --user=super-user --password=1234567 --skip-ssl-validation","locators":["localhost[10334]"],"urls":{"gfsh":"https://localhost:7070/gemfire/v1","pulse":"https://localhost:7070/pulse"},"users":[{"password":"1234567","roles":["cluster_operator"],"username":"super-user"},{"password":"1234567","roles":["developer"],"username":"app"}],"wan":{"sender_credentials":{"active":{"password":"no-password","username":"no-user"}}}},"syslog_drain_url":null,"volume_mounts":[]}]}'
+$ export VCAP_SERVICES='{"p-cloudcache":[{"label":"p-cloudcache","provider":null,"plan":"dev-plan","name":"pcc-dev","tags":["gemfire","cloudcache","database","pivotal"],"instance_name":"pcc-dev","binding_name":null,"credentials":{"distributed_system_id":"0","gfsh_login_string":"connect --url=https://localhost:7070/gemfire/v1 --user=super-user --password=1234567 --skip-ssl-validation","locators":["localhost[10334]"],"urls":{"gfsh":"https://localhost:7070/gemfire/v1","pulse":"https://localhost:7070/pulse"},"users":[{"password":"1234567","roles":["cluster_operator"],"username":"super-user"},{"password":"1234567","roles":["developer"],"username":"app"}],"wan":{"sender_credentials":{"active":{"password":"no-password","username":"no-user"}}}},"syslog_drain_url":null,"volume_mounts":[]}]}'
 ```
 
 ## Start a Cluster
@@ -173,7 +173,7 @@ Replace `localhost:8080` with the app route:
 
 ```
 $ curl -X PUT \
-  'http://PAS-name.cf-app.com/book/put?isbn=0525565329' \
+  'https://PAS-name.cf-app.com/book/put?isbn=0525565329' \
   -H 'Content-Type: application/json' \
   -d '{
   "FullTitle": "The Shining",
@@ -194,5 +194,5 @@ specifying the ISBN as a key:
 
 ```
 $ curl -X GET \
-  'http://PAS-name.cf-app.com/book/get?isbn=0525565329' 
+  'https://PAS-name.cf-app.com/book/get?isbn=0525565329' 
 ```
