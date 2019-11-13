@@ -32,8 +32,6 @@ The site displays a simple page-counter backed either locally by GemFire or by P
         - Clicking `Re-render in browser` displays `Count: N/A`. An express api could be created to support user-side requests.
         - Clicking `Re-render on server` displays `Count: 1`. This is the updated count stored in GemFire.
 
-====================================================
-
 ## Using Pivotal Cloud Cache
 
 #### Prerequisites:
@@ -56,3 +54,5 @@ The site displays a simple page-counter backed either locally by GemFire or by P
 1. View your site! 
     - View your site by entering the route returned from the `cf push` into your browser
 
+##### Example Site
+![Pivotal Cloud Cache + Next.js Example Site](/screenshot.png)
