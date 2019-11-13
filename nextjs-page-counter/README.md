@@ -45,6 +45,7 @@ The site displays a simple page-counter backed either locally by GemFire or by P
           1. You may need to create a region named `example_partition_region`. Dev plans, if available, will include the region by default. If it does not exist, [access the service instance](https://docs.pivotal.io/p-cloud-cache/accessing-instance.html) and [create the region](https://docs.pivotal.io/p-cloud-cache/using-pcc.html#create-regions).
 
 2. Build and push the app to the PAS environment.
+
 Skip the `npm install` and `npm update` if you have already
 done this to run the example locally.
 
@@ -56,7 +57,7 @@ done this to run the example locally.
     ```
 1. View the page served at the route returned from the `cf push` command.
 
-1. When done running the app, tear down the app and the Cloud Cache service instance:
+2. When done running the app, tear down the app and the Cloud Cache service instance:
 
     1. Stop the running app:
 
@@ -64,13 +65,13 @@ done this to run the example locally.
         $ cf stop nextjs-page-counter
         ```
 
-    1. Delete the app and its route:
+    2. Delete the app and its route:
 
         ```
         $ cf delete nextjs-page-counter -r -f
         ```
 
-    1. If the Cloud Cache service instance is no longer needed,
+    3. If the Cloud Cache service instance is no longer needed,
     delete it,
     replacing `INSTANCE-NAME` with your service instance's name:
 
