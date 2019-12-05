@@ -8,14 +8,19 @@ by a Pivotal Cloud Cache service instance.
 
 ## Prerequisites
 
-1. [npm](https://www.npmjs.com/get-npm)
-1. [Node.js v10.0+](https://nodejs.org/)
-1. Download the [Node.js Client](https://network.pivotal.io/products/pivotal-gemfire/) from Pivnet
-1. Download and install [Pivotal GemFire v9.8](https://network.pivotal.io/products/pivotal-gemfire/) from Pivnet
-1. Pivotal Cloud Cache v1.8
-1. [Cloud Foundry Command Line Interface](https://docs.cloudfoundry.org/cf-cli/)
+-  [npm](https://www.npmjs.com/get-npm)
+-  [Node.js v10.0+](https://nodejs.org/)
+-  Download the [Node.js Client](https://network.pivotal.io/products/pivotal-gemfire/) from Pivnet
+-  Download and install [Pivotal GemFire v9.8](https://network.pivotal.io/products/pivotal-gemfire/) from Pivnet
+-  Pivotal Cloud Cache v1.8
+-  [Cloud Foundry Command Line Interface](https://docs.cloudfoundry.org/cf-cli/)
 
 ## Run the Example Locally
+
+*Note:* If you ran the book-service example in a local development
+environment prior to running this example,
+make sure to unset the book-service's `VCAP_SERVICES` environment variable.
+If it is set, this example will fail to run.
 
 1. Start a GemFire cluster with a single locator and a single server:
 
@@ -70,7 +75,7 @@ Complete directions are available at [Create or Delete a Service Instance](https
     $ cf create-service p-cloudcache dev-plan INSTANCE-NAME  -c '{"tls": false}'
     ```
 
-1. Modify the `manifest.yml` file by replacing `INSTANCE-NAME` with you service instance's name.
+1. Modify the `manifest.yml` file by replacing `INSTANCE-NAME` with your service instance's name.
 1. If not using the dev plan, use gfsh to create a region named `example_partition_region`. A dev plan will include the region by default. If the region does not exist, follow the directions at [Accessing a Service Instance](https://docs.pivotal.io/p-cloud-cache/accessing-instance.html) and [Create Regions](https://docs.pivotal.io/p-cloud-cache/using-pcc.html#create-regions).
         
 1. Build and push the app to the PAS environment.
