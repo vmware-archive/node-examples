@@ -110,6 +110,29 @@ $ curl -X GET \
   'http://localhost:8080/book/get?isbn=0525565329' 
 ```
 
+## Clean Up the Local Development Environment
+
+- When finished with running the example locally, use a control-C in the shell running `node` to stop running the app.
+
+- When finished with running the example locally, use the shell running gfsh to tear down the GemFire cluster. Answer 'Y' when prompted for confirmation:
+
+    ```
+    gfsh>shutdown --include-locators=true
+    As a lot of data in memory will be lost, including possibly events in queues, do you really want
+    to shutdown the entire distributed system? (Y/n): Y
+    Shutdown is triggered
+    
+    gfsh>exit
+    ```
+
+- Unset the `VCAP_SERVICES` environment variable
+to avoid interference with running other examples that would
+reference this environment variable if it continues to exist.
+
+    ```
+    $ unset VCAP_SERVICES
+    ```
+
 # Run the App with PCC as the Data Service
 
 ## Create and Configure a PCC Service Instance
