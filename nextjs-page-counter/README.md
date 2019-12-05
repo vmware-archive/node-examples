@@ -4,7 +4,8 @@ This example demonstrates use of the Node.js client with a simple Next.js web ap
 
 The rendered site displays a count of page renderings,
 backed either by a local Pivotal GemFire cluster or
-by a Pivotal Cloud Cache service instance.
+by a Pivotal Cloud Cache (PCC) service instance.
+This app has been tested with PCC version 1.8.1.
 
 ## Prerequisites
 
