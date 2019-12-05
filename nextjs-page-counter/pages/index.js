@@ -10,7 +10,7 @@ let locatorPort = 10334
 let poolName = "myPool"
 let username = "root"
 let password = "root-password"
-let regionName = "exampleRegion"
+let regionName = "example_partition_region"
 
 
 function initGemfire() {
@@ -36,9 +36,6 @@ function initCloudFoundryConfig(){
     username = vcap_pcc.credentials.users[0].username;
     password = vcap_pcc.credentials.users[0].password;
     console.log("Found PCC Credentials for user: " + username)
-
-    /* p-cloudcache default example region */
-    regionName = "example_partition_region"
   }
 }
 
