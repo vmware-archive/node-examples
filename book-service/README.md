@@ -123,7 +123,7 @@ With a current working directory of `node-examples/book-service`:
     $ ./shutdownGemFire.sh
     ```
 
-- Use a script to tear remove the directories and files containing
+- Use a script to remove the directories and files containing
 GemFire logs created for the cluster.
 With a current working directory of `node-examples/book-service`:
 
