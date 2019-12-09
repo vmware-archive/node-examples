@@ -1,58 +1,117 @@
-# Getting Started with Node.js Client
-This is a getting started example for the GemFire / Pivotal Cloud Cache Node.js client.
+# Page Counting Node.js Client App
 
-It demonstrates use of the Node.js client with a simple Next.js web-app. 
+This example demonstrates use of the Node.js client with a simple Next.js web app. 
 
-The site displays a simple page-counter backed either locally by GemFire or by Pivotal Cloud Cache service.
+The rendered site displays a count of page renderings,
+backed either by a local Pivotal GemFire cluster or
+by a Pivotal Cloud Cache (PCC) service instance.
+This app has been tested with PCC version 1.8.1.
 
-## Local Development 
+## Prerequisites
 
-#### Prerequisites:
-1. [Node.js v10.0+](https://nodejs.org/)
-1. [GemFire Node.js Client](https://network.pivotal.io/products/pivotal-gemfire/)
-1. GemFire 9.8+
+-  [npm](https://www.npmjs.com/get-npm)
+-  [Node.js v10.0+](https://nodejs.org/)
+-  Download the [Node.js Client](https://network.pivotal.io/products/pivotal-gemfire/) from Pivnet
+-  Download and install [Pivotal GemFire v9.8](https://network.pivotal.io/products/pivotal-gemfire/) from Pivnet
+-  Pivotal Cloud Cache v1.8
+-  [Cloud Foundry Command Line Interface](https://docs.cloudfoundry.org/cf-cli/)
 
-#### Running This Example:
-1. Start a GemFire locator and server:
-     ```bash
-      gfsh
-      > start locator
-      > start server
-      > create region --name=exampleRegion --type=REPLICATE_PERSISTENT
-   ```
-1. Install and run via npm: 
-    ```bash
-    npm install ~/Downloads/gemfire-nodejs-client-v2.0.0-beta.tgz 
-    npm update
-    npm run dev
-   ```
-1. View the site, http://localhost:3000
-    - Next.js renders the page on the web-server (see [Next.js Server-Side Rendering](https://nextjs.org/features/server-side-rendering)) before sending it to the browser. 
-        - The initial page displays an empty count, `Count: `
-        - Clicking `Re-render in browser` displays `Count: N/A`. An express api could be created to support user-side requests.
-        - Clicking `Re-render on server` displays `Count: 1`. This is the updated count stored in GemFire.
+## Run the Example Locally
 
-## Using Pivotal Cloud Cache
+*Note:* If you ran the book-service example in a local development
+environment prior to running this example,
+make sure to unset the book-service's `VCAP_SERVICES` environment variable.
+If it is set, this example will fail to run.
 
-#### Prerequisites:
-1. [CloudFoundry Command Line Interface](https://docs.cloudfoundry.org/cf-cli/)
-1. [npm](https://www.npmjs.com/get-npm)
-1. [GemFire Node.js Client](https://network.pivotal.io/products/pivotal-gemfire/)
-1. Pivotal Cloud Cache 1.8.1
-    1. [Create a Pivotal Cloud Cache service](https://docs.pivotal.io/p-cloud-cache/1-4/create-instance.html) 
-          1. Name the service `mypcc` or modify `manifest.yml` with the appropriate service name
-          1. You may need to create a region named `example_partition_region`. Dev plans, if available, will include the region by default. If it does not exist, [access the service instance](https://docs.pivotal.io/p-cloud-cache/accessing-instance.html) and [create the region](https://docs.pivotal.io/p-cloud-cache/using-pcc.html#create-regions).
-        
-#### Running This Example:
-1. Build and push! 
-    ```bash
-    npm install ~/Downloads/cloud-cache-node-v2.0.0.tgz
-    npm update
-    npm run build
-    cf push
+1. Start a GemFire cluster with a single locator and a single server:
+
     ```
-1. View your site! 
-    - View your site by entering the route returned from the `cf push` into your browser
+    $ gfsh
+    gfsh>start locator
+    gfsh>start server
+    gfsh>create region --name=example_partition_region --type=PARTITION
+    ```
+
+1. In a separate shell, install and run via npm: 
+
+    ```
+    $ npm install ~/Downloads/gemfire-nodejs-client-2.0.0-beta.tgz 
+    $ npm update
+    $ npm run dev
+    ```
+
+1. View the page served at http://localhost:3000 in a browser.
+Next.js renders the page in the web server before sending it to the browser. 
+See [Next.js Server-Side Rendering](https://nextjs.org/features/server-side-rendering) for more information on the rendering.
+
+    - The initial page displays an empty count, `Count: `
+    - Clicking on `Re-render in browser` displays `Count: N/A`. An express api could be created to support user-side requests.
+    - Clicking on `Re-render on server` displays `Count: 1`. This is the updated count that is stored in the GemFire cluster.
+
+1. When finished with running the example locally, use a control-C
+in the shell running `npm run dev` to stop running the app.
+
+1. When finished with running the example locally, use the shell
+running gfsh to tear down the GemFire cluster.
+Answer 'Y' when prompted for confirmation:
+
+    ```
+    gfsh>shutdown --include-locators=true
+    As a lot of data in memory will be lost, including possibly events in queues, do you really want
+    to shutdown the entire distributed system? (Y/n): Y
+    Shutdown is triggered
+
+    gfsh>exit
+    ```
+
+## Run the Example with Pivotal Cloud Cache
+
+1. After using the cf CLI to log in and target your org and space,
+create a Pivotal Cloud Cache service instance
+that disables TLS encryption,
+replacing `INSTANCE-NAME` with your service instance's name.
+Complete directions are available at [Create or Delete a Service Instance](https://docs.pivotal.io/p-cloud-cache/create-instance.html).
+
+    ```
+    $ cf create-service p-cloudcache dev-plan INSTANCE-NAME  -c '{"tls": false}'
+    ```
+
+1. Modify the `manifest.yml` file by replacing `INSTANCE-NAME` with your service instance's name.
+1. If not using the dev plan, use gfsh to create a region named `example_partition_region`. A dev plan will include the region by default. If the region does not exist, follow the directions at [Accessing a Service Instance](https://docs.pivotal.io/p-cloud-cache/accessing-instance.html) and [Create Regions](https://docs.pivotal.io/p-cloud-cache/using-pcc.html#create-regions).
+        
+1. Build and push the app to the PAS environment.
+Skip the `npm install` and `npm update` if you have already
+done this to run the example locally.
+
+    ```
+    $ npm install ~/Downloads/gemfire-nodejs-client-2.0.0-beta.tgz
+    $ npm update
+    $ npm run build
+    $ cf push
+    ```
+1. View the page served at the route returned from the `cf push` command.
+
+1. When done running the app, tear down the app and the Cloud Cache service instance:
+
+    1. Stop the running app:
+
+        ```
+        $ cf stop nextjs-page-counter
+        ```
+
+    1. Delete the app and its route:
+
+        ```
+        $ cf delete nextjs-page-counter -r -f
+        ```
+    
+    1. If the Cloud Cache service instance is no longer needed,
+    delete it,
+    replacing `INSTANCE-NAME` with your service instance's name:
+
+        ```
+        $ cf delete-service INSTANCE-NAME
+        ```
 
 ##### Example Site
 ![Pivotal Cloud Cache + Next.js Example Site](./screenshot.png)

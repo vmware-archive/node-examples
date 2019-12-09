@@ -110,6 +110,36 @@ $ curl -X GET \
   'http://localhost:8080/book/get?isbn=0525565329' 
 ```
 
+## Clean Up the Local Development Environment
+
+- When finished with running the example locally, use a control-C in the shell running `node` to stop running the app.
+
+- When finished with running the example locally, use a script to
+tear down the GemFire cluster.
+With a current working directory of `node-examples/book-service`:
+
+    ```bash
+    $ cd scripts
+    $ ./shutdownGemFire.sh
+    ```
+
+- Use a script to remove the directories and files containing
+GemFire logs created for the cluster.
+With a current working directory of `node-examples/book-service`:
+
+    ```bash
+    $ cd scripts
+    $ ./clearGemFireData.sh
+    ```
+
+- Unset the `VCAP_SERVICES` environment variable
+to avoid interference with running other examples that would
+reference this environment variable if it continues to exist.
+
+    ```
+    $ unset VCAP_SERVICES
+    ```
+
 # Run the App with PCC as the Data Service
 
 ## Create and Configure a PCC Service Instance
