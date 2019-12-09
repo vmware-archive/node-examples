@@ -114,15 +114,22 @@ $ curl -X GET \
 
 - When finished with running the example locally, use a control-C in the shell running `node` to stop running the app.
 
-- When finished with running the example locally, use the shell running gfsh to tear down the GemFire cluster. Answer 'Y' when prompted for confirmation:
+- When finished with running the example locally, use a script to
+tear down the GemFire cluster.
+With a current working directory of `node-examples/book-service`:
 
+    ```bash
+    $ cd scripts
+    $ ./shutdownGemFire.sh
     ```
-    gfsh>shutdown --include-locators=true
-    As a lot of data in memory will be lost, including possibly events in queues, do you really want
-    to shutdown the entire distributed system? (Y/n): Y
-    Shutdown is triggered
-    
-    gfsh>exit
+
+- Use a script to tear remove the directories and files containing
+GemFire logs created for the cluster.
+With a current working directory of `node-examples/book-service`:
+
+    ```bash
+    $ cd scripts
+    $ ./clearGemFireData.sh
     ```
 
 - Unset the `VCAP_SERVICES` environment variable
