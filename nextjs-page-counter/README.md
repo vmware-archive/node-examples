@@ -1,3 +1,4 @@
+
 # Getting Started with Node.js Client
 This is a getting started example for the GemFire / Pivotal Cloud Cache Node.js client.
 
@@ -43,7 +44,7 @@ The site displays a simple page-counter backed either locally by GemFire or by P
           1. Name the service `mypcc` or modify `manifest.yml` with the appropriate service name
           1. You may need to create a region named `example_partition_region`. Dev plans, if available, will include the region by default. If it does not exist, [access the service instance](https://docs.pivotal.io/p-cloud-cache/accessing-instance.html) and [create the region](https://docs.pivotal.io/p-cloud-cache/using-pcc.html#create-regions).
 
-1. Build and push the app to the PAS environment.
+2. Build and push the app to the PAS environment.
 Skip the `npm install` and `npm update` if you have already
 done this to run the example locally.
 
