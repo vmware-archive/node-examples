@@ -1,6 +1,6 @@
-# The Book Service Example
+# The Book-Serving Example App
 
-This Node.js example provides a simple book service app,
+This Node.js example provides a simple book-serving app,
 which uses the data service as a system of record.
 REST endpoints allow an app user to look up books by ISBN
 or put new books into the service.

@@ -1,4 +1,4 @@
-# Page Counting Node.js Client App
+# Page-Counting Node.js Client App
 
 This example demonstrates use of the Node.js client with a simple Next.js web app. 
 
@@ -18,9 +18,9 @@ This app has been tested with PCC version 1.8.1.
 
 ## Run the Example Locally
 
-*Note:* If you ran the book-service example in a local development
+*Note:* If you ran the book-serving example app in a local development
 environment prior to running this example,
-make sure to unset the book-service's `VCAP_SERVICES` environment variable.
+make sure to unset the book-serving example app's `VCAP_SERVICES` environment variable.
 If it is set, this example will fail to run.
 
 1. Start a GemFire cluster with a single locator and a single server:
