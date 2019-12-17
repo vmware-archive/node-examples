@@ -44,7 +44,7 @@ function launchServer() {
     mkdir -p ${APP_HOME}/data/server
     pushd ${APP_HOME}/data/server
 
-    gfsh -e "connect --locator=locator[10337]" -e "start server --locators=locator[10337] --server-port=4040 --name=server --dir=${APP_HOME}/data/server" &
+    gfsh -e "connect --locator=localhost[10337]" -e "start server --locators=localhost[10337] --server-port=40404 --name=server --dir=${APP_HOME}/data/server" &
 
     popd
 }
@@ -62,6 +62,6 @@ wait
 
 pushd ${APP_HOME}/data/server
 
-gfsh -e "connect --locator=locator[10337]" -e "create region --name=test --type=PARTITION"
+gfsh -e "connect --locator=localhost[10337]" -e "create region --name=test --type=PARTITION"
 
 popd
