@@ -145,6 +145,9 @@ Creating a region called 'test' of type 'PROXY' connected to the pool named 'poo
 Putting key 'foo' into region 'test' with the value 'bar'
 Getting value from region 'test' with key 'foo'. The expected value is going to be: 'bar'
 The value retrieved is: 'bar'
+Updating key 'foo' in region 'test' with the value 'candy'
+Getting value from region 'test' with key 'foo'. The expected value is going to be: 'candy'
+The value retrieved is: 'candy'
 Removing key 'foo' from region 'test'
 Getting value from region 'test' with key 'foo'. The expected value is going to be: null
 The value retrieved is: 'null'
