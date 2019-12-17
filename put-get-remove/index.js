@@ -22,16 +22,24 @@ async function put_get_remove_example() {
     region = await cache.createRegion("test", { type: 'PROXY', poolName: 'pool' })
 
     //put, get and remove data from region
-    //put value into cache
+
+    //put value into cache - create operation
     console.log('Putting key \'foo\' into region \'test\' with the value \'bar\'')
     await region.put('foo', 'bar')
-    console.log('Getting value from region \'test\' with key \'foo\'. The expected value is going to be: \'bar\'')
 
-    //get value from cache
+    //get value from cache - read operation
+    console.log('Getting value from region \'test\' with key \'foo\'. The expected value is going to be: \'bar\'')
     var result = await region.get('foo')
     console.log('The value retrieved is: \'' + result + '\'')
 
-    //delete value from cache
+    //put value into cache - update operation
+    console.log('Updating key \'foo\' in region \'test\' with the value \'candy\'')
+    await region.put('foo', 'candy')
+    console.log('Getting value from region \'test\' with key \'foo\'. The expected value is going to be: \'candy\'')
+    result = await region.get('foo')
+    console.log('The value retrieved is: \'' + result + '\'')
+
+    //delete value from cache - delete operation
     console.log('Removing key \'foo\' from region \'test\'')
     await region.remove('foo')
     console.log('Getting value from region \'test\' with key \'foo\'. The expected value is going to be: null')
