@@ -18,8 +18,8 @@ cd "`dirname \"$PRG\"`/.." >&-
 APP_HOME="`pwd -P`"
 cd "$SAVED" >&-
 
-pushd ${APP_HOME}/data/locator4 > /dev/null
+pushd ${APP_HOME}/data/locator > /dev/null
 
-gfsh -e "connect --locator=locator[10337]" -e "shutdown --include-locators=true --time-out=15"
+gfsh -e "connect --locator=localhost[10337]" -e "shutdown --include-locators=true --time-out=15"
 
 popd > /dev/null
