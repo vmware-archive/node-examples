@@ -174,7 +174,7 @@ Create a region in client called 'test' and connect it to the pool used to commu
 ```javascript
   region = await cache.createRegion("test", { type: 'PROXY', poolName: 'pool' })
 ```
-### Put
+### Put or Create
 Insert/store data value 'bar' using key 'foo' into region 'test'
 ```javascript
 await region.put('foo', 'bar')
@@ -184,6 +184,12 @@ Fetch a value from the server by getting it with key 'foo'
 ```javascript
 var result = await region.get('foo')
 ```
+### Update
+A put is used to update a key-value pair that already has been added to the cache
+```Javascript
+await region.put('foo', 'candy')
+```
+
 ### Remove
 Delete the data on the server. using key 'foo'
 ```javascript
