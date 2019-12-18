@@ -21,32 +21,36 @@ async function put_get_remove_example() {
     console.log('Creating a region called \'test\' of type \'PROXY\' connected to the pool named \'pool\'')
     region = await cache.createRegion("test", { type: 'PROXY', poolName: 'pool' })
 
-    //put, get and remove data from region
+    // Do region operations
 
-    //put value into cache - create operation
-    console.log('Putting key \'foo\' into region \'test\' with the value \'bar\'')
+    // Create operation: put value into cache
+    console.log('Create operation:')
+    console.log('  Putting key \'foo\' with value \'bar\'')
     await region.put('foo', 'bar')
 
-    //get value from cache - read operation
-    console.log('Getting value from region \'test\' with key \'foo\'. The expected value is going to be: \'bar\'')
+    // Read operation: get value from cache
+    console.log('Read operation:')
+    console.log('  Getting value with key \'foo\'. Expected value: \'bar\'')
     var result = await region.get('foo')
-    console.log('The value retrieved is: \'' + result + '\'')
+    console.log('  Value retrieved is: \'' + result + '\'')
 
-    //put value into cache - update operation
-    console.log('Updating key \'foo\' in region \'test\' with the value \'candy\'')
+    // Update operation: put value into cache
+    console.log('Update operation:')
+    console.log('  Updating key \'foo\' with value \'candy\'')
     await region.put('foo', 'candy')
-    console.log('Getting value from region \'test\' with key \'foo\'. The expected value is going to be: \'candy\'')
+    console.log('  Getting value with key \'foo\'. Expected value: \'candy\'')
     result = await region.get('foo')
-    console.log('The value retrieved is: \'' + result + '\'')
+    console.log('  Value retrieved is: \'' + result + '\'')
 
-    //delete value from cache - delete operation
-    console.log('Removing key \'foo\' from region \'test\'')
+    // Delete operation: delete value from cache
+    console.log('Delete operation:')
+    console.log('  Removing key \'foo\' from region \'test\'')
     await region.remove('foo')
-    console.log('Getting value from region \'test\' with key \'foo\'. The expected value is going to be: null')
+    console.log('  Getting value with key \'foo\'. Expected value: null')
     result = await region.get('foo')
-    console.log('The value retrieved is: \'' + result + '\'')
+    console.log('  Value retrieved is: \'' + result + '\'')
 
-    //done with cache then close it
+    //done with cache, so close it
     cache.close()
 
     //exit nodejs
