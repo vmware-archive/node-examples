@@ -4,7 +4,7 @@ This Node.js example provides a simple Javascript application, which demonstrate
  basic CRUD operations on a GemFire Cache cluster. This app can be run with
  either a local Apache Geode or Pivotal GemFire cluster.
 
-# Prerequisites
+## Prerequisites
 
 - Examples source code.  Acquire the repository:
 
@@ -28,7 +28,7 @@ at [Pivotal GemFire](https://network.pivotal.io/products/pivotal-gemfire/). Conf
 - `npm`, the Node.js package manager
 
 
-# Build the App
+## Build the App
 
 With a current working directory of `node-examples/put-get-remove`,
 build the app:
@@ -54,7 +54,7 @@ $ cd scripts
 $ ./startGemFire.sh
 ```
 
-If you encounter script issues with gfsh, validate that the GEODE_HOME environmental variable is configured and pointing to the GemFire install directory and that the PATH variable includes the bin directory of the GemFire install. Logs and other data for the cluster is stored in directory `node-examples/put-get-remove/data`
+If you encounter script issues with gfsh, validate that the GEODE_HOME environmental variable is configured and pointing to the GemFire install directory and that the PATH variable includes the bin directory of the GemFire install. Logs and other data for the cluster is stored in directory `node-examples/put-get-remove/data`.
 
 Example output:
 
@@ -130,11 +130,14 @@ With a current working directory of `node-examples/put-get-remove`:
 $ node index.js
 ```
 
-The application demonstrates configuring the Node.js GemFire client to use a local cluster. Doing a put of a key/value pair, fetching the value with a get using the key and finally deleting the key/value pair from GemFire. The application is not interactive.
+The application demonstrates configuring the Node.js GemFire client
+to use a local cluster.
+It does each CRUD operation, printing expected and actual values along
+the way. The application is not interactive.
 
 Example output:
 
-```bash
+```
 $ node index.js
 Creating a cache factory
 Creating a cache
@@ -142,24 +145,28 @@ Creating a pool factory
 Configuring the pool factory to find a locator at localhost:10337
 Creating a pool
 Creating a region called 'test' of type 'PROXY' connected to the pool named 'pool'
-Putting key 'foo' into region 'test' with the value 'bar'
-Getting value from region 'test' with key 'foo'. The expected value is going to be: 'bar'
-The value retrieved is: 'bar'
-Updating key 'foo' in region 'test' with the value 'candy'
-Getting value from region 'test' with key 'foo'. The expected value is going to be: 'candy'
-The value retrieved is: 'candy'
-Removing key 'foo' from region 'test'
-Getting value from region 'test' with key 'foo'. The expected value is going to be: null
-The value retrieved is: 'null'
+Create operation:
+  Putting key 'foo' with value 'bar'
+Read operation:
+  Getting value with key 'foo'. Expected value: 'bar'
+  Value retrieved is: 'bar'
+Update operation:
+  Updating key 'foo' with value 'candy'
+  Getting value with key 'foo'. Expected value: 'candy'
+  Value retrieved is: 'candy'
+Delete operation:
+  Removing key 'foo' from region 'test'
+  Getting value with key 'foo'. Expected value: null
+  Value retrieved is: 'null'
 To exit: CTRL-C
 ```
 
-## Review example code
-Snippets of the example code index.js are captured below.
+## Review of the Example Code
 
 ### Configuration
 
 This block of code configures the client cache. The log location and metrics are written to the data directory. The PoolFactory configures a connection pool which uses the locator to lookup the servers.
+
 ```javascript
 cacheFactory = gemfire.createCacheFactory()
 cacheFactory.set("log-file","data/nodeClient.log")
@@ -171,34 +178,43 @@ poolFactory.addLocator('localhost', 10337)
 poolFactory.create('pool')
 ```
 
-### Region
+### Region Configuration
 Create a region in client called 'test' and connect it to the pool used to communicate with the server. A matching region on the server is required and was created by the server startup script.
 
 ```javascript
   region = await cache.createRegion("test", { type: 'PROXY', poolName: 'pool' })
 ```
-### Put or Create
+
+### Create (Put)
 Insert/store data value 'bar' using key 'foo' into region 'test'
+
 ```javascript
 await region.put('foo', 'bar')
 ```
-### Get
+
+### Read (Get)
 Fetch a value from the server by getting it with key 'foo'
+
 ```javascript
 var result = await region.get('foo')
 ```
-### Update
+
+### Update (Put)
 A put is used to update a key-value pair that already has been added to the cache
+
 ```Javascript
 await region.put('foo', 'candy')
 ```
 
-### Remove
+### Delete (Remove)
 Delete the data on the server. using key 'foo'
+
 ```javascript
 await region.remove('foo')
 ```
+
 Attempting to get a value that has been removed will result in a null value being returned.
+
 ```javascript
 result = await region.get('foo') //null value
 ```
