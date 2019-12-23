@@ -1,0 +1,18 @@
+Certificate generation
+https://jamielinux.com/docs/openssl-certificate-authority/introduction.html
+
+from comments...
+openssl pkcs12 -export -out intermediate/certs/%certname%.pfx -inkey intermediate/private/%certname%.key.pem -in intermediate/certs/%certname%.cert.pem -certfile intermediate/certs/intermediate.cert.pem
+
+jks keystore import
+https://blog.codecentric.de/en/2013/01/how-to-use-self-signed-pem-client-certificates-in-java/
+
+https://docs.oracle.com/cd/E35976_01/server.740/es_admin/src/tadm_ssl_convert_pem_to_jks.html
+https://roopindersingh.com/programming/converting-pem-certificates-and-private-keys-to-jks/
+
+
+
+**************
+One-Way
+
+Two-Way
