@@ -1,0 +1,1 @@
+V	291217220504Z		1000	unknown	/C=US/ST=Oregon/O=Pivotal/CN=Pivotal NC Intermediate CA
