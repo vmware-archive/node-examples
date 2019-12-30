@@ -1,8 +1,8 @@
-# The Put-Get-Remove Example
+# The CRUD-ops Example
 
 This Node.js example provides a simple Javascript application, which demonstrates
- basic CRUD operations on a GemFire Cache cluster. This app can be run with
- either a local Apache Geode or Pivotal GemFire cluster.
+basic CRUD operations on a Pivotal GemFire cluster. This app can be run with
+either a local Apache Geode cluster or with a Pivotal GemFire cluster.
 
 ## Prerequisites
 
@@ -21,7 +21,7 @@ under [Pivotal GemFire](https://network.pivotal.io/products/pivotal-gemfire/).
 Acquire Pivotal GemFire from PivNet
 at [Pivotal GemFire](https://network.pivotal.io/products/pivotal-gemfire/). Configure GEODE_HOME and PATH as required by GemFire.
 
-- Java JDK 1.8.X  is a dependency for GemFire and gfsh
+- Java JDK 1.8.X  is a dependency for Apache Geode/GemFire and gfsh
 
 - Node.js, minimum version of 10.0
 
@@ -30,7 +30,7 @@ at [Pivotal GemFire](https://network.pivotal.io/products/pivotal-gemfire/). Conf
 
 ## Build the App
 
-With a current working directory of `node-examples/put-get-remove`,
+With a current working directory of `node-examples/CRUD-ops`,
 build the app:
 
 ```bash
@@ -40,38 +40,38 @@ $ npm update
 
 ## Start a GemFire Cluster
 
-There is bash script in the `put-get-remove/scripts` directory for creating a GemFire cluster. The `startGemFire.sh` script starts up the simplest cluster of one locator and one cache server. The locator provides administration services for the cluster and a discovery service allowing clients and servers to find each other. The server provides storage for data along with computation services.
+There is bash script in the `CRUD-ops/scripts` directory for creating a GemFire cluster. The `startGemFire.sh` script starts up the simplest cluster of one locator and one cache server. The locator provides administration services for the cluster and a discovery service allowing clients and servers to find each other. The server provides storage for data along with computation services.
 
 The startup script also creates a single Region called "test" that the application uses for storing data in the server (similar to a table in relational databases). A Region is similar to a hashmap and stores all data as
 key/value pairs.
 
 The startup script depends on gfsh the administrative utility provided by the GemFire product.  
 
-With a current working directory of `node-examples/put-get-remove`:
+With a current working directory of `node-examples/CRUD-ops`:
 
 ```bash
 $ cd scripts
 $ ./startGemFire.sh
 ```
 
-If you encounter script issues with gfsh, validate that the GEODE_HOME environmental variable is configured and pointing to the GemFire install directory and that the PATH variable includes the bin directory of the GemFire install. Logs and other data for the cluster is stored in directory `node-examples/put-get-remove/data`.
+If you encounter script issues with gfsh, validate that the GEODE_HOME environmental variable is configured and pointing to the GemFire install directory and that the PATH variable includes the bin directory of the GemFire install. Logs and other data for the cluster is stored in directory `node-examples/CRUD-ops/data`.
 
 Example output:
 
 ```bash
 $  ./startGemFire.sh
-~/workspace/node-examples/put-get-remove/data/locator ~/workspace/node-examples/put-get-remove/scripts
-~/workspace/node-examples/put-get-remove/scripts
+~/workspace/node-examples/CRUD-ops/data/locator ~/workspace/node-examples/CRUD-ops/scripts
+~/workspace/node-examples/CRUD-ops/scripts
 .
-(1) Executing - start locator --name=locator --port=10337 --dir=/Users/pivotal/workspace/node-examples/put-get-remove/data/locator
+(1) Executing - start locator --name=locator --port=10337 --dir=/Users/pivotal/workspace/node-examples/CRUD-ops/data/locator
 
 .....
-Locator in /Users/pivotal/workspace/node-examples/put-get-remove/data/locator on 10.0.0.177[10337] as locator is currently online.
+Locator in /Users/pivotal/workspace/node-examples/CRUD-ops/data/locator on 10.0.0.177[10337] as locator is currently online.
 Process ID: 47975
 Uptime: 4 seconds
 Geode Version: 9.8.4
 Java Version: 1.8.0_222
-Log File: /Users/pivotal/workspace/node-examples/put-get-remove/data/locator/locator.log
+Log File: /Users/pivotal/workspace/node-examples/CRUD-ops/data/locator/locator.log
 JVM Arguments: -Dgemfire.enable-cluster-configuration=true -Dgemfire.load-cluster-configuration-from-dir=false -Dgemfire.launcher.registerSignalHandlers=true -Djava.awt.headless=true -Dsun.rmi.dgc.server.gcInterval=9223372036854775806
 Class-Path: /Users/pivotal/workspace/pivotal-gemfire-9.8.4/lib/geode-core-9.8.4.jar:/Users/pivotal/workspace/pivotal-gemfire-9.8.4/lib/geode-dependencies.jar:/Users/pivotal/workspace/pivotal-gemfire-9.8.4/extensions/gemfire-greenplum-3.4.1.jar
 
@@ -79,8 +79,8 @@ Successfully connected to: JMX Manager [host=10.0.0.177, port=1099]
 
 Cluster configuration service is up and running.
 
-~/workspace/node-examples/put-get-remove/data/server ~/workspace/node-examples/put-get-remove/scripts
-~/workspace/node-examples/put-get-remove/scripts
+~/workspace/node-examples/CRUD-ops/data/server ~/workspace/node-examples/CRUD-ops/scripts
+~/workspace/node-examples/CRUD-ops/scripts
 
 (1) Executing - connect --locator=localhost[10337]
 
@@ -89,19 +89,19 @@ Connecting to Manager at [host=10.0.0.177, port=1099] ..
 Successfully connected to: [host=10.0.0.177, port=1099]
 
 
-(2) Executing - start server --locators=localhost[10337] --server-port=40404 --name=server --dir=/Users/pivotal/workspace/node-examples/put-get-remove/data/server
+(2) Executing - start server --locators=localhost[10337] --server-port=40404 --name=server --dir=/Users/pivotal/workspace/node-examples/CRUD-ops/data/server
 
 ...
-Server in /Users/pivotal/workspace/node-examples/put-get-remove/data/server on 10.0.0.177[40404] as server is currently online.
+Server in /Users/pivotal/workspace/node-examples/CRUD-ops/data/server on 10.0.0.177[40404] as server is currently online.
 Process ID: 48079
 Uptime: 2 seconds
 Geode Version: 9.8.4
 Java Version: 1.8.0_222
-Log File: /Users/pivotal/workspace/node-examples/put-get-remove/data/server/server.log
+Log File: /Users/pivotal/workspace/node-examples/CRUD-ops/data/server/server.log
 JVM Arguments: -Dgemfire.locators=localhost[10337] -Dgemfire.start-dev-rest-api=false -Dgemfire.use-cluster-configuration=true -Dgemfire.launcher.registerSignalHandlers=true -Djava.awt.headless=true -Dsun.rmi.dgc.server.gcInterval=9223372036854775806
 Class-Path: /Users/pivotal/workspace/pivotal-gemfire-9.8.4/lib/geode-core-9.8.4.jar:/Users/pivotal/workspace/pivotal-gemfire-9.8.4/lib/geode-dependencies.jar:/Users/pivotal/workspace/pivotal-gemfire-9.8.4/extensions/gemfire-greenplum-3.4.1.jar
 
-~/workspace/node-examples/put-get-remove/data/server ~/workspace/node-examples/put-get-remove/scripts
+~/workspace/node-examples/CRUD-ops/data/server ~/workspace/node-examples/CRUD-ops/scripts
 
 (1) Executing - connect --locator=localhost[10337]
 
@@ -124,7 +124,7 @@ $ cd ..
 
 ## Run the example application
 
-With a current working directory of `node-examples/put-get-remove`:
+With a current working directory of `node-examples/CRUD-ops`:
 
 ```bash
 $ node index.js
@@ -225,7 +225,7 @@ result = await region.get('foo') //null value
 
 - When finished with running the example, use a script to
 tear down the GemFire cluster.
-With a current working directory of `node-examples/put-get-remove`:
+With a current working directory of `node-examples/CRUD-ops`:
 
     ```bash
     $ cd scripts
@@ -234,7 +234,7 @@ With a current working directory of `node-examples/put-get-remove`:
 
 - Use a script to remove the directories and files containing
 GemFire logs created for the cluster.
-With a current working directory of `node-examples/put-get-remove`:
+With a current working directory of `node-examples/CRUD-ops`:
 
     ```bash
     $ cd scripts
