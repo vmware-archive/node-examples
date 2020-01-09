@@ -38,34 +38,34 @@ async function putAll_example() {
 
     //Confirm via getAll operation:
     console.log('Validate putAll operation with getAll:')
+    //fetch data with getAll
     let getresult = await region.getAll(['foo','boo','spam'])
+    console.log('  Getting value with key \'foo\'. Expected value: \'bungie\'')
     console.log('  Value retrieved is: \'' + getresult.foo + '\'')
+    console.log('  Getting value with key \'boo\'. Expected value: \'tophat\'')
     console.log('  Value retrieved is: \'' + getresult.boo + '\'')
+    console.log('  Getting value with key \'spam\'. Expected value: \'sushi\'')
     console.log('  Value retrieved is: \'' + getresult.spam + '\'')
 
-    console.log('PutAll and GetALL')
-    await region.putAll({'foo': {'bar':10},'boo':'candy','spam':'musubi'})
+    console.log('Use putAll and getAll with JSON Objects')
+    await region.putAll({'foo': {'bar':10},'boo':{'bar':'candy'},'spam':{'bar':'musubi'}})
+    //get object associated with key foo
+    console.log("Do a regular get operation.")
     result = await region.get('foo')
-    console.log('  Value retrieved is: \'' + result.foo + '\'')
+    console.log('  Object retrieved is:\'' + result + '\'')
+    console.log('  Value retrieved is: \'' + result.bar + '\'')
+    //retrieve group of objects based on keys with GetAll
+    console.log("Do a regular getAll operation.")
     getresult = await region.getAll(['foo','boo','spam'])
-    console.log('  Value retrieved is: \'' + getresult.foo + '\'')
-    console.log('  Value retrieved is: \'' + getresult.boo + '\'')
-    console.log('  Value retrieved is: \'' + getresult.spam + '\'')
-    // Update operation: put value into cache
-    // console.log('Update operation:')
-    // console.log('  Updating key \'foo\' with value \'candy\'')
-    // await region.put('foo', 'candy')
-    // console.log('  Getting value with key \'foo\'. Expected value: \'candy\'')
-    // result = await region.get('foo')
-    // console.log('  Value retrieved is: \'' + result + '\'')
-    //
-    // // Delete operation: delete value from cache
-    // console.log('Delete operation:')
-    // console.log('  Removing key \'foo\' from region \'test\'')
-    // await region.remove('foo')
-    // console.log('  Getting value with key \'foo\'. Expected value: null')
-    // result = await region.get('foo')
-    // console.log('  Value retrieved is: \'' + result + '\'')
+    console.log('  Getting object with key \'foo\'. Expected value: \'[object Object]\'')
+    console.log('  Object retrieved is:\'' + getresult.foo + '\'')
+    //print values of objects fetch via getAll
+    console.log('  Getting value with key \'foo\'. Expected value of bar: \'10\'')
+    console.log('  Value retrieved is: \'' + getresult.foo.bar + '\'')
+    console.log('  Getting value with key \'boo\'. Expected value of bar: \'candy\'')
+    console.log('  Value retrieved is: \'' + getresult.boo.bar + '\'')
+    console.log('  Getting value with key \'spam\'. Expected value of bar: \'musubi\'')
+    console.log('  Value retrieved is: \'' + getresult.spam.bar + '\'')
 
     //done with cache, so close it
     cache.close()
