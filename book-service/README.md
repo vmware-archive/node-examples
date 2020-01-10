@@ -78,7 +78,7 @@ $ ./startGemFire.sh
 
 ## Run the App
 
-With a current working directory of `node-examples/book-service`:
+In a separate shell, set the current working directory to `node-examples/book-service`:
 
 ```
 $ node src/server.js
