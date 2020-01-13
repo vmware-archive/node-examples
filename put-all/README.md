@@ -195,25 +195,28 @@ console.log('  Value retrieved is: \'' + getresult.boo + '\'')
 console.log('  Value retrieved is: \'' + getresult.spam + '\'')
 ```
 
-### putAll with 
-A put is used to update a key-value pair that already has been added to the cache
+### putAll and getAll with JSON objects
+A putAll can insert a collection of objects with key:{object value} pairing being passed to the server for processing.  
 
 ```Javascript
-await region.put('foo', 'candy')
+await region.putAll({'foo':{'bar':10},'boo':{'bar':'candy'},'spam':{'bar':'musubi'}})
+result = await region.get('foo')
+console.log('  Object retrieved is:\'' + result + '\'')
+console.log('  Value retrieved is: \'' + result.bar + '\'')
+getallresult = await region.getAll(['foo','boo','spam'])
+console.log('  Object retrieved is:\'' + getallresult.foo + '\'')
+console.log('  Value retrieved is: \'' + getallresult.foo.bar + '\'')
 ```
 
 ### Delete (Remove)
-Delete the data on the server. using key 'foo'
+There is no general method for aggregated deletions of data in a region. The region.clean() method can delete all data in a replicated server region but is limited and does not work with server partitioned regions. As such region.clear() for most use cases will not be appropriate.     
 
 ```javascript
-await region.remove('foo')
+await region.clear()
 ```
 
-Attempting to get a value that has been removed will result in a null value being returned.
+For more complex use cases deleting of data from regions, many users will use the GemFire Function Service and develop a server side function to handle these cases. Optionally server side regions can configure expiration as another method from deleting data automatically.   
 
-```javascript
-result = await region.get('foo') //null value
-```
 
 ## Clean Up the Local Development Environment
 
