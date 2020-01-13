@@ -215,7 +215,7 @@ There is no general method for aggregated deletions of data in a region. The reg
 await region.clear()
 ```
 
-For more complex use cases deleting of data from regions, many users will use the GemFire Function Service and develop a server side function to handle these cases. Optionally server side regions can configure expiration as another method from deleting data automatically.   
+For more complex use cases deleting data from regions, many users will use the GemFire Function Service and develop a server side function to handle these cases. Optionally server side regions can configure expiration as another method for deleting data automatically.   
 
 
 ## Clean Up the Local Development Environment
