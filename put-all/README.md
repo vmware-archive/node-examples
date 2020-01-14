@@ -54,7 +54,7 @@ $ cd scripts
 $ ./startGemFire.sh
 ```
 
-If you encounter script issues with gfsh, validate that the GEODE_HOME environmental variable is configured and pointing to the GemFire install directory and that the PATH variable includes the bin directory of the GemFire install. Logs and other data for the cluster is stored in directory `node-examples/put-all/data`.
+If you encounter script issues with gfsh, validate that the GEODE_HOME environmental variable is configured and pointing to the GemFire install directory and that the PATH variable includes the bin directory of the GemFire install. Logs and other data for the cluster are stored in directory `node-examples/put-all/data`.
 
 Example output:
 
@@ -118,6 +118,7 @@ server | OK     | Region "/test" created on "server"
 Changes to configuration for group 'cluster' are persisted.
 ```
 Change back to application directory.
+
 ```bash
 $ cd ..
 ```
