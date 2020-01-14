@@ -1,10 +1,16 @@
 # The CRUD-ops Example
 
-This Node.js example provides a simple Javascript application, which demonstrates
-basic CRUD operations on a Pivotal GemFire cluster. This app can be run with
-either a local Apache Geode cluster or with a Pivotal GemFire cluster.
+This Node.js example provides a simple Javascript application which demonstrates
+basic CRUD operations (create, read, update, delete) on a local Pivotal GemFire cluster. This app also can be run with
+a local Apache Geode cluster.
 
 ## Prerequisites
+
+- Java JDK 1.8.X  is a dependency for Apache Geode/GemFire and gfsh
+
+- Node.js, minimum version of 10.0
+
+- `npm`, the Node.js package manager
 
 - Examples source code.  Acquire the repository:
 
@@ -13,19 +19,21 @@ either a local Apache Geode cluster or with a Pivotal GemFire cluster.
     ```
 
 - Node.js client library. Acquire the Node.js client library from PivNet.
-Find and download the Node.js Client 2.0.0 Beta version,
-`gemfire-nodejs-client-2.0.0-beta.tgz`,
+Find and download the current version of the Node.js Client,
+`gemfire-nodejs-client-2.0.0.tgz`,
 under [Pivotal GemFire](https://network.pivotal.io/products/pivotal-gemfire/).
 
 - Pivotal GemFire (to have gfsh, the command line interface for GemFire).
 Acquire Pivotal GemFire from PivNet
-at [Pivotal GemFire](https://network.pivotal.io/products/pivotal-gemfire/). Configure GEODE_HOME and PATH as required by GemFire.
+at [Pivotal GemFire](https://network.pivotal.io/products/pivotal-gemfire/). 
 
-- Java JDK 1.8.X  is a dependency for Apache Geode/GemFire and gfsh
+- Configure GEODE\_HOME and PATH environment variables.
+Set GEODE\_HOME to the GemFire installation directory and add $GEODE\_HOME/bin to your PATH. For example
 
-- Node.js, minimum version of 10.0
-
-- `npm`, the Node.js package manager
+    ```bash
+    export GEODE_HOME=/Users/MyGemFire
+    export PATH=$GEODE_HOME/bin:$PATH
+    ```
 
 
 ## Build the App
@@ -54,7 +62,7 @@ $ cd scripts
 $ ./startGemFire.sh
 ```
 
-If you encounter script issues with gfsh, validate that the GEODE_HOME environmental variable is configured and pointing to the GemFire install directory and that the PATH variable includes the bin directory of the GemFire install. Logs and other data for the cluster is stored in directory `node-examples/CRUD-ops/data`.
+If you encounter script issues with gfsh, validate that the GEODE_HOME environment variable is configured and pointing to the GemFire install directory and that the PATH variable includes the bin directory of the GemFire install. Logs and other data for the cluster are stored in directory `node-examples/CRUD-ops/data`.
 
 Example output:
 
