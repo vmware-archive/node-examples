@@ -50,8 +50,7 @@ The startup script depends on gfsh the administrative utility provided by the Ge
 With a current working directory of `node-examples/authenticate`:
 
 ```bash
-$ cd scripts
-$ ./startGemFire.sh
+$ ./scripts/startGemFire.sh
 ```
 
 If you encounter script issues with gfsh, validate that the GEODE_HOME environmental variable is configured and pointing to the GemFire install directory and that the PATH variable includes the bin directory of the GemFire install. Logs and other data for the cluster is stored in directory `node-examples/authenticate/data`
@@ -59,33 +58,39 @@ If you encounter script issues with gfsh, validate that the GEODE_HOME environme
 Example output:
 
 ```bash
-$ ./startGemFire.sh
+$ ./scripts/startGemFire.sh
+
+Geode home= /Users/pivotal/workspace/pivotal-gemfire-9.8.4
+
+PATH = /usr/local/opt/openssl@1.1/bin:/Users/pivotal/.nvm/versions/node/v10.17.0/bin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:/Users/pivotal/workspace/pivotal-gemfire-9.8.4/bin
+
+Java version:
+openjdk version "1.8.0_222"
+OpenJDK Runtime Environment (AdoptOpenJDK)(build 1.8.0_222-b10)
+OpenJDK 64-Bit Server VM (AdoptOpenJDK)(build 25.222-b10, mixed mode)
+
 *** Build SimpleSecurityManager ***
-~/workspace/node-examples/authenticate/src ~/workspace/node-examples/authenticate/scripts
+CLASSPATH=/Users/pivotal/workspace/pivotal-gemfire-9.8.4/lib/*
 added manifest
 adding: securitymanager/(in = 0) (out= 0)(stored 0%)
 adding: securitymanager/SimpleSecurityManager.java(in = 2851) (out= 1026)(deflated 64%)
 adding: securitymanager/SimpleSecurityManager.class(in = 2267) (out= 1103)(deflated 51%)
-~/workspace/node-examples/authenticate/scripts
+
 *** Start Locator ***
-~/workspace/node-examples/authenticate/data/locator ~/workspace/node-examples/authenticate/scripts
-~/workspace/node-examples/authenticate/scripts
-..
+
 (1) Executing - start locator --connect=false --name=locator --port=10337 --dir=/Users/pivotal/workspace/node-examples/authenticate/data/locator --classpath=/Users/pivotal/workspace/node-examples/authenticate/src/security.jar --J=-Dgemfire.security-manager=securitymanager.SimpleSecurityManager
 
-.....
+....
 Locator in /Users/pivotal/workspace/node-examples/authenticate/data/locator on 10.118.33.177[10337] as locator is currently online.
-Process ID: 59026
+Process ID: 7072
 Uptime: 4 seconds
 Geode Version: 9.8.4
 Java Version: 1.8.0_222
 Log File: /Users/pivotal/workspace/node-examples/authenticate/data/locator/locator.log
 JVM Arguments: -Dgemfire.enable-cluster-configuration=true -Dgemfire.load-cluster-configuration-from-dir=false -Dgemfire.security-manager=securitymanager.SimpleSecurityManager -Dgemfire.launcher.registerSignalHandlers=true -Djava.awt.headless=true -Dsun.rmi.dgc.server.gcInterval=9223372036854775806
-Class-Path: /Users/pivotal/workspace/pivotal-gemfire-9.8.4//lib/geode-core-9.8.4.jar:/Users/pivotal/workspace/node-examples/authenticate/src/security.jar:/Users/pivotal/workspace/pivotal-gemfire-9.8.4/lib/geode-dependencies.jar:/Users/pivotal/workspace/pivotal-gemfire-9.8.4/extensions/gemfire-greenplum-3.4.1.jar
+Class-Path: /Users/pivotal/workspace/pivotal-gemfire-9.8.4/lib/geode-core-9.8.4.jar:/Users/pivotal/workspace/node-examples/authenticate/src/security.jar:/Users/pivotal/workspace/pivotal-gemfire-9.8.4/lib/geode-dependencies.jar:/Users/pivotal/workspace/pivotal-gemfire-9.8.4/extensions/gemfire-greenplum-3.4.1.jar
 
 *** Start Server ***
-~/workspace/node-examples/authenticate/data/server ~/workspace/node-examples/authenticate/scripts
-~/workspace/node-examples/authenticate/scripts
 
 (1) Executing - connect --locator=localhost[10337] --user=root --password=*****
 
@@ -97,16 +102,15 @@ Successfully connected to: [host=10.118.33.177, port=1099]
 
 ...
 Server in /Users/pivotal/workspace/node-examples/authenticate/data/server on 10.118.33.177[40404] as server is currently online.
-Process ID: 59142
+Process ID: 7182
 Uptime: 2 seconds
 Geode Version: 9.8.4
 Java Version: 1.8.0_222
 Log File: /Users/pivotal/workspace/node-examples/authenticate/data/server/server.log
 JVM Arguments: -Dgemfire.locators=localhost[10337] -Dgemfire.security-username=root -Dgemfire.start-dev-rest-api=false -Dgemfire.security-password=******** -Dgemfire.use-cluster-configuration=true -Dgemfire.security-manager=securitymanager.SimpleSecurityManager -Dgemfire.launcher.registerSignalHandlers=true -Djava.awt.headless=true -Dsun.rmi.dgc.server.gcInterval=9223372036854775806
-Class-Path: /Users/pivotal/workspace/pivotal-gemfire-9.8.4//lib/geode-core-9.8.4.jar:/Users/pivotal/workspace/node-examples/authenticate/src/security.jar:/Users/pivotal/workspace/pivotal-gemfire-9.8.4/lib/geode-dependencies.jar:/Users/pivotal/workspace/pivotal-gemfire-9.8.4/extensions/gemfire-greenplum-3.4.1.jar
+Class-Path: /Users/pivotal/workspace/pivotal-gemfire-9.8.4/lib/geode-core-9.8.4.jar:/Users/pivotal/workspace/node-examples/authenticate/src/security.jar:/Users/pivotal/workspace/pivotal-gemfire-9.8.4/lib/geode-dependencies.jar:/Users/pivotal/workspace/pivotal-gemfire-9.8.4/extensions/gemfire-greenplum-3.4.1.jar
 
-*** Create Region \'test\' on server ***
-~/workspace/node-examples/authenticate/data/server ~/workspace/node-examples/authenticate/scripts
+*** Create Partition Region "test" ***
 
 (1) Executing - connect --locator=localhost[10337] --user=root --password=*****
 
@@ -122,7 +126,6 @@ server | OK     | Region "/test" created on "server"
 
 Changes to configuration for group 'cluster' are persisted.
 
-~/workspace/node-examples/authenticate/scripts
 ```
 
 ## Run the example application
@@ -146,7 +149,6 @@ Create Pool
 Create Region
 Do put and get CRUD operations
 Finished
-To exit: CTRL-C
 ```
 
 ## Review example code
@@ -195,7 +197,8 @@ The provided example security manager (node-examples/authenticate/src/securityma
 Try changing the client application "security-password" property from "root-password"
 to "root-passwordabc" in the index.js file. This is will cause an authentication
 error with the cluster and the client will not be able to connect or perform
-any actions.  
+any actions.  Because of retries in the connection logic of the client, the
+error may take a minute or more before it appears.
 
 Example output:
 ```
@@ -315,7 +318,7 @@ Caused by: org.apache.shiro.authz.UnauthorizedException: Subject does not have p
 ) happened at remote server.
 ```
 If one resets the security-username and security-password back to the origin "root"
-and "root-password" the application should work again as it did initially. 
+and "root-password" the application should work again as it did initially.
 
 ## Clean Up the Local Development Environment
 
@@ -326,8 +329,7 @@ tear down the GemFire cluster.
 With a current working directory of `node-examples/authenticate`:
 
     ```bash
-    $ cd scripts
-    $ ./shutdownGemFire.sh
+    $ ./scripts/shutdownGemFire.sh
     ```
 
 - Use a script to remove the directories and files containing
@@ -335,6 +337,5 @@ GemFire logs created for the cluster.
 With a current working directory of `node-examples/authenticate`:
 
     ```bash
-    $ cd scripts
-    $ ./clearGemFireData.sh
+    $ ./scripts/clearGemFireData.sh
     ```
