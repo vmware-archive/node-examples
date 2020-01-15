@@ -25,7 +25,7 @@ under [Pivotal GemFire](https://network.pivotal.io/products/pivotal-gemfire/).
 
 - Pivotal GemFire (to have gfsh, the command line interface for GemFire).
 Acquire Pivotal GemFire from PivNet
-at [Pivotal GemFire](https://network.pivotal.io/products/pivotal-gemfire/). 
+at [Pivotal GemFire](https://network.pivotal.io/products/pivotal-gemfire/).
 
 - Configure GEODE\_HOME and PATH environment variables.
 Set GEODE\_HOME to the GemFire installation directory and add $GEODE\_HOME/bin to your PATH. For example
@@ -166,7 +166,6 @@ Delete operation:
   Removing key 'foo' from region 'test'
   Getting value with key 'foo'. Expected value: null
   Value retrieved is: 'null'
-To exit: CTRL-C
 ```
 
 ## Review of the Example Code

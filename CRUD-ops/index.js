@@ -54,7 +54,7 @@ async function put_get_remove_example() {
     cache.close()
 
     //exit nodejs
-    console.log('To exit: CTRL-C')
+    process.exit(0)
 }
 
 put_get_remove_example()
