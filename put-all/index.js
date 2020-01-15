@@ -71,7 +71,7 @@ async function putAll_example() {
     cache.close()
 
     //exit nodejs
-    console.log('To exit: CTRL-C')
+    process.exit(0)
 }
 
 putAll_example()
