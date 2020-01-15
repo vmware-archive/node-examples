@@ -50,8 +50,7 @@ The startup script depends on gfsh the administrative utility provided by the Ge
 With a current working directory of `node-examples/put-all`:
 
 ```bash
-$ cd scripts
-$ ./startGemFire.sh
+$ ./scripts/startGemFire.sh
 ```
 
 If you encounter script issues with gfsh, validate that the GEODE_HOME environmental variable is configured and pointing to the GemFire install directory and that the PATH variable includes the bin directory of the GemFire install. Logs and other data for the cluster are stored in directory `node-examples/put-all/data`.
@@ -59,15 +58,26 @@ If you encounter script issues with gfsh, validate that the GEODE_HOME environme
 Example output:
 
 ```bash
-$  ./startGemFire.sh
-~/workspace/node-examples/put-all/data/locator ~/workspace/node-examples/put-all/scripts
-~/workspace/node-examples/put-all/scripts
-.
+$  ./scripts/startGemFire.sh
+
+Geode home= /Users/pivotal/workspace/pivotal-gemfire-9.8.4
+
+PATH = /usr/local/opt/openssl@1.1/bin:/Users/pivotal/.nvm/versions/node/v10.17.0/bin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:/Users/pivotal/workspace/pivotal-gemfire-9.8.4/bin
+
+Java version:
+openjdk version "1.8.0_222"
+OpenJDK Runtime Environment (AdoptOpenJDK)(build 1.8.0_222-b10)
+OpenJDK 64-Bit Server VM (AdoptOpenJDK)(build 25.222-b10, mixed mode)
+
+*** Start Locator ***
+
 (1) Executing - start locator --name=locator --port=10337 --dir=/Users/pivotal/workspace/node-examples/put-all/data/locator
 
-.....
-Locator in /Users/pivotal/workspace/node-examples/put-all/data/locator on 10.0.0.177[10337] as locator is currently online.
-Process ID: 47975
+....
+
+*** Start Server ***
+Locator in /Users/pivotal/workspace/node-examples/put-all/data/locator on 10.118.33.177[10337] as locator is currently online.
+Process ID: 8349
 Uptime: 4 seconds
 Geode Version: 9.8.4
 Java Version: 1.8.0_222
@@ -75,25 +85,21 @@ Log File: /Users/pivotal/workspace/node-examples/put-all/data/locator/locator.lo
 JVM Arguments: -Dgemfire.enable-cluster-configuration=true -Dgemfire.load-cluster-configuration-from-dir=false -Dgemfire.launcher.registerSignalHandlers=true -Djava.awt.headless=true -Dsun.rmi.dgc.server.gcInterval=9223372036854775806
 Class-Path: /Users/pivotal/workspace/pivotal-gemfire-9.8.4/lib/geode-core-9.8.4.jar:/Users/pivotal/workspace/pivotal-gemfire-9.8.4/lib/geode-dependencies.jar:/Users/pivotal/workspace/pivotal-gemfire-9.8.4/extensions/gemfire-greenplum-3.4.1.jar
 
-Successfully connected to: JMX Manager [host=10.0.0.177, port=1099]
+Successfully connected to: JMX Manager [host=10.118.33.177, port=1099]
 
 Cluster configuration service is up and running.
-
-~/workspace/node-examples/put-all/data/server ~/workspace/node-examples/put-all/scripts
-~/workspace/node-examples/put-all/scripts
 
 (1) Executing - connect --locator=localhost[10337]
 
 Connecting to Locator at [host=localhost, port=10337] ..
-Connecting to Manager at [host=10.0.0.177, port=1099] ..
-Successfully connected to: [host=10.0.0.177, port=1099]
-
+Connecting to Manager at [host=10.118.33.177, port=1099] ..
+Successfully connected to: [host=10.118.33.177, port=1099]
 
 (2) Executing - start server --locators=localhost[10337] --server-port=40404 --name=server --dir=/Users/pivotal/workspace/node-examples/put-all/data/server
 
 ...
-Server in /Users/pivotal/workspace/node-examples/put-all/data/server on 10.0.0.177[40404] as server is currently online.
-Process ID: 48079
+Server in /Users/pivotal/workspace/node-examples/put-all/data/server on 10.118.33.177[40404] as server is currently online.
+Process ID: 8452
 Uptime: 2 seconds
 Geode Version: 9.8.4
 Java Version: 1.8.0_222
@@ -101,13 +107,13 @@ Log File: /Users/pivotal/workspace/node-examples/put-all/data/server/server.log
 JVM Arguments: -Dgemfire.locators=localhost[10337] -Dgemfire.start-dev-rest-api=false -Dgemfire.use-cluster-configuration=true -Dgemfire.launcher.registerSignalHandlers=true -Djava.awt.headless=true -Dsun.rmi.dgc.server.gcInterval=9223372036854775806
 Class-Path: /Users/pivotal/workspace/pivotal-gemfire-9.8.4/lib/geode-core-9.8.4.jar:/Users/pivotal/workspace/pivotal-gemfire-9.8.4/lib/geode-dependencies.jar:/Users/pivotal/workspace/pivotal-gemfire-9.8.4/extensions/gemfire-greenplum-3.4.1.jar
 
-~/workspace/node-examples/put-all/data/server ~/workspace/node-examples/put-all/scripts
+*** Create Partition Region "test" ***
 
 (1) Executing - connect --locator=localhost[10337]
 
 Connecting to Locator at [host=localhost, port=10337] ..
-Connecting to Manager at [host=10.0.0.177, port=1099] ..
-Successfully connected to: [host=10.0.0.177, port=1099]
+Connecting to Manager at [host=10.118.33.177, port=1099] ..
+Successfully connected to: [host=10.118.33.177, port=1099]
 
 (2) Executing - create region --name=test --type=PARTITION
 
@@ -115,12 +121,7 @@ Member | Status | Message
 ------ | ------ | ----------------------------------
 server | OK     | Region "/test" created on "server"
 
-Changes to configuration for group 'cluster' are persisted.
-```
-Change back to application directory.
-
-```bash
-$ cd ..
+Changes to configuration for group 'cluster' are persisted
 ```
 
 ## Run the example application
@@ -168,7 +169,6 @@ Do a regular getAll operation.
   Value retrieved is: 'candy'
   Getting value with key 'spam'. Expected value of bar: 'musubi'
   Value retrieved is: 'musubi'
-To exit: CTRL-C
 ```
 
 ## Review of the Example Code
@@ -216,20 +216,17 @@ There is no general method for aggregated deletions of data in a region. The reg
 await region.clear()
 ```
 
-For more complex use cases deleting data from regions, many users will use the GemFire Function Service and develop a server side function to handle these cases. Optionally server side regions can configure expiration as another method for deleting data automatically.   
+For more complex use cases of deleting data from regions, many users will use the GemFire Function Service and develop a server side function to handle these use cases. Optionally on the server side, regions can be configured with data expiration as another method for deleting keys and values automatically.   
 
 
 ## Clean Up the Local Development Environment
-
-- When finished with running the example, use a control-C in the shell running `node` to stop running the application.
 
 - When finished with running the example, use a script to
 tear down the GemFire cluster.
 With a current working directory of `node-examples/put-all`:
 
     ```bash
-    $ cd scripts
-    $ ./shutdownGemFire.sh
+    $ ./scripts/shutdownGemFire.sh
     ```
 
 - Use a script to remove the directories and files containing
@@ -237,6 +234,5 @@ GemFire logs created for the cluster.
 With a current working directory of `node-examples/put-all`:
 
     ```bash
-    $ cd scripts
-    $ ./clearGemFireData.sh
+    $ ./scripts/clearGemFireData.sh
     ```
