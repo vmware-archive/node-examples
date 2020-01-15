@@ -97,13 +97,11 @@ Successfully connected to: JMX Manager [host=10.118.33.177, port=1099]
 
 Cluster configuration service is up and running.
 
-
 (1) Executing - connect --locator=localhost[10337]
 
 Connecting to Locator at [host=localhost, port=10337] ..
 Connecting to Manager at [host=10.118.33.177, port=1099] ..
 Successfully connected to: [host=10.118.33.177, port=1099]
-
 
 (2) Executing - start server --locators=localhost[10337] --server-port=40404 --name=server --dir=/Users/pivotal/workspace/node-examples/CRUD-ops/data/server
 
@@ -117,7 +115,6 @@ Log File: /Users/pivotal/workspace/node-examples/CRUD-ops/data/server/server.log
 JVM Arguments: -Dgemfire.locators=localhost[10337] -Dgemfire.start-dev-rest-api=false -Dgemfire.use-cluster-configuration=true -Dgemfire.launcher.registerSignalHandlers=true -Djava.awt.headless=true -Dsun.rmi.dgc.server.gcInterval=9223372036854775806
 Class-Path: /Users/pivotal/workspace/pivotal-gemfire-9.8.4/lib/geode-core-9.8.4.jar:/Users/pivotal/workspace/pivotal-gemfire-9.8.4/lib/geode-dependencies.jar:/Users/pivotal/workspace/pivotal-gemfire-9.8.4/extensions/gemfire-greenplum-3.4.1.jar
 
-
 *** Create Partition Region "test" ***
 
 (1) Executing - connect --locator=localhost[10337]
@@ -126,15 +123,11 @@ Connecting to Locator at [host=localhost, port=10337] ..
 Connecting to Manager at [host=10.118.33.177, port=1099] ..
 Successfully connected to: [host=10.118.33.177, port=1099]
 
-
 (2) Executing - create region --name=test --type=PARTITION
 
 Member | Status | Message
 ------ | ------ | ----------------------------------
 server | OK     | Region "/test" created on "server"
-
-
-
 
 Changes to configuration for group 'cluster' are persisted.
 ```
@@ -237,9 +230,7 @@ result = await region.get('foo') //null value
 
 ## Clean Up the Local Development Environment
 
-- When finished with running the example, use a control-C in the shell running `node` to stop running the application.
-
-- When finished with running the example, use a script to
+- When finished with running the example, use the shutdown script to
 tear down the GemFire cluster.
 With a current working directory of `node-examples/CRUD-ops`:
 
@@ -247,7 +238,7 @@ With a current working directory of `node-examples/CRUD-ops`:
     $ ./scripts/shutdownGemFire.sh
     ```
 
-- Use a script to remove the directories and files containing
+- Use the clean up script to remove the directories and files containing
 GemFire logs created for the cluster.
 With a current working directory of `node-examples/CRUD-ops`:
 

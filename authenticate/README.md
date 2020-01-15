@@ -211,7 +211,6 @@ Create Region
 Do put and get CRUD operations
 : not connected to Geode
 Finished
-To exit: CTRL-C
 ```
 
 In the client log file (node-examples/authenticate/data/nodeClient.log), a Java
@@ -288,12 +287,11 @@ Caused by: org.apache.shiro.authz.UnauthorizedException: Subject does not have p
 	... 11 more
 
 Finished
-To exit: CTRL-C
 ```
 The client log file will show a Java exception stack trace from server which shows
 details of the failure. In this case that the authorization of the get operation
 which is a DATA:READ of the "test" region and key "foo" failed as the "writer" user
-only has permissions to perform DATA:WRITE operators or puts.
+only has permissions to perform DATA:WRITE operations or puts.
 
 ```Java
 [error 2019/12/19 10:42:33.528252 PST minbari.pivotal.io:63588 123145467691008] Region::get: An exception (org.apache.geode.security.NotAuthorizedException: writer not authorized for DATA:READ:test:foo
@@ -322,9 +320,7 @@ and "root-password" the application should work again as it did initially.
 
 ## Clean Up the Local Development Environment
 
-- When finished with running the example, use a control-C in the shell running `node` to stop running the application.
-
-- When finished with running the example, use a script to
+- When finished with running the example, use the shutdown script to
 tear down the GemFire cluster.
 With a current working directory of `node-examples/authenticate`:
 
@@ -332,7 +328,7 @@ With a current working directory of `node-examples/authenticate`:
     $ ./scripts/shutdownGemFire.sh
     ```
 
-- Use a script to remove the directories and files containing
+- Use the cleanup script to remove the directories and files containing
 GemFire logs created for the cluster.
 With a current working directory of `node-examples/authenticate`:
 

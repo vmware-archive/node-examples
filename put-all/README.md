@@ -221,7 +221,7 @@ For more complex use cases of deleting data from regions, many users will use th
 
 ## Clean Up the Local Development Environment
 
-- When finished with running the example, use a script to
+- When finished with running the example, use the shutdown script to
 tear down the GemFire cluster.
 With a current working directory of `node-examples/put-all`:
 
@@ -229,7 +229,7 @@ With a current working directory of `node-examples/put-all`:
     $ ./scripts/shutdownGemFire.sh
     ```
 
-- Use a script to remove the directories and files containing
+- Use the cleanup script to remove the directories and files containing
 GemFire logs created for the cluster.
 With a current working directory of `node-examples/put-all`:
 
