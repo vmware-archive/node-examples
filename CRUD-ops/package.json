@@ -4,7 +4,7 @@
   "description": "A put-get-remove example.",
   "main": "index.js",
   "dependencies": {
-    "gemfire": "file:../../../Downloads/gemfire-nodejs-all-v2.0.0-build.31.tgz"
+    "gemfire": "file:../../../Downloads/gemfire-nodejs-all-v2.0.0-build.34.tgz"
   },
   "devDependencies": {},
   "scripts": {
