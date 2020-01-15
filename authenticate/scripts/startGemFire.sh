@@ -1,77 +1,67 @@
 #!/bin/bash
 
-# Attempt to set APP_HOME
-# Resolve links: $0 may be a link
-PRG="$0"
-# Need this for relative symlinks.
-while [ -h "$PRG" ] ; do
-    ls=`ls -ld "$PRG"`
-    link=`expr "$ls" : '.*-> \(.*\)$'`
-    if expr "$link" : '/.*' > /dev/null; then
-        PRG="$link"
-    else
-        PRG=`dirname "$PRG"`"/$link"
-    fi
-done
-SAVED="`pwd`"
-cd "`dirname \"$PRG\"`/.." >&-
+
 APP_HOME="`pwd -P`"
-cd "$SAVED" >&-
-
-function waitForPort {
-
-    (exec 6<>/dev/tcp/${HOSTNAME}/$1) &>/dev/null
-    while [[ $? -ne 0 ]]
-    do
-        echo -n "."
-        sleep 1
-        (exec 6<>/dev/tcp/${HOSTNAME}/$1) &>/dev/null
-    done
-}
 
 function build_security_jar() {
+  echo ""
+  echo "*** Build SimpleSecurityManager ***"
   export CLASSPATH=$GEODE_HOME/lib/*
-  pushd ${APP_HOME}/src
-  javac securitymanager/SimpleSecurityManager.java
-  jar -vcf security.jar *
-  popd
+  echo "CLASSPATH=${CLASSPATH}"
+  pushd ${APP_HOME}/src > /dev/null
+    javac securitymanager/SimpleSecurityManager.java
+    jar -vcf security.jar *
+  popd > /dev/null
 }
 
 function launchLocator() {
-
+    echo ""
+    echo "*** Start Locator ***"
     mkdir -p ${APP_HOME}/data/locator
-    pushd ${APP_HOME}/data/locator
+    pushd ${APP_HOME}/data/locator > /dev/null
 
-    gfsh -e "start locator --connect=false --name=locator --port=10337 --dir=${APP_HOME}/data/locator --classpath=${APP_HOME}/src/security.jar --J=-Dgemfire.security-manager=securitymanager.SimpleSecurityManager" &
+      gfsh -e "start locator --connect=false --name=locator --port=10337 --dir=${APP_HOME}/data/locator --classpath=${APP_HOME}/src/security.jar --J=-Dgemfire.security-manager=securitymanager.SimpleSecurityManager" &
 
-    popd
+    popd > /dev/null
 }
 
 function launchServer() {
-
+    echo ""
+    echo "*** Start Server ***"
     mkdir -p ${APP_HOME}/data/server
-    pushd ${APP_HOME}/data/server
+    pushd ${APP_HOME}/data/server > /dev/null
 
-    gfsh -e "connect --locator=localhost[10337] --user=root --password=root-password" -e "start server --user=root --password=root-password --locators=localhost[10337] --server-port=40404 --name=server --dir=${APP_HOME}/data/server  --classpath=${APP_HOME}/src/security.jar --J=-Dgemfire.security-manager=securitymanager.SimpleSecurityManager" &
+      gfsh -e "connect --locator=localhost[10337] --user=root --password=root-password" -e "start server --user=root --password=root-password --locators=localhost[10337] --server-port=40404 --name=server --dir=${APP_HOME}/data/server  --classpath=${APP_HOME}/src/security.jar --J=-Dgemfire.security-manager=securitymanager.SimpleSecurityManager" &
 
-    popd
+    popd > /dev/null
 }
 
-echo "*** Build SimpleSecurityManager ***"
+function createRegion(){
+  echo ""
+  echo "*** Create Partition Region \"test\" ***"
+  pushd ${APP_HOME}/data/server > /dev/null
+
+  gfsh -e "connect --locator=localhost[10337] --user=root --password=root-password " -e "create region --name=test --type=PARTITION"
+
+  popd > /dev/null
+}
+
+echo ""
+echo "Geode home= ${GEODE_HOME}"
+echo ""
+echo "PATH = ${PATH} "
+echo ""
+echo "Java version:"
+java -version
+
 build_security_jar
-echo "*** Start Locator ***"
+
 launchLocator
 
-waitForPort 10337
-
 sleep 10
-echo "*** Start Server ***"
+
 launchServer
 
 wait
-echo "*** Create Region \'test\' on server ***"
-pushd ${APP_HOME}/data/server
 
-gfsh -e "connect --locator=localhost[10337] --user=root --password=root-password" -e "create region --name=test --type=PARTITION"
-
-popd
+createRegion

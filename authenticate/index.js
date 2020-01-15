@@ -45,7 +45,7 @@ async function authenticate_example() {
     cache.close()
     //exit nodejs
     console.log('Finished')
-    console.log('To exit: CTRL-C')
+    process.exit(0)
 }
 
 authenticate_example()
