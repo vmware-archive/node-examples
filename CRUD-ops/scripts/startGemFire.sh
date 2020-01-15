@@ -44,8 +44,6 @@ java -version
 
 launchLocator
 
-# waitForPort 10337
-
 sleep 10
 
 launchServer
