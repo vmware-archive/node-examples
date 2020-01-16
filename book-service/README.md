@@ -6,11 +6,11 @@ REST endpoints allow an app user to look up books by ISBN
 or put new books into the service.
 
 This app may be run with a local Apache Geode or Pivotal GemFire cluster,
-or with a Pivotal Cloud Cache (PCC) service instance.
+or with a Pivotal Cloud Cache service instance.
 A common development path runs locally first to iterate quickly on feature
 development prior to pushing the app to a PAS environment to run with
-PCC.
-This app has been tested with PCC version 1.8.1.
+Cloud Cache.
+This app has been tested with Cloud Cache version 1.8.1.
 
 # Prerequisites
 
@@ -30,7 +30,7 @@ Acquire Pivotal GemFire from PivNet
 at [Pivotal GemFire](https://network.pivotal.io/products/pivotal-gemfire/).
 Choose your GemFire version based on the version of Cloud Cache
 in your PAS environment.
-See the [Product Snapshot](https://docs.pivotal.io/p-cloud-cache/product-snapshot.html) for your PCC version.
+See the [Product Snapshot](https://docs.pivotal.io/p-cloud-cache/product-snapshot.html) for your Cloud Cache version.
 
 - Node.js, minimum version of 10.0
 
@@ -140,12 +140,12 @@ reference this environment variable if it continues to exist.
     $ unset VCAP_SERVICES
     ```
 
-# Run the App with PCC as the Data Service
+# Run the App with Cloud Cache as the Data Service
 
-## Create and Configure a PCC Service Instance
+## Create and Configure a Cloud Cache Service Instance
 
 - After using the cf CLI to log in and target your org and space,
-create a PCC service instance that disables TLS encryption: 
+create a Cloud Cache service instance that disables TLS encryption: 
 
     ```
     $ cf create-service p-cloudcache dev-plan PCC-noTLS  -c '{"tls": false}'
@@ -174,7 +174,7 @@ labeled as `gfsh_login_string`:
 
 - Run gfsh.
 
-- Use the captured gfsh connect command to connect to the PCC service instance.
+- Use the captured gfsh connect command to connect to the Cloud Cache service instance.
 Use the return key when prompted for keystore and truststore values.
 
 - Once connected, create the region that the book service expects to find:
@@ -227,3 +227,27 @@ specifying the ISBN as a key:
 $ curl -X GET \
   'https://PAS-name.cf-app.com/book/get?isbn=0525565329' 
 ```
+
+## Clean Up the Cloud Cache Environment
+
+When done running the app, tear down the app and the Cloud Cache service instance:
+
+1. Stop the running app:
+
+    ```
+    $ cf stop cloudcache-node-sample
+    ```
+
+1. Delete the app and its route:
+
+    ```
+    $ cf delete cloudcache-node-sample -r -f
+    ```
+
+1. If the Cloud Cache service instance is no longer needed,
+    delete it,
+    replacing `INSTANCE-NAME` with your service instance's name:
+
+    ```
+    $ cf delete-service INSTANCE-NAME
+    ```
