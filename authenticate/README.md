@@ -1,9 +1,11 @@
 # The Authentication Example
 
-This Node.js example demonstrates basic authentication of a user with a GemFire
- Cache cluster. This application leverages the put-get-remove example and should
- be reviewed prior starting. The example works with either a local Apache Geode
- or Pivotal GemFire cluster.
+This Node.js example demonstrates the basic authentication and authorization
+mechanism used when an app interacts with a Pivotal GemFire cluster.
+The app does a put, a get, and a remove operation to show authorization.
+
+This example works with either a local Pivotal GemFire cluster
+or a local Apache Geode cluster.
 
 # Prerequisites
 
@@ -14,13 +16,17 @@ This Node.js example demonstrates basic authentication of a user with a GemFire
     ```
 
 - Node.js client library. Acquire the Node.js client library from PivNet.
-Find and download the Node.js Client 2.0.0 Beta version,
-`gemfire-nodejs-client-2.0.0-beta.tgz`,
+Find and download the Node.js Client 2.0.0 version,
+`gemfire-nodejs-client-2.0.0.tgz`,
 under [Pivotal GemFire](https://network.pivotal.io/products/pivotal-gemfire/).
 
 - Pivotal GemFire (to have gfsh, the command line interface for GemFire).
 Acquire Pivotal GemFire from PivNet
-at [Pivotal GemFire](https://network.pivotal.io/products/pivotal-gemfire/). Configure GEODE_HOME and PATH as required by GemFire.
+at [Pivotal GemFire](https://network.pivotal.io/products/pivotal-gemfire/).
+Set a GEODE_HOME environment variable to point to the
+GemFire installation.
+Configure your PATH to include the `${GEODE_HOME}/bin` directory,
+such that the security manager implementation can be built and included.
 
 - Java JDK 1.8.X  is a dependency for GemFire and gfsh
 
