@@ -7,24 +7,17 @@ async function ssl_example() {
     console.log('Creating a cache factory')
     cacheFactory = gemfire.createCacheFactory()
     cacheFactory.set("log-file","data/nodeClient.log")
-    cacheFactory.set("log-level","debug")
+    cacheFactory.set("log-level","config")
     cacheFactory.set("statistic-archive-file","data/clientStatArchive.gfs")
+    
+    //Configure keystores and passwords for SSL connections
     cacheFactory.set("ssl-enabled", "true")
-    //cacheFactory.set('ssl-keystore', sslKeyPath + '/example.cert.pem')
-    //cacheFactory.set('ssl-keystore-password', 'mypassword')
-    cacheFactory.set('ssl-truststore', sslKeyPath + '/ca-chain.cert.pem')
-    //cacheFactory.set('ssl-truststore', './keys/certs/ca.cert.pem')
-    //cacheFactory.set('ssl-truststore-password','mypassword')
-    //Configure a username and password for Authentication
-    console.log('Set Authentication')
-    cacheFactory.setAuthentication((properties, server) => {
-      properties['security-username'] = 'root'
-      properties['security-password'] = 'root-password'
-    }, () => {
-    })
+    cacheFactory.set('ssl-keystore', sslKeyPath + '/client_keystore.pem')
+    cacheFactory.set('ssl-keystore-password', 'apachegeode')
+    cacheFactory.set('ssl-truststore', sslKeyPath + '/client_truststore.pem')
+    
     console.log('Create Cache')
     cache = await cacheFactory.create()
-
     console.log('Create Pool')
     poolFactory = await cache.getPoolManager().createFactory()
     poolFactory.addLocator('localhost', 10337)
@@ -33,27 +26,37 @@ async function ssl_example() {
     console.log('Create Region')
     region = await cache.createRegion("test", { type: 'PROXY', poolName: 'pool' })
 
-    //if the security-user and security-password are wrong
-    //the following operations will fail to complete
     try {
-      console.log("Do put and get CRUD operations")
+      console.log("Do put and get operations")
+      console.log('  Putting key \'foo\' with value \'bar\'')
       await region.put('foo', 'bar')
+
+      console.log('  Getting value with key \'foo\'. Expected value: \'bar\'')
       var result = await region.get('foo')
+      console.log('  Value retrieved is: \'' + result + '\'')
+
+      console.log('Update operation:')
+      console.log('  Updating key \'foo\' with value \'candy\'')
       await region.put('foo', 'candy')
+      console.log('  Getting value with key \'foo\'. Expected value: \'candy\'')
       result = await region.get('foo')
+      console.log('  Value retrieved is: \'' + result + '\'')
+      
+      console.log('Delete operation:')
+      console.log('  Removing key \'foo\' from region \'test\'')
       await region.remove('foo')
+      console.log('  Getting value with key \'foo\'. Expected value: null')
       result = await region.get('foo')
-      console.log("Finished CRUD Operations foo:"+result)
+      console.log('  Value retrieved is: \'' + result + '\'')
     }
     catch (error){
       console.error(error)
     }
 
     //done with cache then close it
-    cache.close()
-    //exit nodejs
     console.log('Finished')
-    console.log('To exit: CTRL-C')
+    cache.close()
+    process.exit()
 }
 
 ssl_example()

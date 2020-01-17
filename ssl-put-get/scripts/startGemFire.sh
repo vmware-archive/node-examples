@@ -1,82 +1,54 @@
 #!/bin/bash
 
 
-# Attempt to set APP_HOME
-# Resolve links: $0 may be a link
-PRG="$0"
-# Need this for relative symlinks.
-while [ -h "$PRG" ] ; do
-    ls=`ls -ld "$PRG"`
-    link=`expr "$ls" : '.*-> \(.*\)$'`
-    if expr "$link" : '/.*' > /dev/null; then
-        PRG="$link"
-    else
-        PRG=`dirname "$PRG"`"/$link"
-    fi
-done
-SAVED="`pwd`"
-cd "`dirname \"$PRG\"`/.." >&-
 APP_HOME="`pwd -P`"
-cd "$SAVED" >&-
-
-keystore="${APP_HOME}/keys/keystore.jks"
-truststore="${APP_HOME}/keys/truststore.jks"
-keystorePassword="mypassword"
-
-function waitForPort {
-
-    (exec 6<>/dev/tcp/${HOSTNAME}/$1) &>/dev/null
-    while [[ $? -ne 0 ]]
-    do
-        echo -n "."
-        sleep 1
-        (exec 6<>/dev/tcp/${HOSTNAME}/$1) &>/dev/null
-    done
-}
-
-function build_security_jar() {
-  export CLASSPATH=$GEODE_HOME/lib/*
-  pushd ${APP_HOME}/src
-  javac securitymanager/SimpleSecurityManager.java
-  jar -vcf security.jar *
-  popd
-}
 
 function launchLocator() {
-
+    echo ""
+    echo "*** Start Locator ***"
     mkdir -p ${APP_HOME}/data/locator
-    pushd ${APP_HOME}/data/locator
+    pushd ${APP_HOME}/data/locator > /dev/null
 
-    gfsh -e "start locator --connect=false --name=locator --port=10337 --dir=${APP_HOME}/data/locator --classpath=${APP_HOME}/src/security.jar --J=-Dgemfire.security-manager=securitymanager.SimpleSecurityManager --J=-Dgemfire.ssl-enabled-components=all --J=-Djavax.net.debug=all --J=-Dgemfire.ssl-keystore=${keystore} --J=-Dgemfire.ssl-truststore=${truststore} --J=-Dgemfire.ssl-keystore-password=${keystorePassword} --J=-Dgemfire.ssl-truststore-password=${keystorePassword} --J=-Dgemfire.ssl-require-authentication=false" &
+    gfsh -e "start locator --name=locator --port=10337 --dir=${APP_HOME}/data/locator --connect=false --J=-Dgemfire.ssl-enabled-components=all --J=-Dgemfire.ssl-keystore=${APP_HOME}/keys/server_keystore.p12 --J=-Dgemfire.ssl-truststore=${APP_HOME}/keys/server_truststore.jks --J=-Dgemfire.ssl-keystore-password=apachegeode --J=-Dgemfire.ssl-truststore-password=apachegeode" &
 
-    popd
+    popd > /dev/null
 }
 
 function launchServer() {
-
+    echo ""
+    echo "*** Start Server ***"
     mkdir -p ${APP_HOME}/data/server
-    pushd ${APP_HOME}/data/server
+    pushd ${APP_HOME}/data/server > /dev/null
 
-    gfsh -e "connect --locator=localhost[10337] --user=root --password=root-password --use-ssl=true --key-store=${keystore} --trust-store=${truststore} --key-store-password=${keystorePassword} --trust-store-password=${keystorePassword} " -e "start server --user=root --password=root-password --locators=localhost[10337] --server-port=40404 --name=server --dir=${APP_HOME}/data/server  --classpath=${APP_HOME}/src/security.jar --J=-Dgemfire.security-manager=securitymanager.SimpleSecurityManager --J=-Dgemfire.ssl-enabled-components=all --J=-Djavax.net.debug=all --J=-Dgemfire.ssl-keystore=${keystore} --J=-Dgemfire.ssl-truststore=${truststore} --J=-Dgemfire.ssl-keystore-password=${keystorePassword} --J=-Dgemfire.ssl-truststore-password=${keystorePassword} --J=-Dgemfire.ssl-require-authentication=false " &
+    gfsh -e "connect --locator=localhost[10337] --use-ssl=true --key-store=${APP_HOME}/keys/server_keystore.p12 --trust-store=${APP_HOME}/keys/server_truststore.jks --trust-store-password=apachegeode --key-store-password=apachegeode" -e "start server --locators=localhost[10337] --server-port=40404 --name=server --dir=${APP_HOME}/data/server --J=-Dgemfire.ssl-enabled-components=all --J=-Dgemfire.ssl-keystore=${APP_HOME}/keys/server_keystore.p12 --J=-Dgemfire.ssl-truststore=${APP_HOME}/keys/server_truststore.jks --J=-Dgemfire.ssl-truststore-password=apachegeode --J=-Dgemfire.ssl-keystore-password=apachegeode" &
 
-    popd
+    popd > /dev/null
 }
 
-echo "*** Build SimpleSecurityManager ***"
-build_security_jar
-echo "*** Start Locator ***"
+function createRegion(){
+  echo ""
+  echo "*** Create Partition Region \"test\" ***"
+  pushd ${APP_HOME}/data/server > /dev/null
+
+  gfsh -e "connect --locator=localhost[10337] --use-ssl=true --key-store=${APP_HOME}/keys/server_keystore.p12 --trust-store=${APP_HOME}/keys/server_truststore.jks --trust-store-password=apachegeode --key-store-password=apachegeode" -e "create region --name=test --type=PARTITION"
+
+  popd > /dev/null
+}
+
+echo ""
+echo "Geode home= ${GEODE_HOME}"
+echo ""
+echo "PATH = ${PATH} "
+echo ""
+echo "Java version:"
+java -version
+
 launchLocator
 
-waitForPort 10337
-
 sleep 10
-echo "*** Start Server ***"
+
 launchServer
 
 wait
-echo "*** Create Region \'test\' on server ***"
-pushd ${APP_HOME}/data/server
 
-gfsh -e "connect --locator=localhost[10337] --user=root --password=root-password --use-ssl=true --key-store=${keystore} --trust-store=${truststore} --key-store-password=${keystorePassword} --trust-store-password=${keystorePassword}" -e "create region --name=test --type=PARTITION"
-
-popd
+createRegion
