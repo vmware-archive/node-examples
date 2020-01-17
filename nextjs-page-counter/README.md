@@ -78,4 +78,4 @@ done this to run the example locally.
         ```
 
 ##### Example Site
-![Pivotal Cloud Cache + Next.js Example Site](./screenshot.png)
+![Pivotal Cloud Cache + Next.js Example Site](/screenshot.png)
