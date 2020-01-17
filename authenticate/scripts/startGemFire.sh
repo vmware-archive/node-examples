@@ -21,7 +21,8 @@ function launchLocator() {
     pushd ${APP_HOME}/data/locator > /dev/null
 
       gfsh -e "start locator --connect=false --name=locator --port=10337 --dir=${APP_HOME}/data/locator --classpath=${APP_HOME}/src/security.jar --J=-Dgemfire.security-manager=securitymanager.SimpleSecurityManager" &
-
+      gfsh -e "connect --locator=localhost[10337]" -e "configure pdx --read-serialized=true"
+      
     popd > /dev/null
 }
 

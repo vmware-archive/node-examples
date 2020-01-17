@@ -10,7 +10,8 @@ function launchLocator() {
     pushd ${APP_HOME}/data/locator > /dev/null
 
     gfsh -e "start locator --name=locator --port=10337 --dir=${APP_HOME}/data/locator --connect=false --J=-Dgemfire.ssl-enabled-components=all --J=-Dgemfire.ssl-keystore=${APP_HOME}/keys/server_keystore.p12 --J=-Dgemfire.ssl-truststore=${APP_HOME}/keys/server_truststore.jks --J=-Dgemfire.ssl-keystore-password=apachegeode --J=-Dgemfire.ssl-truststore-password=apachegeode" &
-
+    gfsh -e "connect --locator=localhost[10337] --use-ssl=true --key-store=${APP_HOME}/keys/server_keystore.p12 --trust-store=${APP_HOME}/keys/server_truststore.jks --trust-store-password=apachegeode --key-store-password=apachegeode" -e "configure pdx --read-serialized=true"
+    
     popd > /dev/null
 }
 

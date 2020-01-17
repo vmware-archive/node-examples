@@ -10,7 +10,8 @@ function launchLocator() {
     pushd ${APP_HOME}/data/locator > /dev/null
 
     gfsh -e "start locator --name=locator --port=10337 --dir=${APP_HOME}/data/locator" &
-
+    gfsh -e "connect --locator=localhost[10337]" -e "configure pdx --read-serialized=true"
+    
     popd > /dev/null
 }
 
