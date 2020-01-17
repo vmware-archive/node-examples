@@ -197,7 +197,7 @@ significant resources with large datasets and should be used with caution.
 ```javascript
 data = await region.query("select * from /test")
 ```
-Query and return all keys in the region. This simple query can consume
+Query and return all keys in the region keyset. This simple query can consume
 significant resources with large datasets and should be used with caution.
 
 ```javascript
