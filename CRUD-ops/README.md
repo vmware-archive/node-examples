@@ -35,14 +35,13 @@ Set GEODE\_HOME to the GemFire installation directory and add $GEODE\_HOME/bin t
     export PATH=$GEODE_HOME/bin:$PATH
     ```
 
-
 ## Build the App
 
 With a current working directory of `node-examples/CRUD-ops`,
 build the app:
 
 ```bash
-$ npm install gemfire-nodejs-client-2.0.0-beta.tgz
+$ npm install gemfire-nodejs-client-2.0.0.tgz
 $ npm update
 ```
 

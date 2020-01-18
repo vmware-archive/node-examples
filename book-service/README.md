@@ -1,18 +1,24 @@
 # The Book-Serving Example App
 
-This Node.js example provides a simple book-serving app,
+This Node.js example provides a simple book-serving app
 which uses the data service as a system of record.
 REST endpoints allow an app user to look up books by ISBN
 or put new books into the service.
 
-This app may be run with a local Apache Geode or Pivotal GemFire cluster,
-or with a Pivotal Cloud Cache service instance.
+This app can be run with a local Apache Geode or Pivotal GemFire cluster,
+or with a Cloud Cache service instance.
 A common development path runs locally first to iterate quickly on feature
 development prior to pushing the app to a PAS environment to run with
 Cloud Cache.
 This app has been tested with Cloud Cache version 1.8.1.
 
 # Prerequisites
+
+- Node.js, minimum version of 10.0
+
+- `npm`, the Node.js package manager
+
+- Cloud Foundry Command Line Interface (cf CLI).  See [Installing the cf CLI](https://docs.cloudfoundry.org/cf-cli/install-go-cli.html).
 
 - Examples source code.  Acquire the repository:
 
@@ -21,22 +27,22 @@ This app has been tested with Cloud Cache version 1.8.1.
     ```
 
 - Node.js client library. Acquire the Node.js client library from PivNet.
-Find and download the Node.JS Client 2.0.0 Beta version, 
-`gemfire-nodejs-client-2.0.0-beta.tgz`,
+Find and download the current version of the  Node.JS Client, for example:
+`gemfire-nodejs-client-2.0.0.tgz`,
 under [Pivotal GemFire](https://network.pivotal.io/products/pivotal-gemfire/).
 
 - Pivotal GemFire (to have gfsh, the command line interface for GemFire).
-Acquire Pivotal GemFire from PivNet
-at [Pivotal GemFire](https://network.pivotal.io/products/pivotal-gemfire/).
-Choose your GemFire version based on the version of Cloud Cache
-in your PAS environment.
+Acquire Pivotal GemFire from PivNet at [Pivotal GemFire](https://network.pivotal.io/products/pivotal-gemfire/).
+Choose your GemFire version based on the version of Cloud Cache in your PAS environment.
 See the [Product Snapshot](https://docs.pivotal.io/p-cloud-cache/product-snapshot.html) for your Cloud Cache version.
 
-- Node.js, minimum version of 10.0
+- Configure GEODE\_HOME and PATH environment variables.
+Set GEODE\_HOME to the GemFire installation directory and add $GEODE\_HOME/bin to your PATH. For example
 
-- `npm`, the Node.js package manager
-
-- Cloud Foundry Command Line Interface (cf CLI).  See [Installing the cf CLI](https://docs.cloudfoundry.org/cf-cli/install-go-cli.html).
+    ```bash
+    export GEODE_HOME=/Users/MyGemFire
+    export PATH=$GEODE_HOME/bin:$PATH
+    ```
 
 # Build the App
  
@@ -44,10 +50,9 @@ With a current working directory of `node-examples/book-service`,
 build the app:
 
 ```bash
-$ npm install gemfire-nodejs-client-2.0.0-beta.tgz 
+$ npm install gemfire-nodejs-client-2.0.0.tgz 
 $ npm update
 ```
-
 
 # Run the App Locally
 
@@ -72,13 +77,12 @@ the script also creates the single region that the app uses.
 With a current working directory of `node-examples/book-service`:
 
 ```bash
-$ cd scripts
-$ ./startGemFire.sh
+$ ./scripts/startGemFire.sh
 ```
 
 ## Run the App
 
-With a current working directory of `node-examples/book-service`:
+With the current working directory to `node-examples/book-service` and run the app:
 
 ```
 $ node src/server.js
@@ -86,7 +90,7 @@ $ node src/server.js
 
 ## Add a Book to the Book Service
 
-To add a book to the data service, use a curl command:
+To add a book to the data service, open a separate shell and issue a curl command:
 
 ```
 $ curl -X PUT \
