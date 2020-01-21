@@ -3,19 +3,19 @@ var gemfire = require('gemfire');
 async function ssl_example() {
 
     //configure and create client cache
-    sslKeyPath="./keys/intermediate/certs"
+    sslKeyPath="./keys/client/certs"
     console.log('Creating a cache factory')
     cacheFactory = gemfire.createCacheFactory()
     cacheFactory.set("log-file","data/nodeClient.log")
     cacheFactory.set("log-level","config")
     cacheFactory.set("statistic-archive-file","data/clientStatArchive.gfs")
-    
+
     //Configure keystores and passwords for SSL connections
     cacheFactory.set("ssl-enabled", "true")
     cacheFactory.set('ssl-keystore', sslKeyPath + '/client_keystore.pem')
     cacheFactory.set('ssl-keystore-password', 'apachegeode')
     cacheFactory.set('ssl-truststore', sslKeyPath + '/client_truststore.pem')
-    
+
     console.log('Create Cache')
     cache = await cacheFactory.create()
     console.log('Create Pool')
@@ -41,7 +41,7 @@ async function ssl_example() {
       console.log('  Getting value with key \'foo\'. Expected value: \'candy\'')
       result = await region.get('foo')
       console.log('  Value retrieved is: \'' + result + '\'')
-      
+
       console.log('Delete operation:')
       console.log('  Removing key \'foo\' from region \'test\'')
       await region.remove('foo')
