@@ -13,6 +13,7 @@ This Node.js example demonstrates basic SSL connection of a client with a GemFir
     $ git clone git@github.com:gemfire/node-examples.git
     ```
 
+- OpenSSL Version 1.1.1
 - Node.js client library. Acquire the Node.js client library from PivNet.
 Find and download the Node.js Client 2.0.0 Beta version,
 `gemfire-nodejs-client-2.0.0-beta.tgz`,
