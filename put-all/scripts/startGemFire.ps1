@@ -36,10 +36,10 @@ else
 Write-Debug "GFSH_PATH == $GFSH_PATH"
 if ($GFSH_PATH -ne "")
 {
-   Write-Debug "$GFSH_PATH -e 'start locator --name=locator --port=10337 --dir=$PSScriptRoot\locator'"
-   Invoke-Expression "$GFSH_PATH -e 'start locator --name=locator --port=10337 --dir=$PSScriptRoot\locator'"
-   Write-Debug "$GFSH_PATH -e 'connect --locator=localhost[10337]' -e 'start server --name=server --dir=$PSScriptRoot\server'" 
-   Invoke-Expression "$GFSH_PATH -e 'connect --locator=localhost[10337]' -e 'start server --name=server --dir=$PSScriptRoot\server'" 
+   Write-Debug "$GFSH_PATH -e 'start locator --name=locator --port=10337 --dir=$PSScriptRoot\..\data\locator'"
+   Invoke-Expression "$GFSH_PATH -e 'start locator --name=locator --port=10337 --dir=$PSScriptRoot\..\data\locator'"
+   Write-Debug "$GFSH_PATH -e 'connect --locator=localhost[10337]' -e 'start server --name=server --dir=$PSScriptRoot\..\data\server'" 
+   Invoke-Expression "$GFSH_PATH -e 'connect --locator=localhost[10337]' -e 'start server --name=server --dir=$PSScriptRoot\..\data\server'" 
    Write-Debug "$GFSH_PATH -e 'connect --locator=localhost[10337]' -e 'create region --name=test --type=PARTITION'"
    Invoke-Expression "$GFSH_PATH -e 'connect --locator=localhost[10337]' -e 'create region --name=test --type=PARTITION'"
 }

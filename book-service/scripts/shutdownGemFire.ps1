@@ -88,4 +88,3 @@ if ($GFSH_PATH -ne "")
 	Stop-Locator -LocatorNumber 2 -LocatorPort 10335 -SecurityPropertiesFile $PROPFILE
 }
 
-Remove-Item -Path data -Recurse -Force

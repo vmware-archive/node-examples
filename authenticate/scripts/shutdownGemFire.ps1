@@ -20,8 +20,6 @@ else
     }
 }
 
-pushd $APP_HOME/data/locator
 
 Invoke-Expression "$GFSH_PATH -e 'connect --locator=localhost[10337] --user=root --password=root-password' -e 'shutdown --include-locators=true --time-out=15'"
 
-popd
