@@ -1,4 +1,4 @@
-# The Book-Serving Example App
+# The Book Service Example
 
 This Node.js example provides a simple book-serving app
 which uses the data service as a system of record.
@@ -62,10 +62,17 @@ A PAS environment injects the services binding through a `VCAP_SERVICES`
 environment variable.
 Set this environment variable:
 
-```
+(MacOS, Linux)
+```bash
 $ export VCAP_SERVICES='{"p-cloudcache":[{"label":"p-cloudcache","provider":null,"plan":"dev-plan","name":"pcc-dev","tags":["gemfire","cloudcache","database","pivotal"],"instance_name":"pcc-dev","binding_name":null,"credentials":{"distributed_system_id":"0","gfsh_login_string":"connect --url=https://localhost:7070/gemfire/v1 --user=super-user --password=1234567 --skip-ssl-validation","locators":["localhost[10334]"],"urls":{"gfsh":"https://localhost:7070/gemfire/v1","pulse":"https://localhost:7070/pulse"},"users":[{"password":"1234567","roles":["cluster_operator"],"username":"super-user"},{"password":"1234567","roles":["developer"],"username":"app"}],"wan":{"sender_credentials":{"active":{"password":"no-password","username":"no-user"}}}},"syslog_drain_url":null,"volume_mounts":[]}]}'
 ```
+<br/><br/>
 
+(Windows)
+```
+PS C:\node-examples\book-service>$env:VCAP_SERVICES='{"p-cloudcache":[{"label":"p-cloudcache","provider":null,"plan":"dev-plan","name":"pcc-dev","tags":["gemfire","cloudcache","database","pivotal"],"instance_name":"pcc-dev","binding_name":null,"credentials":{"distributed_system_id":"0","gfsh_login_string":"connect --url=https://localhost:7070/gemfire/v1 --user=super-user --password=1234567 --skip-ssl-validation","locators":["localhost[10334]"],"urls":{"gfsh":"https://localhost:7070/gemfire/v1","pulse":"https://localhost:7070/pulse"},"users":[{"password":"1234567","roles":["cluster_operator"],"username":"super-user"},{"password":"1234567","roles":["developer"],"username":"app"}],"wan":{"sender_credentials":{"active":{"password":"no-password","username":"no-user"}}}},"syslog_drain_url":null,"volume_mounts":[]}]}'
+```
+`
 ## Start a Cluster
 
 There are bash scripts in the `book-service/scripts` directory.
@@ -76,22 +83,37 @@ the script also creates the single region that the app uses.
 
 With a current working directory of `node-examples/book-service`:
 
+(MacOS/Linux)
 ```bash
 $ ./scripts/startGemFire.sh
+```
+
+(Windows)
+```
+PS C:\node-examples\book-service>cd scripts
+PS C:\node-examples\book-service>.\startGemFire.ps1
 ```
 
 ## Run the App
 
 With the current working directory to `node-examples/book-service` and run the app:
 
+(MacOS/Linux)
 ```
 $ node src/server.js
+```
+
+<br/><br/>
+(Windows)
+```
+PS C:\node-examples\book-service>node .\src\server.js
 ```
 
 ## Add a Book to the Book Service
 
 To add a book to the data service, open a separate shell and issue a curl command:
 
+(MacOS/Linux)
 ```
 $ curl -X PUT \
   'http://localhost:8080/book/put?isbn=0525565329' \
@@ -104,6 +126,12 @@ $ curl -X PUT \
   "Authors": "Stephen King"
 }'
 ```
+<br/><br/>
+(Windows)
+```
+PS C:\node-examples\book-service>curl -X PUT  "http://localhost:8080/book/put?isbn=0525565329"  -H "Content-Type: application/json"  -d "{\"FullTitle\": \"The Shining\", \"ISBN\": \"0525565329\", \"MSRP\": \"9.99\", \"Publisher\": \"Anchor\", \"Authors\": \"Stephen King\"}"
+```
+
 ## Look Up a Book
 
 To look up a book in the data service, use a curl command,
@@ -122,10 +150,15 @@ $ curl -X GET \
 tear down the GemFire cluster.
 With a current working directory of `node-examples/book-service`:
 
+(MacOS/Linux)
     ```bash
     $ cd scripts
     $ ./shutdownGemFire.sh
     ```
+<br/><br/>
+(Windows)
+```
+```
 
 - Use a script to remove the directories and files containing
 GemFire logs created for the cluster.
