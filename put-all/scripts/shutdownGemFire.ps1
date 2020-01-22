@@ -43,5 +43,3 @@ if ($GFSH_PATH -ne "")
    Invoke-Expression "$GFSH_PATH -e 'connect --locator=localhost[10337]' -e 'stop locator --name=locator'"
 }
 
-Remove-Item -Path locator -Recurse -Force
-Remove-Item -Path server -Recurse -Force
