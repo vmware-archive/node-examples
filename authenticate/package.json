@@ -1,7 +1,7 @@
 {
-  "name": "ssl",
+  "name": "authenticate",
   "version": "1.0.0",
-  "description": "A ssl example.",
+  "description": "A authenticated user example.",
   "main": "index.js",
   "dependencies": {
     "gemfire": "file:../../../../Downloads/gemfire-nodejs-all-v2.0.0-build.37.tgz"
