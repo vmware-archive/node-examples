@@ -204,10 +204,10 @@ push the app and make note of the route assigned for the app:
 
 To add a book to the data service, use a curl command similar to the one
 used when running with a local cluster.
-Replace `localhost:8080` with the app route:
+Replace `PAS-name.cf-app.com` with the app route (which can be found by running 'cf apps'):
 
 ```
-$ curl -X PUT \
+$ curl -k -X PUT \
   'https://PAS-name.cf-app.com/book/put?isbn=0525565329' \
   -H 'Content-Type: application/json' \
   -d '{
@@ -224,11 +224,11 @@ $ curl -X PUT \
 To look up a book in the data service,
 use a curl command similar to the one
 used when running with a local cluster.
-Replace `localhost:8080` with the app route,
+Replace `PAS-name.cf-app.com` with the app route,
 specifying the ISBN as a key:
 
 ```
-$ curl -X GET \
+$ curl -k -X GET \
   'https://PAS-name.cf-app.com/book/get?isbn=0525565329' 
 ```
 
@@ -248,10 +248,15 @@ When done running the app, tear down the app and the Cloud Cache service instanc
     $ cf delete cloudcache-node-sample -r -f
     ```
 
+1. Delete the Service Key,
+
+   ```
+   $ cf delete-service-key PCC-noTLS PCC-noTLS-service-key
+   ```
+
 1. If the Cloud Cache service instance is no longer needed,
     delete it,
-    replacing `INSTANCE-NAME` with your service instance's name:
 
     ```
-    $ cf delete-service INSTANCE-NAME
+    $ cf delete-service PCC-noTLS
     ```
