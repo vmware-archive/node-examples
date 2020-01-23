@@ -6,4 +6,4 @@ applications:
   buildpack: nodejs_buildpack
   timeout: 180
   services:
-   - cloudcache-dev
+   - PCC-noTLS

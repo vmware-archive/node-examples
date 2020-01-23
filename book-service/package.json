@@ -5,6 +5,7 @@
   "main": "src/server.js",
   "dependencies": {
     "express": "^4.17.1",
+    "gemfire": "file:../../../Downloads/gemfire-nodejs-all-v2.0.0-build.37.tgz",
     "jsonpath": "^1.0.2",
     "jsonpath-plus": "^1.1.0"
   },
@@ -18,7 +19,7 @@
     "url": "git+https://github.com/gemfire/node-examples.git"
   },
   "engines": {
-    "node": "10.16.3"
+    "node": "10.17.0"
   },
   "author": "",
   "license": "Apache",
