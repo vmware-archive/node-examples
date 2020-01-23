@@ -27,7 +27,7 @@ This app has been tested with Cloud Cache version 1.8.1.
     ```
 
 - **Node.js client library**. Acquire the Node.js client library from PivNet under [Pivotal GemFire](https://network.pivotal.io/products/pivotal-gemfire/).
-he file is a compressed tar archive (suffix `.tgz`), and the filename contains the client library version number.
+The file is a compressed tar archive (suffix `.tgz`), and the filename contains the client library version number.
 For example:
 `gemfire-nodejs-client-2.0.0.tgz`.
 
@@ -46,12 +46,12 @@ Set `GEODE_HOME` to the GemFire installation directory and add `$GEODE_HOME/bin`
     ```
 
 # Build the App
- 
+
 With a current working directory of `node-examples/book-service`,
 build the app:
 
 ```bash
-$ npm install gemfire-nodejs-client-2.0.0.tgz 
+$ npm install gemfire-nodejs-client-2.0.0.tgz
 $ npm update
 ```
 
@@ -76,8 +76,8 @@ C:\node-examples\book-service>$env:VCAP_SERVICES='{"p-cloudcache":[{"label":"p-c
 
 ## Start a Cluster
 
-There are bash scripts in the `book-service/scripts` directory.
-The `startGemFire.sh` script starts up two locators and two cache servers.
+There are shell scripts in the `book-service/scripts` directory.
+The `startGemFire` script starts up two locators and two cache servers.
 The locators allow clients to find the cache servers.
 To simplify local development,
 the script also creates the single region that the app uses.
@@ -91,13 +91,12 @@ $ ./scripts/startGemFire.sh
 
 (Windows)
 ```
-C:\node-examples\book-service>cd scripts
-C:\node-examples\book-service>.\startGemFire.ps1
+C:\node-examples\book-service>.\scripts\startGemFire.ps1
 ```
 
 ## Run the App
 
-With the current working directory to `node-examples/book-service` and run the app:
+With a current working directory of `node-examples/book-service` and run the app:
 
 (MacOS/Linux)
 ```
@@ -140,7 +139,7 @@ specifying the ISBN as a key:
 
 ```
 $ curl -X GET \
-  'http://localhost:8080/book/get?isbn=0525565329' 
+  'http://localhost:8080/book/get?isbn=0525565329'
 ```
 
 ## Clean Up the Local Development Environment
@@ -166,8 +165,7 @@ GemFire logs created for the cluster.
 With a current working directory of `node-examples/book-service`:
 
     ```bash
-    $ cd scripts
-    $ ./clearGemFireData.sh
+    $ ./scripts/clearGemFireData.sh
     ```
 
 - Unset the `VCAP_SERVICES` environment variable
@@ -224,15 +222,15 @@ Tap the return key to enter empty responses when prompted for keystore and trust
 
     ```bash
     gfsh>connect --url=https://cloudcache-999-persianplum.cf-app.com/gemfire/v1 --user=cluster_operator_BhKM --password=xucZ --skip-ssl-validation
-    key-store: 
-    key-store-password: 
-    key-store-type(default: JKS): 
-    trust-store: 
-    trust-store-password: 
-    trust-store-type(default: JKS): 
-    ssl-ciphers(default: any): 
-    ssl-protocols(default: any): 
-    ssl-enabled-components(default: all): 
+    key-store:
+    key-store-password:
+    key-store-type(default: JKS):
+    trust-store:
+    trust-store-password:
+    trust-store-type(default: JKS):
+    ssl-ciphers(default: any):
+    ssl-protocols(default: any):
+    ssl-enabled-components(default: all):
     Successfully connected to: GemFire Manager HTTP service @ https://cloudcache-999-persianplum.cf-app.com/gemfire/v1
     ```
 
@@ -254,7 +252,7 @@ Tap the return key to enter empty responses when prompted for keystore and trust
 
 - View the `manifest.yml` file to verify that the service instance matches the one specified in
 the `cf create-service` command above.  If you have been following these instructions,
-it would be `PCC-noTLS`. Edit manifest.yml, if necessary, to make sure it specifies the
+it is `PCC-noTLS`. Edit manifest.yml, if necessary, to make sure it specifies the
 service instance you created.
 
     ```
@@ -270,7 +268,7 @@ push the app and make note of the route assigned for the app:
     Pushing from manifest to org test_org / space test_space as admin...
     Using manifest file /Users/dbarnes/Repo/node-examples/book-service/manifest.yml
     ...
-    
+
     Waiting for app to start...
 
     name:              cloudcache-node-sample
@@ -281,14 +279,14 @@ push the app and make note of the route assigned for the app:
     #0   running   2020-01-22T18:40:54Z   0.0%   0 of 512M   0 of 1G
     ```
 
-Note the app route (labeled "routes:") in the output of the `cf push` command. In the preceding example,
+Note the app route (labeled "routes:") in the output of the `cf push` command. In the above example,
 it is "cloudcache-node-sample.apps.persianplum.cf-app.com".
 
 ## Add a Book to the Book Service
 
 To add a book to the data service, use a curl command similar to the one
 used when running with a local cluster, specifying the app route assigned
-n the `cf push` step, above.:
+in the `cf push` step, above.
 
 (MacOS/Linux)
 
@@ -318,11 +316,11 @@ The curl command responds with a confirmation: `{"initialized":true}`.
 
 To look up a book in the data service, use a curl command similar to the one
 used when running with a local cluster, specifying the ISBN as a key.
-Replace `APP-ROUTE` with the app route assigned in the `cf push` step, above.
+Use the app route assigned in the `cf push` step, above.
 
 ```
 $ curl -k -X GET \
-  'https://cloudcache-node-sample.apps.persianplum.cf-app.com/book/get?isbn=0525565329' 
+  'https://cloudcache-node-sample.apps.persianplum.cf-app.com/book/get?isbn=0525565329'
 ```
 
 The curl command responds with the requested data:
