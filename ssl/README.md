@@ -133,8 +133,15 @@ Changes to configuration for group 'cluster' are persisted.
 
 With a current working directory of `node-examples/ssl`:
 
+On Mac and Linux:
 ```bash
 $ node index.js
+```
+
+On Windows:
+```cmd
+c:\node-modules\ssl> set PATH=%PATH%;.\node_modules\gemfire\build\Release
+c:\node-modules\ssl> node index.js
 ```
 
 The application demonstrates configuring the Node.js GemFire client to use a local cluster. Doing a put of a key/value pair, fetching the value with a get using the key and finally deleting the key/value pair from GemFire. The application is not interactive.
