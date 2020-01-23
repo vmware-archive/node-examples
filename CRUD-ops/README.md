@@ -28,12 +28,19 @@ Acquire Pivotal GemFire from PivNet
 at [Pivotal GemFire](https://network.pivotal.io/products/pivotal-gemfire/).
 
 - Configure GEODE\_HOME and PATH environment variables.
-Set GEODE\_HOME to the GemFire installation directory and add $GEODE\_HOME/bin to your PATH. For example
+Set GEODE\_HOME to the GemFire installation directory and add $GEODE\_HOME/bin to your PATH. For example:
 
-    ```bash
-    export GEODE_HOME=/Users/MyGemFire
-    export PATH=$GEODE_HOME/bin:$PATH
-    ```
+  On Mac and Linux:
+  ```bash
+  export GEODE_HOME=/Users/MyGemFire
+  export PATH=$GEODE_HOME/bin:$PATH
+  ```
+
+  On Windows:
+  ```cmd
+  set GEODE_HOME=c:\Users\MyGemFire
+  set PATH=%GEODE_HOME%\bin;%PATH%
+  ```
 
 ## Build the App
 
@@ -41,23 +48,29 @@ With a current working directory of `node-examples/CRUD-ops`,
 build the app:
 
 ```bash
-$ npm install gemfire-nodejs-client-2.0.0.tgz
-$ npm update
+npm install gemfire-nodejs-client-2.0.0.tgz
+npm update
 ```
 
 ## Start a GemFire Cluster
 
-There is bash script in the `CRUD-ops/scripts` directory for creating a GemFire cluster. The `startGemFire.sh` script starts up the simplest cluster of one locator and one cache server. The locator provides administration services for the cluster and a discovery service allowing clients and servers to find each other. The server provides storage for data along with computation services.
+There are scripts in the `CRUD-ops/scripts` directory for creating a GemFire cluster. The `startGemFire.sh` script (`startGemFire.ps1` on Windows) starts up the simplest cluster of one locator and one cache server. The locator provides administration services for the cluster and a discovery service allowing clients and servers to find each other. The server provides storage for data along with computation services.
 
 The startup script also creates a single Region called "test" that the application uses for storing data in the server (similar to a table in relational databases). A Region is similar to a hashmap and stores all data as
 key/value pairs.
 
-The startup script depends on gfsh the administrative utility provided by the GemFire product.  
+The startup script depends on gfsh, the administrative utility provided by the GemFire product.  
 
 With a current working directory of `node-examples/CRUD-ops`:
 
+On Mac and Linux:
 ```bash
 $ ./scripts/startGemFire.sh
+```
+
+On Windows:
+```cmd
+$ powershell ./scripts/startGemFire.ps1
 ```
 
 If you encounter script issues with gfsh, validate that the GEODE_HOME environment variable is configured and pointing to the GemFire install directory and that the PATH variable includes the bin directory of the GemFire install. Logs and other data for the cluster are stored in directory `node-examples/CRUD-ops/data`.
@@ -233,14 +246,25 @@ result = await region.get('foo') //null value
 tear down the GemFire cluster.
 With a current working directory of `node-examples/CRUD-ops`:
 
+  On Mac and Linux:
     ```bash
     $ ./scripts/shutdownGemFire.sh
-    ```
+  ```
+  On Windows:
+    ```cmd
+    c:\node-examples\CRUD-ops> powershell ./scripts/shutdownGemFire.ps1
+  ```
 
 - Use the clean up script to remove the directories and files containing
 GemFire logs created for the cluster.
 With a current working directory of `node-examples/CRUD-ops`:
 
-    ```bash
-    $ ./scripts/clearGemFireData.sh
-    ```
+  On Mac and Linux:
+  ```bash
+  $ ./scripts/clearGemFireData.sh
+  ```
+
+    On Windows:
+  ```cmd
+  c:\node-examples\CRUD-ops> powershell ./scripts/clearGemFireData.ps1
+  ```
