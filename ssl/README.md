@@ -7,27 +7,47 @@ This Node.js example demonstrates basic SSL connection of a client with a GemFir
 
 # Prerequisites
 
-- Examples source code.  Acquire the repository:
+- **OpenSSL**, Version 1.1.1
+
+- **Node.js**, minimum version of 10.0
+
+- **npm**, the Node.js package manager
+
+- **Cloud Foundry Command Line Interface (cf CLI)**.  See [Installing the cf CLI](https://docs.cloudfoundry.org/cf-cli/install-go-cli.html).
+
+- **Examples source code**.  Acquire the repository:
 
     ```
     $ git clone git@github.com:gemfire/node-examples.git
     ```
 
-- OpenSSL Version 1.1.1
-- Node.js client library. Acquire the Node.js client library from PivNet.
-Find and download the Node.js Client 2.0.0 Beta version,
-`gemfire-nodejs-client-2.0.0-beta.tgz`,
-under [Pivotal GemFire](https://network.pivotal.io/products/pivotal-gemfire/).
+- **Node.js client library**. Acquire the Node.js client library from PivNet under [Pivotal GemFire](https://network.pivotal.io/products/pivotal-gemfire/).
+The file is a compressed tar archive (suffix `.tgz`), and the filename contains the client library version number.
+For example:
+`gemfire-nodejs-client-2.0.0.tgz`.
 
-- Pivotal GemFire (to have gfsh, the command line interface for GemFire).
-Acquire Pivotal GemFire from PivNet
-at [Pivotal GemFire](https://network.pivotal.io/products/pivotal-gemfire/). Configure GEODE_HOME and PATH as required by GemFire.
 
-- Java JDK 1.8.X  is a dependency for GemFire and gfsh
+- **Pivotal GemFire**.
+Acquire Pivotal GemFire from PivNet at [Pivotal GemFire](https://network.pivotal.io/products/pivotal-gemfire/). Be sure to install GemFire's prerequisite Java JDK 1.8.X, which is needed to support gfsh, the GemFire command line interface.
+Choose your GemFire version based on the version of Cloud Cache in your PAS environment.
+See the [Product Snapshot](https://docs.pivotal.io/p-cloud-cache/product-snapshot.html) for your Cloud Cache version.
 
-- Node.js, minimum version of 10.0
+- **Configure environment variables**.
+Set `GEODE_HOME` to the GemFire installation directory and add `$GEODE_HOME/bin` to your `PATH`. For example
 
-- `npm`, the Node.js package manager
+    On Mac and Linux:
+
+    ```bash
+    export GEODE_HOME=/Users/MyGemFire
+    export PATH=$GEODE_HOME/bin:$PATH
+    ```
+
+    On Windows:
+  
+    ```cmd
+    set GEODE_HOME=c:\Users\MyGemFire
+    set PATH=%GEODE_HOME%\bin;%PATH%
+    ```
 
 
 # Install GemFire Node.js Client Module

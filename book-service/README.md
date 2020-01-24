@@ -12,7 +12,7 @@ development prior to pushing the app to a PAS environment to run with
 Cloud Cache.
 This app has been tested with Cloud Cache version 1.8.1.
 
-# Prerequisites
+## Prerequisites
 
 - **Node.js**, minimum version of 10.0
 
@@ -32,20 +32,29 @@ For example:
 `gemfire-nodejs-client-2.0.0.tgz`.
 
 
-- **Pivotal GemFire** (to have gfsh, the command line interface for GemFire).
-Acquire Pivotal GemFire from PivNet at [Pivotal GemFire](https://network.pivotal.io/products/pivotal-gemfire/).
+- **Pivotal GemFire**.
+Acquire Pivotal GemFire from PivNet at [Pivotal GemFire](https://network.pivotal.io/products/pivotal-gemfire/). Be sure to install GemFire's prerequisite Java JDK 1.8.X, which is needed to support gfsh, the GemFire command line interface.
 Choose your GemFire version based on the version of Cloud Cache in your PAS environment.
 See the [Product Snapshot](https://docs.pivotal.io/p-cloud-cache/product-snapshot.html) for your Cloud Cache version.
 
 - **Configure environment variables**.
 Set `GEODE_HOME` to the GemFire installation directory and add `$GEODE_HOME/bin` to your `PATH`. For example
 
+    On Mac and Linux:
+
     ```bash
     export GEODE_HOME=/Users/MyGemFire
     export PATH=$GEODE_HOME/bin:$PATH
     ```
 
-# Build the App
+    On Windows:
+  
+    ```cmd
+    set GEODE_HOME=c:\Users\MyGemFire
+    set PATH=%GEODE_HOME%\bin;%PATH%
+    ```
+
+## Build the App
 
 With a current working directory of `node-examples/book-service`,
 build the app:
@@ -55,7 +64,7 @@ $ npm install gemfire-nodejs-client-2.0.0.tgz
 $ npm update
 ```
 
-# Run the App Locally
+## Run the App Locally
 
 The local environment mocks the services binding that would exist
 for a PAS environment.
@@ -63,13 +72,13 @@ A PAS environment injects the services binding through a `VCAP_SERVICES`
 environment variable.
 Set this environment variable:
 
-(MacOS, Linux)
+On Mac and Linux:
 
 ```bash
 $ export VCAP_SERVICES='{"p-cloudcache":[{"label":"p-cloudcache","provider":null,"plan":"dev-plan","name":"pcc-dev","tags":["gemfire","cloudcache","database","pivotal"],"instance_name":"pcc-dev","binding_name":null,"credentials":{"distributed_system_id":"0","gfsh_login_string":"connect --url=https://localhost:7070/gemfire/v1 --user=super-user --password=1234567 --skip-ssl-validation","locators":["localhost[10334]"],"urls":{"gfsh":"https://localhost:7070/gemfire/v1","pulse":"https://localhost:7070/pulse"},"users":[{"password":"1234567","roles":["cluster_operator"],"username":"super-user"},{"password":"1234567","roles":["developer"],"username":"app"}],"wan":{"sender_credentials":{"active":{"password":"no-password","username":"no-user"}}}},"syslog_drain_url":null,"volume_mounts":[]}]}'
 ```
 
-(Windows)
+On Windows:
 
 ```
 C:\node-examples\book-service>$env:VCAP_SERVICES='{"p-cloudcache":[{"label":"p-cloudcache","provider":null,"plan":"dev-plan","name":"pcc-dev","tags":["gemfire","cloudcache","database","pivotal"],"instance_name":"pcc-dev","binding_name":null,"credentials":{"distributed_system_id":"0","gfsh_login_string":"connect --url=https://localhost:7070/gemfire/v1 --user=super-user --password=1234567 --skip-ssl-validation","locators":["localhost[10334]"],"urls":{"gfsh":"https://localhost:7070/gemfire/v1","pulse":"https://localhost:7070/pulse"},"users":[{"password":"1234567","roles":["cluster_operator"],"username":"super-user"},{"password":"1234567","roles":["developer"],"username":"app"}],"wan":{"sender_credentials":{"active":{"password":"no-password","username":"no-user"}}}},"syslog_drain_url":null,"volume_mounts":[]}]}'
@@ -85,39 +94,39 @@ the script also creates the single region that the app uses.
 
 With a current working directory of `node-examples/book-service`:
 
-(MacOS/Linux)
+On Mac and Linux:
 
 ```bash
 $ ./scripts/startGemFire.sh
 ```
 
-(Windows)
+On Windows:
 
 ```
 C:\node-examples\book-service>.\scripts\startGemFire.ps1
 ```
 
-## Run the App
+### Run the App
 
 With a current working directory of `node-examples/book-service` and run the app:
 
-(MacOS/Linux)
+On Mac and Linux:
 
 ```
 $ node src/server.js
 ```
 
-(Windows)
+On Windows:
 
 ```
 C:\node-examples\book-service>node .\src\server.js
 ```
 
-## Add a Book to the Book Service
+### Add a Book to the Book Service
 
 To add a book to the data service, open a separate shell and issue a curl command:
 
-(MacOS/Linux)
+On Mac and Linux:
 
 ```
 $ curl -X PUT \
@@ -132,13 +141,13 @@ $ curl -X PUT \
 }'
 ```
 
-(Windows)
+On Windows:
 
 ```
 C:\node-examples\book-service>curl -X PUT  "http://localhost:8080/book/put?isbn=0525565329"  -H "Content-Type: application/json"  -d "{\"FullTitle\": \"The Shining\", \"ISBN\": \"0525565329\", \"MSRP\": \"9.99\", \"Publisher\": \"Anchor\", \"Authors\": \"Stephen King\"}"
 ```
 
-## Look Up a Book
+### Look Up a Book
 
 To look up a book in the data service, use a curl command,
 specifying the ISBN as a key:
@@ -148,7 +157,7 @@ $ curl -X GET \
   'http://localhost:8080/book/get?isbn=0525565329'
 ```
 
-## Clean Up the Local Development Environment
+### Clean Up the Local Development Environment
 
 - When finished with running the example locally, use a control-C in the shell running `node` to stop running the app.
 
@@ -156,13 +165,13 @@ $ curl -X GET \
 tear down the GemFire cluster.
 With a current working directory of `node-examples/book-service`:
 
-(MacOS/Linux)
+On Mac and Linux:
 
     ```bash
     $ ./scripts/shutdownGemFire.sh
     ```
 
-(Windows)
+On Windows:
 
 ```
 C:\node-examples\book-service>.\scripts\shutdownGemFire.ps1
@@ -184,7 +193,7 @@ reference this environment variable if it continues to exist.
     $ unset VCAP_SERVICES
     ```
 
-# Run the App with Cloud Cache as the Data Service
+## Run the App with Cloud Cache as the Data Service
 
 This section uses the following names - if your Cloud Cache instance uses different names, substitute as appropriate for these:
 
@@ -193,7 +202,7 @@ This section uses the following names - if your Cloud Cache instance uses differ
 - **PAS-name**: cloudcache-999-persianplum
 - **app-name**: cloudcache-node-sample
 
-## Create and Configure a Cloud Cache Service Instance
+### Create and Configure a Cloud Cache Service Instance
 
 - Use the cf CLI to log in and target your org and space.
 
@@ -221,7 +230,7 @@ This section uses the following names - if your Cloud Cache instance uses differ
     connect --url=https://PAS-name.cf-app.com/gemfire/v1 --user=cluster_operator_XXX --password=YYY --skip-ssl-validation
     ```
 
-## Create the Region Used by the Book Service
+### Create the Region Used by the Book Service
 
 - Run gfsh.
 
@@ -290,13 +299,13 @@ push the app and make note of the route assigned for the app:
 Note the app route (labeled "routes:") in the output of the `cf push` command. In the above example,
 it is "cloudcache-node-sample.apps.persianplum.cf-app.com".
 
-## Add a Book to the Book Service
+### Add a Book to the Book Service
 
 To add a book to the data service, use a curl command similar to the one
 used when running with a local cluster, specifying the app route assigned
 in the `cf push` step, above.
 
-(MacOS/Linux)
+On Mac and Linux:
 
 ```
 $ curl -k -X PUT \
@@ -311,7 +320,7 @@ $ curl -k -X PUT \
 }'
 ```
 
-(Windows)
+On Windows:
 
 ```
 C:\node-examples\book-service>curl -X PUT  "http://localhost:8080/book/put?isbn=0525565329"  -H "Content-Type: application/json"  -d "{\"FullTitle\": \"The Shining\", \"ISBN\": \"0525565329\", \"MSRP\": \"9.99\", \"Publisher\": \"Anchor\", \"Authors\": \"Stephen King\"}"
@@ -337,7 +346,7 @@ The curl command responds with the requested data:
 {"FullTitle":"The Shining","ISBN":"0525565329","MSRP":"9.99","Publisher":"Anchor","Authors":"Stephen King"}
 ```
 
-## Clean Up the Cloud Cache Environment
+### Clean Up the Cloud Cache Environment
 
 When done running the app, tear down the app and the Cloud Cache service instance:
 
