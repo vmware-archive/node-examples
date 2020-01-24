@@ -46,6 +46,16 @@ Set `GEODE_HOME` to the GemFire installation directory and add `$GEODE_HOME/bin`
     set PATH=%GEODE_HOME%\bin;%PATH%
     ```
 
+## Build the App
+
+With a current working directory of `node-examples/CRUD-ops`,
+build the app:
+
+```bash
+$ npm install gemfire-nodejs-client-2.0.0.tgz
+$ npm update
+```
+
 ## Start a GemFire Cluster
 
 There are scripts in the `CRUD-ops/scripts` directory for creating a GemFire cluster. The `startGemFire` script starts up a simplest cluster of one locator and one cache server. The locator provides administration services for the cluster and a discovery service allowing clients and servers to find each other. The server provides storage for data along with computation services.
