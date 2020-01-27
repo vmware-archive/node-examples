@@ -1,7 +1,7 @@
-# The function-execution Example
+# The Function Execution Example
 
-This Node.js example provides a simple Javascript application, which demonstrates
-basic calling a server side function on a Pivotal GemFire cluster. This app can
+This Node.js example provides a simple Javascript application that demonstrates
+calling a server-side function on a Pivotal GemFire cluster. This app can
 be run with either a local Apache Geode cluster or with a Pivotal GemFire cluster.
 
 ## Prerequisites
@@ -9,8 +9,6 @@ be run with either a local Apache Geode cluster or with a Pivotal GemFire cluste
 - **Node.js**, minimum version of 10.0
 
 - **npm**, the Node.js package manager
-
-- **Cloud Foundry Command Line Interface (cf CLI)**.  See [Installing the cf CLI](https://docs.cloudfoundry.org/cf-cli/install-go-cli.html).
 
 - **Examples source code**.  Acquire the repository:
 
@@ -46,22 +44,40 @@ Set `GEODE_HOME` to the GemFire installation directory and add `$GEODE_HOME/bin`
     set PATH=%GEODE_HOME%\bin;%PATH%
     ```
 
+## Build the App
+
+With a current working directory of `node-examples/function-execution`,
+build the app:
+
+```bash
+$ npm install gemfire-nodejs-client-2.0.0.tgz
+$ npm update
+```
+
 ## Start a GemFire Cluster
 
-There is bash script in the `function-execution/scripts` directory for creating a GemFire cluster. The `startGemFire.sh` script starts up the simplest cluster of one locator and one cache server. The locator provides administration services for the cluster and a discovery service allowing clients and servers to find each other. The server provides storage for data along with computation services.
+There are scripts in the `function-execution/scripts` directory for creating a GemFire cluster. The `startGemFire.sh` script starts up the simplest cluster of one locator and one cache server. The locator provides administration services for the cluster and a discovery service allowing clients and servers to find each other. The server provides storage for data along with computation services.
 
-The startup script also creates a single Region called "test" that the application uses for storing data in the server (similar to a table in relational databases). A Region is similar to a hashmap and stores all data as
+The startup script also creates a single region called "test" that the application uses for storing data in the server (similar to a table in relational databases). A region is similar to a hashmap and stores all data as
 key/value pairs.
 
-The startup script depends on gfsh the administrative utility provided by the GemFire product.  
+The startup script depends on gfsh, the administrative utility provided with the GemFire product.  
 
-With a current working directory of `node-examples/function-execution`:
+With a current working directory of `node-examples/function-execution`, run the `startGemFire` script for your system:
+
+On Mac and Linux:
 
 ```bash
 $ ./scripts/startGemFire.sh
 ```
 
-If you encounter script issues with gfsh, validate that the GEODE_HOME environmental variable is configured and pointing to the GemFire install directory and that the PATH variable includes the bin directory of the GemFire install. Logs and other data for the cluster is stored in directory `node-examples/function-execution/data`.
+On Windows:
+
+```cmd
+$ powershell ./scripts/startGemFire.ps1
+```
+
+Logs and other data for the cluster are stored in directory `node-examples/function-execution/data`.
 
 Example output:
 
@@ -162,9 +178,9 @@ With a current working directory of `node-examples/function-execution`:
 $ node index.js
 ```
 
-The application demonstrates call a server side function with the Node.js
-GemFire client. The client does two puts then calls the server side function
-which will sum the two entries and return the sum to the client.  The
+The application demonstrates call a server-side function with the Node.js
+GemFire client. The client does two puts then calls the server-side function,
+which adds the two entries and returns the sum to the client.  The
 application is not interactive.
 
 Example output:
@@ -180,14 +196,14 @@ Sum of data on server: 3
 ## Review of the Example Code
 
 ### Server Configuration
-Prior to starting the Node.js GemFire client, a server side function is compiled
-and deployed to the server. See startGemFire.sh script for example of building and deploying a function.
+Prior to starting the Node.js GemFire client, a server-side function is compiled
+and deployed to the server. See the `startGemFire` script for an example of building and deploying a function.
 
-All server side functions are written in Java and must
-follow the GemFire API.  The following example function is extremely simple, it
+All server-side functions are written in Java and must
+follow the GemFire API.  The following example function is extremely simple; it
 sums the data in the test region then returns the sum to the client.
 
-Example function is at src/com/vmware/example/SumRegion.java
+The example function is in the file `src/com/vmware/example/SumRegion.java`.
 
 ```java
 package com.vmware.example;
@@ -222,46 +238,62 @@ public class SumRegion extends FunctionAdapter {
 }
 ```
 
-For additional details on writing and using server side functions see the
-GemFire documentation. Functions are extremely powerful but also can introduce server side issues if not carefully written as they run in the server process and
-have broad access to the server resources. Only well tested, vetted by the operations team and reviewed functions should be deployed in production servers.
+For additional details on writing and using server-side functions see the
+GemFire documentation. Functions are extremely powerful but also can introduce server-side issues if not carefully written, as they run in the server process and
+have broad access to the server resources. Only well-tested and reviewed functions, vetted by the operations team, should be deployed in production servers.
 
 ### Client Configuration
 
 The Node.js client configuration is similar to other client examples. The test
-Region is used and two put operations add data to the server.
+One region is used and two put operations add data to the server.
 
 ```javascript
 await region.put('one', 1)
 await region.put('two', 2)
 ```
 
-### Call server side function
-Call the server side function, which will sum the data in the test region.
+### Call server-side function
+Call the server-side function, which adds the data values in the test region.
 
 ```javascript
 let data = await region.executeFunction('com.vmware.example.SumRegion')
 ```
 
-Although this is a simple function, imagine if this was thousands or tens of
-thousands of entries that needed to be summed or a even a more complex algorithm
-used to compute a value based on the data. By doing the operations in the server we avoid having to fetch the data back over the network to the client. If the client is only interested in the final result of the computation, calling a function to do the work on the server can be significantly faster.  In some cases
-a client may not have the necessary resources such as memory or CPU to complete a large task and so using a server side function makes this possible.   
+Although this is a simple function, imagine if this were thousands or tens of
+thousands of entries that needed to be summed, or an even more complex algorithm
+used to compute a value based on the data. By performing the operations in the server we avoid having to fetch the data across the network to the client. If the client is interested only in the final result of the computation, calling a function on the server to do the work can be significantly faster.  In some cases
+a client may not have the necessary resources, such as memory or CPU, to complete a large task, so using a server side function makes this possible.   
 
 ## Clean Up the Local Development Environment
 
-- When finished with running the example, use a script to
+When finished running the example, use the shutdown script to
 tear down the GemFire cluster.
 With a current working directory of `node-examples/function-execution`:
 
-    ```bash
+  On Mac and Linux:
+  
+  ```bash
     $ ./scripts/shutdownGemFire.sh
-    ```
+  ```
+  
+  On Windows:
+  
+  ```cmd
+    c:\node-examples\CRUD-ops> powershell ./scripts/shutdownGemFire.ps1
+  ```
 
-- Use a script to remove the directories and files containing
+Use the cleanup script to remove the directories and files containing
 GemFire logs created for the cluster.
 With a current working directory of `node-examples/function-execution`:
 
-    ```bash
-    $ ./scripts/clearGemFireData.sh
-    ```
+  On Mac and Linux:
+  
+  ```bash
+  $ ./scripts/clearGemFireData.sh
+  ```
+
+  On Windows:
+    
+  ```cmd
+  c:\node-examples\CRUD-ops> powershell ./scripts/clearGemFireData.ps1
+  ```
