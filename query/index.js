@@ -1,6 +1,6 @@
 var gemfire = require('gemfire');
 
-async function function_execution_example() {
+async function query_example() {
 
     //configure and create client cache
     console.log('Configuring and creating a cache')
@@ -48,11 +48,11 @@ async function function_execution_example() {
       text+= (data[i].bar + ",")
     }
     text+= (data[i].bar)
-    console.log(" Values greater than 5: "+text)
+    console.log(" Values greater than 5: " + text)
 
     //done with cache, so close it
     cache.close()
     process.exit(0)
 }
 
-function_execution_example()
+query_example()

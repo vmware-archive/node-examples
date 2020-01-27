@@ -1,7 +1,7 @@
 # The query Example
 
 This Node.js example provides a simple Javascript application, which demonstrates
-basic calling a server side function on a Pivotal GemFire cluster. This app can
+basic executing a query on a Pivotal GemFire cluster. This app can
 be run with either a local Apache Geode cluster or with a Pivotal GemFire cluster.
 
 ## Prerequisites
