@@ -1,6 +1,6 @@
 # The CRUD-ops Example
 
-This Node.js example provides a simple Javascript application which demonstrates
+This Node.js example provides a simple Javascript application that demonstrates
 basic CRUD operations (create, read, update, delete) on a local Pivotal GemFire cluster. This app also can be run with
 a local Apache Geode cluster.
 
@@ -9,8 +9,6 @@ a local Apache Geode cluster.
 - **Node.js**, minimum version of 10.0
 
 - **npm**, the Node.js package manager
-
-- **Cloud Foundry Command Line Interface (cf CLI)**.  See [Installing the cf CLI](https://docs.cloudfoundry.org/cf-cli/install-go-cli.html).
 
 - **Examples source code**.  Acquire the repository:
 
@@ -58,14 +56,14 @@ $ npm update
 
 ## Start a GemFire Cluster
 
-There are scripts in the `CRUD-ops/scripts` directory for creating a GemFire cluster. The `startGemFire` script starts up a simplest cluster of one locator and one cache server. The locator provides administration services for the cluster and a discovery service allowing clients and servers to find each other. The server provides storage for data along with computation services.
+There are scripts in the `CRUD-ops/scripts` directory for creating a GemFire cluster. The `startGemFire` script starts up the simplest cluster of one locator and one cache server. The locator provides administration services for the cluster and a discovery service allowing clients and servers to find each other. The server provides storage for data along with computation services.
 
-The startup script also creates a single Region called "test" that the application uses for storing data in the server (similar to a table in relational databases). A Region is similar to a hashmap and stores all data as
+The startup script also creates a single region called "test" that the application uses for storing data in the server (similar to a table in relational databases). A region is similar to a hashmap and stores all data as
 key/value pairs.
 
 The startup scripts depend on gfsh, the administrative utility provided with the GemFire product.  
 
-With a current working directory of `node-examples/CRUD-ops`:
+With a current working directory of `node-examples/CRUD-ops`, run the `startGemFire` script for your system:
 
 On Mac and Linux:
 
