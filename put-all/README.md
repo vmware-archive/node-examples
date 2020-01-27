@@ -1,7 +1,7 @@
 # The PutAll & GetAll Example
 
-This Node.js example provides a simple Javascript application, which demonstrates
-basic putAll and getAll operations on a Pivotal GemFire cluster. This application leverages the put-get-remove example and should be reviewed prior starting. This example client works with
+This Node.js example provides a simple Javascript application that demonstrates
+basic putAll and getAll operations on Pivotal GemFire cluster. This application leverages the CRUD-ops example, which you should review prior starting. This example client works with
 either a local Apache Geode cluster or with a Pivotal GemFire cluster.
 
 ## Prerequisites
@@ -9,8 +9,6 @@ either a local Apache Geode cluster or with a Pivotal GemFire cluster.
 - **Node.js**, minimum version of 10.0
 
 - **npm**, the Node.js package manager
-
-- **Cloud Foundry Command Line Interface (cf CLI)**.  See [Installing the cf CLI](https://docs.cloudfoundry.org/cf-cli/install-go-cli.html).
 
 - **Examples source code**.  Acquire the repository:
 
@@ -52,26 +50,34 @@ With a current working directory of `node-examples/put-all`,
 build the app:
 
 ```bash
-$ npm install gemfire-nodejs-client-2.0.0-beta.tgz
+$ npm install gemfire-nodejs-client-2.0.0.tgz
 $ npm update
 ```
 
 ## Start a GemFire Cluster
 
-There is bash script in the `put-all/scripts` directory for creating a GemFire cluster. The `startGemFire.sh` script starts up the simplest cluster of one locator and one cache server. The locator provides administration services for the cluster and a discovery service allowing clients and servers to find each other. The server provides storage for data along with computation services.
+There are scripts in the `put-all/scripts` directory for creating a GemFire cluster. The `startGemFire` script starts up the simplest cluster of one locator and one cache server. The locator provides administration services for the cluster and a discovery service allowing clients and servers to find each other. The server provides storage for data along with computation services.
 
-The startup script also creates a single Region called "test" that the application uses for storing data in the server (similar to a table in relational databases). A Region is similar to a hashmap and stores all data as
+The startup script also creates a single region called "test" that the application uses for storing data in the server (similar to a table in relational databases). A region is similar to a hashmap and stores all data as
 key/value pairs.
 
-The startup script depends on gfsh the administrative utility provided by the GemFire product.  
+The startup script depends on gfsh, the administrative utility provided with the GemFire product.  
 
-With a current working directory of `node-examples/put-all`:
+With a current working directory of `node-examples/put-all`, run the `startGemFire` script for your system:
+
+On Mac and Linux:
 
 ```bash
 $ ./scripts/startGemFire.sh
 ```
 
-If you encounter script issues with gfsh, validate that the GEODE_HOME environmental variable is configured and pointing to the GemFire install directory and that the PATH variable includes the bin directory of the GemFire install. Logs and other data for the cluster are stored in directory `node-examples/put-all/data`.
+On Windows:
+
+```cmd
+$ powershell ./scripts/startGemFire.ps1
+```
+
+Logs and other data for the cluster are stored in directory `node-examples/put-all/data`.
 
 Example output:
 
@@ -197,15 +203,15 @@ The configuration client is identical to the put-get-remove example. The region 
 connection with the server.
 
 ### putAll
-The putAll operation is similar to a put in that it updates the region entries with a key/value pair. But unlike a standard put which updates a single entry, the putAll takes a collection of key/value pairs updating multiple entries. In the code snippet, the three keys foo, boo and spam will be created in the cache with their associated values.  The putAll operation is typically used for batch data imports into the cache.  
+The putAll operation is similar to a put in that it updates the region entries with a key/value pair. But unlike a standard put which updates a single entry, putAll takes a collection of key/value pairs, updating multiple entries in a single API call. In the code snippet, the three keys 'foo', 'boo', and 'spam' are created in the cache with their associated values.  The putAll operation is typically used for batch data imports into the cache.  
 
 ```javascript
 await region.putAll({'foo': 'bar','boo':'candy','spam':'musubi'})
 ```
 
 ### getAll
-Similar to a get operation, the getAll will fetch values from the server. But instead of using and single key, an array of keys is used to fetch multiple
-values from the server as a collection. In the example the array of keys ['foo','boo','spam'] which will return the associated values. The getAll is typically used when doing batch update cycles of existing data in such cases doing a getAll, modify data then a putAll of the updated values.
+Similar to a get operation, the getAll fetches values from the server. But instead of using a single key, an array of keys is used to fetch multiple
+values from the server as a collection. In the example the array of keys ['foo','boo','spam'] returns the associated values. The getAll operation is typically used when doing batch update cycles of existing data, in such cases doing a getAll, modifying the data, then calling putAll to store the updated values.
 
 ```javascript
 let getresult = await region.getAll(['foo','boo','spam'])
@@ -228,29 +234,45 @@ console.log('  Value retrieved is: \'' + getallresult.foo.bar + '\'')
 ```
 
 ### Delete (Remove)
-There is no general method for aggregated deletions of data in a region. The region.clean() method can delete all data in a replicated server region but is limited and does not work with server partitioned regions. As such region.clear() for most use cases will not be appropriate.     
+There is no general method for aggregated deletions of data in a region. The region.clean() method can delete all data in a replicated server region, but is limited and does not work with server partitioned regions. Therefore, `region.clear()` for most use cases will not be appropriate.     
 
 ```javascript
 await region.clear()
 ```
 
-For more complex use cases of deleting data from regions, many users will use the GemFire Function Service and develop a server side function to handle these use cases. Optionally on the server side, regions can be configured with data expiration as another method for deleting keys and values automatically.   
+For more complex use cases of deleting data from regions, many users use the GemFire Function Service and develop a server-side function to handle these use cases. Optionally on the server side, regions can be configured with data expiration as another method for deleting keys and values automatically.
 
 
 ## Clean Up the Local Development Environment
 
-- When finished with running the example, use the shutdown script to
+When finished running the example, use the shutdown script to
 tear down the GemFire cluster.
 With a current working directory of `node-examples/put-all`:
 
-    ```bash
+  On Mac and Linux:
+  
+  ```bash
     $ ./scripts/shutdownGemFire.sh
-    ```
+  ```
+  
+  On Windows:
+  
+  ```cmd
+    c:\node-examples\CRUD-ops> powershell ./scripts/shutdownGemFire.ps1
+  ```
 
-- Use the cleanup script to remove the directories and files containing
+Use the cleanup script to remove the directories and files containing
 GemFire logs created for the cluster.
 With a current working directory of `node-examples/put-all`:
 
-    ```bash
-    $ ./scripts/clearGemFireData.sh
-    ```
+  On Mac and Linux:
+  
+  ```bash
+  $ ./scripts/clearGemFireData.sh
+  ```
+
+  On Windows:
+    
+  ```cmd
+  c:\node-examples\CRUD-ops> powershell ./scripts/clearGemFireData.ps1
+  ```
