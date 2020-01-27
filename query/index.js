@@ -23,7 +23,7 @@ async function function_execution_example() {
 
     console.log("Call server side query")
     //Execute query on server
-    let data = await region.query("select * from /test")
+    let data = await region.query("select * from /test a order by a.bar")
     console.log(" List of values returned by query: select * from /test ")
     var i,text
     text=""
@@ -35,13 +35,13 @@ async function function_execution_example() {
 
     //Execute query on server
     console.log("Call server side query")
-    data = await region.query("select * from /test.keySet")
+    data = await region.query("select * from /test.keySet a order by a")
     console.log(" List of keys returned by query: select * from /test.keySet ")
     console.log(" Keys: " + data)
 
     //Execute query on server
     console.log("Call server side query")
-    data = await region.query("select * from /test x where x.bar >5")
+    data = await region.query("select * from /test x where x.bar >5 order by x.bar")
     console.log(" List of values greater than five returned by query: select * from /test x where x.bar >5" )
     text=""
     for(i=0; i<data.length-1;i++){
