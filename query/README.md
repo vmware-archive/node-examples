@@ -46,11 +46,21 @@ Set `GEODE_HOME` to the GemFire installation directory and add `$GEODE_HOME/bin`
     set PATH=%GEODE_HOME%\bin;%PATH%
     ```
 
+# Install GemFire Node.js Client Module
+
+With a current working directory of `node-examples/query`,
+ install the module:
+
+```bash
+$ npm install gemfire-nodejs-client-2.0.0-beta.tgz
+$ npm update
+```
+
 ## Start a GemFire Cluster
 
 There is bash script in the `query/scripts` directory for creating a GemFire cluster. The `startGemFire.sh` script starts up the simplest cluster of one locator and one cache server. The locator provides administration services for the cluster and a discovery service allowing clients and servers to find each other. The server provides storage for data along with computation services.
 
-The startup script also creates a single Region called "test" that the application uses for storing data in the server (similar to a table in relational databases). A Region is similar to a hashmap and stores all data as
+The startup script also creates a single region called "test" that the application uses for storing data in the server (similar to a table in relational databases). A region is similar to a hashmap and stores all data as
 key/value pairs.
 
 The startup script depends on gfsh the administrative utility provided by the GemFire product.  
@@ -156,14 +166,14 @@ $ node index.js
 Configuring and creating a cache
 Put data into server
 Call server side query
- List of values returned by query: select * from /test
- Values: 6,3,8,7,10,9,4,2,1,5
+ List of values returned by query: select * from /test 
+ Values: 1,2,3,4,5,6,7,8,9,10
 Call server side query
- List of keys returned by query: select * from /test.keySet
- Keys: ten,two,five,seven,nine,one,three,four,eight,six
+ List of keys returned by query: select * from /test.keySet 
+ Keys: eight,five,four,nine,one,seven,six,ten,three,two
 Call server side query
  List of values greater than five returned by query: select * from /test x where x.bar >5
- Values greater than 5: 8,9,10,7,6
+ Values greater than 5: 6,7,8,9,10
 ```
 
 ## Review of the Example Code
@@ -184,7 +194,7 @@ See GemFire documentation for additional details.
 ### Client Configuration
 
 The Node.js client configuration is similar to other client examples. The test
-Region is used and two putAll operations add data to the server.
+region is used and two putAll operations add data to the server.
 
 ```javascript
 await region.putAll({'one': {bar:1},'two': {bar:2},'three': {bar:3},'four':{bar:4},'five': {bar:5}})
