@@ -44,10 +44,10 @@ Set `GEODE_HOME` to the GemFire installation directory and add `$GEODE_HOME/bin`
     set PATH=%GEODE_HOME%\bin;%PATH%
     ```
 
-## Build the App
+## Install the Node.js Client Module
 
 With a current working directory of `node-examples/CRUD-ops`,
-build the app:
+ install the Node.js client module:
 
 ```bash
 $ npm install gemfire-nodejs-client-2.0.0.tgz
@@ -148,7 +148,7 @@ server | OK     | Region "/test" created on "server"
 Changes to configuration for group 'cluster' are persisted.
 ```
 
-## Run the example application
+## Run the Example Application
 
 With a current working directory of `node-examples/CRUD-ops`:
 

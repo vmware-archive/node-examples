@@ -1,7 +1,7 @@
-# The query Example
+# The Query Example
 
-This Node.js example provides a simple Javascript application, which demonstrates
-basic executing a query on a Pivotal GemFire cluster. This app can
+This Node.js example provides a simple Javascript application that demonstrates
+executing a query on a Pivotal GemFire cluster. This app can
 be run with either a local Apache Geode cluster or with a Pivotal GemFire cluster.
 
 ## Prerequisites
@@ -9,8 +9,6 @@ be run with either a local Apache Geode cluster or with a Pivotal GemFire cluste
 - **Node.js**, minimum version of 10.0
 
 - **npm**, the Node.js package manager
-
-- **Cloud Foundry Command Line Interface (cf CLI)**.  See [Installing the cf CLI](https://docs.cloudfoundry.org/cf-cli/install-go-cli.html).
 
 - **Examples source code**.  Acquire the repository:
 
@@ -46,32 +44,39 @@ Set `GEODE_HOME` to the GemFire installation directory and add `$GEODE_HOME/bin`
     set PATH=%GEODE_HOME%\bin;%PATH%
     ```
 
-# Install GemFire Node.js Client Module
+# Install the Node.js Client Module
 
 With a current working directory of `node-examples/query`,
- install the module:
+ install the Node.js client module:
 
 ```bash
-$ npm install gemfire-nodejs-client-2.0.0-beta.tgz
+$ npm install gemfire-nodejs-client-2.0.0.tgz
 $ npm update
 ```
 
 ## Start a GemFire Cluster
 
-There is bash script in the `query/scripts` directory for creating a GemFire cluster. The `startGemFire.sh` script starts up the simplest cluster of one locator and one cache server. The locator provides administration services for the cluster and a discovery service allowing clients and servers to find each other. The server provides storage for data along with computation services.
+There are scripts in the `query/scripts` directory for creating a GemFire cluster. The `startGemFire` script starts up the simplest cluster of one locator and one cache server. The locator provides administration services for the cluster and a discovery service allowing clients and servers to find each other. The server provides storage for data along with computation services.
 
 The startup script also creates a single region called "test" that the application uses for storing data in the server (similar to a table in relational databases). A region is similar to a hashmap and stores all data as
 key/value pairs.
 
 The startup script depends on gfsh the administrative utility provided by the GemFire product.  
 
-With a current working directory of `node-examples/query`:
+With a current working directory of `node-examples/query`, run the `startGemFire` script for your system:
+On Mac and Linux:
 
 ```bash
 $ ./scripts/startGemFire.sh
 ```
 
-If you encounter script issues with gfsh, validate that the GEODE_HOME environmental variable is configured and pointing to the GemFire install directory and that the PATH variable includes the bin directory of the GemFire install. Logs and other data for the cluster is stored in directory `node-examples/query/data`.
+On Windows:
+
+```cmd
+$ powershell ./scripts/startGemFire.ps1
+```
+
+Logs and other data for the cluster is stored in directory `node-examples/query/data`.
 
 Example output:
 
@@ -146,7 +151,7 @@ server | OK     | Region "/test" created on "server"
 Changes to configuration for group 'cluster' are persisted.
 ```
 
-## Run the example application
+## Run the Example Application
 
 With a current working directory of `node-examples/query`:
 
@@ -154,9 +159,8 @@ With a current working directory of `node-examples/query`:
 $ node index.js
 ```
 
-The application demonstrates call a server side function with the Node.js
-GemFire client. The client does two puts then calls the server side function
-which will sum the two entries and return the sum to the client.  The
+The application demonstrates simple queries using the Node.js
+GemFire client. The client populates the data store, then performs there queries and displays their results.  The
 application is not interactive.
 
 Example output:
@@ -201,10 +205,10 @@ await region.putAll({'one': {bar:1},'two': {bar:2},'three': {bar:3},'four':{bar:
 await region.putAll({'six': {bar:6},'seven': {bar:7},'eight': {bar:8},'nine': {bar:9},'ten': {bar:10}})
 ```
 
-Queries are server side operations and use a form of the Object Query Language or
+Queries are server-side operations that use a form of the Object Query Language, or
  OQL for short. See GemFire documentation for additional details on using OQL for queries.  
 
-### Calling server side query
+### Calling Server-side Queries
 
 The example demonstrates three simple queries that run on the server and return an
 array of results to the client application.
@@ -228,7 +232,7 @@ Query and filter entries based on a field of each entry.
 data = await region.query("select * from /test x where x.bar >5")
 ```
 
-The results of the query are returned as an unsorted array of objects. So in the query
+The results of each query are returned as an unsorted array of objects. So in the query
  "select * from /test x where x.bar >5", the results are the five entry values
  like '{bar:7}' where bar > 5. The result set doesn't contain the keys unless
  querying against the keyset itself.
@@ -243,28 +247,44 @@ Process the result set into a string for display.
  text+= (data[i].bar)
  ```
 
-These examples are very simple queries against a minimal dataset, imagine if this was thousands
- or tens of thousands of entries. Queries over large datasets will consume
+These examples are very simple queries against a minimal dataset; imagine if there were thousands
+ or tens of thousands of entries. Queries over large datasets consume
  significant server and client resources. In some cases a client may not have the necessary
- resources such as memory or CPU to process a large result set returned from the server. As
+ resources, such as memory or CPU, to process a large result set returned from the server. For that reason,
  such queries should be reviewed by the development and operations team prior to use
  in production.    
 
 
 ## Clean Up the Local Development Environment
 
-- When finished with running the example, use a script to
+When finished running the example, use the shutdown script to
 tear down the GemFire cluster.
 With a current working directory of `node-examples/query`:
 
-    ```bash
+  On Mac and Linux:
+  
+  ```bash
     $ ./scripts/shutdownGemFire.sh
-    ```
+  ```
+  
+  On Windows:
+  
+  ```cmd
+    c:\node-examples\CRUD-ops> powershell ./scripts/shutdownGemFire.ps1
+  ```
 
-- Use a script to remove the directories and files containing
+Use the cleanup script to remove the directories and files containing
 GemFire logs created for the cluster.
 With a current working directory of `node-examples/query`:
 
-    ```bash
-    $ ./scripts/clearGemFireData.sh
-    ```
+ On Mac and Linux:
+  
+  ```bash
+  $ ./scripts/clearGemFireData.sh
+  ```
+
+  On Windows:
+    
+  ```cmd
+  c:\node-examples\CRUD-ops> powershell ./scripts/clearGemFireData.ps1
+  ```

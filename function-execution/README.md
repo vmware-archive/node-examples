@@ -44,10 +44,10 @@ Set `GEODE_HOME` to the GemFire installation directory and add `$GEODE_HOME/bin`
     set PATH=%GEODE_HOME%\bin;%PATH%
     ```
 
-## Build the App
+## Install the Node.js Client Module
 
 With a current working directory of `node-examples/function-execution`,
-build the app:
+ install the Node.js client module:
 
 ```bash
 $ npm install gemfire-nodejs-client-2.0.0.tgz
@@ -56,7 +56,7 @@ $ npm update
 
 ## Start a GemFire Cluster
 
-There are scripts in the `function-execution/scripts` directory for creating a GemFire cluster. The `startGemFire.sh` script starts up the simplest cluster of one locator and one cache server. The locator provides administration services for the cluster and a discovery service allowing clients and servers to find each other. The server provides storage for data along with computation services.
+There are scripts in the `function-execution/scripts` directory for creating a GemFire cluster. The `startGemFire` script starts up the simplest cluster of one locator and one cache server. The locator provides administration services for the cluster and a discovery service allowing clients and servers to find each other. The server provides storage for data along with computation services.
 
 The startup script also creates a single region called "test" that the application uses for storing data in the server (similar to a table in relational databases). A region is similar to a hashmap and stores all data as
 key/value pairs.
@@ -170,7 +170,7 @@ Member | Deployed JAR  | Deployed JAR Location
 server | SumRegion.jar | /Users/pivotal/workspace/node-examples/function-execution/data/server/SumRegion.v1.jar
 ```
 
-## Run the example application
+## Run the Example Application
 
 With a current working directory of `node-examples/function-execution`:
 
@@ -178,7 +178,7 @@ With a current working directory of `node-examples/function-execution`:
 $ node index.js
 ```
 
-The application demonstrates call a server-side function with the Node.js
+The application demonstrates a call to a server-side function with the Node.js
 GemFire client. The client does two puts then calls the server-side function,
 which adds the two entries and returns the sum to the client.  The
 application is not interactive.
@@ -259,7 +259,7 @@ Call the server-side function, which adds the data values in the test region.
 let data = await region.executeFunction('com.vmware.example.SumRegion')
 ```
 
-Although this is a simple function, imagine if this were thousands or tens of
+Although this is a simple function, imagine if there were thousands or tens of
 thousands of entries that needed to be summed, or an even more complex algorithm
 used to compute a value based on the data. By performing the operations in the server we avoid having to fetch the data across the network to the client. If the client is interested only in the final result of the computation, calling a function on the server to do the work can be significantly faster.  In some cases
 a client may not have the necessary resources, such as memory or CPU, to complete a large task, so using a server side function makes this possible.   
