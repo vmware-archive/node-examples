@@ -61,9 +61,10 @@ There are scripts in the `query/scripts` directory for creating a GemFire cluste
 The startup script also creates a single region called "test" that the application uses for storing data in the server (similar to a table in relational databases). A region is similar to a hashmap and stores all data as
 key/value pairs.
 
-The startup script depends on gfsh the administrative utility provided by the GemFire product.  
+The startup script depends on gfsh, the administrative utility provided by the GemFire product.  
 
-With a current working directory of `node-examples/query`, run the `startGemFire` script for your system:
+With a current working directory of `node-examples/query`
+
 On Mac and Linux:
 
 ```bash
@@ -76,7 +77,7 @@ On Windows:
 $ powershell ./scripts/startGemFire.ps1
 ```
 
-Logs and other data for the cluster is stored in directory `node-examples/query/data`.
+Logs and other data for the cluster are stored in directory `node-examples/query/data`.
 
 Example output:
 

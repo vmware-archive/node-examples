@@ -1,44 +1,53 @@
-# The Object usage Example
+# The Object Usage Example
 
-This Node.js example provides a simple Javascript application which demonstrates
+This Node.js example provides a simple Javascript application that demonstrates
 basic object usage with a local Pivotal GemFire cluster. This app also can be run with
 a local Apache Geode cluster.
 
 ## Prerequisites
 
-- Java JDK 1.8.X  is a dependency for Apache Geode/GemFire and gfsh
+- **Node.js**, minimum version of 10.0
 
-- Node.js, minimum version of 10.0
+- **npm**, the Node.js package manager
 
-- `npm`, the Node.js package manager
-
-- Examples source code.  Acquire the repository:
+- **Examples source code**.  Acquire the repository:
 
     ```
     $ git clone git@github.com:gemfire/node-examples.git
     ```
 
-- Node.js client library. Acquire the Node.js client library from PivNet.
-Find and download the current version of the Node.js Client,
-`gemfire-nodejs-client-2.0.0.tgz`,
-under [Pivotal GemFire](https://network.pivotal.io/products/pivotal-gemfire/).
+- **Node.js client library**. Acquire the Node.js client library from PivNet under [Pivotal GemFire](https://network.pivotal.io/products/pivotal-gemfire/).
+The file is a compressed tar archive (suffix `.tgz`), and the filename contains the client library version number.
+For example:
+`gemfire-nodejs-client-2.0.0.tgz`.
 
-- Pivotal GemFire (to have gfsh, the command line interface for GemFire).
-Acquire Pivotal GemFire from PivNet
-at [Pivotal GemFire](https://network.pivotal.io/products/pivotal-gemfire/).
 
-- Configure GEODE\_HOME and PATH environment variables.
-Set GEODE\_HOME to the GemFire installation directory and add $GEODE\_HOME/bin to your PATH. For example
+- **Pivotal GemFire**.
+Acquire Pivotal GemFire from PivNet at [Pivotal GemFire](https://network.pivotal.io/products/pivotal-gemfire/). Be sure to install GemFire's prerequisite Java JDK 1.8.X, which is needed to support gfsh, the GemFire command line interface.
+Choose your GemFire version based on the version of Cloud Cache in your PAS environment.
+See the [Product Snapshot](https://docs.pivotal.io/p-cloud-cache/product-snapshot.html) for your Cloud Cache version.
+
+- **Configure environment variables**.
+Set `GEODE_HOME` to the GemFire installation directory and add `$GEODE_HOME/bin` to your `PATH`. For example
+
+    On Mac and Linux:
 
     ```bash
     export GEODE_HOME=/Users/MyGemFire
     export PATH=$GEODE_HOME/bin:$PATH
     ```
 
-## Build the App
+    On Windows:
+  
+    ```cmd
+    set GEODE_HOME=c:\Users\MyGemFire
+    set PATH=%GEODE_HOME%\bin;%PATH%
+    ```
+
+# Install the Node.js Client Module
 
 With a current working directory of `node-examples/object-put`,
-build the app:
+install the Node.js client module:
 
 ```bash
 $ npm install gemfire-nodejs-client-2.0.0.tgz
@@ -47,20 +56,28 @@ $ npm update
 
 ## Start a GemFire Cluster
 
-There is bash script in the `object-put/scripts` directory for creating a GemFire cluster. The `startGemFire.sh` script starts up the simplest cluster of one locator and one cache server. The locator provides administration services for the cluster and a discovery service allowing clients and servers to find each other. The server provides storage for data along with computation services.
+There are scripts in the `object-put/scripts` directory for creating a GemFire cluster. The `startGemFire` script starts up the simplest cluster of one locator and one cache server. The locator provides administration services for the cluster and a discovery service allowing clients and servers to find each other. The server provides storage for data along with computation services.
 
-The startup script also creates a single Region called "test" that the application uses for storing data in the server (similar to a table in relational databases). A Region is similar to a hashmap and stores all data as
+The startup script also creates a single region called "test" that the application uses for storing data in the server (similar to a table in relational databases). A region is similar to a hashmap and stores all data as
 key/value pairs.
 
-The startup script depends on gfsh the administrative utility provided by the GemFire product.  
+The startup script depends on gfsh, the administrative utility provided by the GemFire product.  
 
-With a current working directory of `node-examples/object-put`:
+With a current working directory of `node-examples/object-put`, run the `startGemFire` script for your system:
+
+On Mac and Linux:
 
 ```bash
 $ ./scripts/startGemFire.sh
 ```
 
-If you encounter script issues with gfsh, validate that the GEODE_HOME environment variable is configured and pointing to the GemFire install directory and that the PATH variable includes the bin directory of the GemFire install. Logs and other data for the cluster are stored in directory `node-examples/object-put/data`.
+On Windows:
+
+```cmd
+$ powershell ./scripts/startGemFire.ps1
+```
+
+Logs and other data for the cluster are stored in directory `node-examples/object-put/data`.
 
 Example output:
 
@@ -129,9 +146,24 @@ Member | Status | Message
 server | OK     | Region "/test" created on "server"
 
 Changes to configuration for group 'cluster' are persisted.
+
+(1) Executing - connect --locator=localhost[10337]
+
+Connecting to Locator at [host=localhost, port=10337] ..
+Connecting to Manager at [host=10.118.33.177, port=1099] ..
+Successfully connected to: [host=10.118.33.177, port=1099]
+
+(2) Executing - create region --name=othertest --type=PARTITION
+
+Member | Status | Message
+------ | ------ | ----------------------------------
+server | OK     | Region "/othertest" created on "server"
+
+Changes to configuration for group 'cluster' are persisted.
+
 ```
 
-## Run the example application
+## Run the Example Application
 
 With a current working directory of `node-examples/object-put`:
 
@@ -139,10 +171,7 @@ With a current working directory of `node-examples/object-put`:
 $ node index.js
 ```
 
-The application demonstrates configuring the Node.js GemFire client
-to use a local cluster.
-It does each CRUD operation, printing expected and actual values along
-the way. The application is not interactive.
+The application demonstrates basic object usage. It creates two regions, then uses objects both as values and as keys to store and retrieve data.  The application is not interactive.
 
 Example output:
 
@@ -194,6 +223,13 @@ Value from region test:  { bar: 'candy' }
 ************* Null value returned for non-existent data *******************
 Not existent data fetch with key: { doom: 'gloom', funk: 'foo', cloud: 'sunny' }
 Value from region test:  null
+*************** Insert new key into test *****************
+Get value from each region with key:  0
+Value from region test:  { bar: 'mars' }
+*************** Insert new key into test *****************
+Get value from each region with key:  mykey
+Value from region test:  { bar: 'hershey' }
+
 ```
 
 ## Review of the Example Code
@@ -205,11 +241,11 @@ the CRUD-ops example.
 
 ### Region Configuration
 In this example, two regions are created. The 'test' region is PROXY region and
- does't store a local copy of the data. The 'othertest' region is a  CACHING_PROXY and
- it stores a local copy of data that is put and fetched from server. In most cases
- applications should just use the PROXY region, but if the data doesn't change
- frequently and will be used multiple times by the client a CACHING_PROXY may
-provide a performance advantage but will increase the memory footprint of the
+ does not store a local copy of the data. The 'othertest' region is a  CACHING_PROXY and
+ it stores a local copy of data that is put and fetched from the server. In most cases
+ applications should just use the PROXY region, but if the data does not change
+ frequently and will be used multiple times by the client, a CACHING_PROXY may
+provide a performance advantage, but will increase the memory footprint of the
 client application for the local storage of the cached server data.
 
 ```javascript
@@ -233,7 +269,7 @@ await cache.rootRegions().forEach( async function(region){
 
 ### Put and Get objects
 Pivotal Cloud Cache is a key/value and cache solution. The keys and values can be
-strings, numbers or JSON objects. Regions can be used like a hashmap with the added
+strings, numbers or JSON objects. A region can be used like a hashmap with the added
 ability to be distributed to a cluster of servers and redistributed to other
 clients or across WAN connections to other clusters.
 
@@ -272,25 +308,41 @@ console.log('Value from region test: ',result)
 ```
 
 ### Best Practice
-For simplicity sake the example mixes different types of keys and data values in the same region, but
+For simplicity, the example mixes different types of keys and data values in the same region, but
 as best practice separate regions should be used to manage each different type and set of data. So in the example code, using a new region to store the data associated with the string or integer keys would be better practice. Best to think
-"birds of a feather, flock together" when designing your data model, and that
+"birds of a feather, flock together" when designing your data model; that
 will help when using server side functionality such as functions, queries and indexes.     
 
 ## Clean Up the Local Development Environment
 
-- When finished with running the example, use the shutdown script to
+When finished running the example, use the shutdown script to
 tear down the GemFire cluster.
 With a current working directory of `node-examples/object-put`:
 
-    ```bash
+  On Mac and Linux:
+  
+  ```bash
     $ ./scripts/shutdownGemFire.sh
-    ```
+  ```
+  
+  On Windows:
+  
+  ```cmd
+    c:\node-examples\CRUD-ops> powershell ./scripts/shutdownGemFire.ps1
+  ```
 
-- Use the clean up script to remove the directories and files containing
+Use the cleanup script to remove the directories and files containing
 GemFire logs created for the cluster.
 With a current working directory of `node-examples/object-put`:
 
-    ```bash
-    $ ./scripts/clearGemFireData.sh
-    ```
+  On Mac and Linux:
+  
+  ```bash
+  $ ./scripts/clearGemFireData.sh
+  ```
+
+  On Windows:
+    
+  ```cmd
+  c:\node-examples\CRUD-ops> powershell ./scripts/clearGemFireData.ps1
+  ```
