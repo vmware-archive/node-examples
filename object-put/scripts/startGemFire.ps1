@@ -49,6 +49,7 @@ Function createRegion() {
   pushd $APP_HOME/data/server
 
   Invoke-Expression "$GFSH_PATH -e 'connect --locator=localhost[10337]' -e 'create region --name=test --type=PARTITION'"
+  Invoke-Expression "$GFSH_PATH -e 'connect --locator=localhost[10337]' -e 'create region --name=othertest --type=PARTITION'"
 
   popd
 }
