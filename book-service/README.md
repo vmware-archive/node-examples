@@ -54,10 +54,10 @@ Set `GEODE_HOME` to the GemFire installation directory and add `$GEODE_HOME/bin`
     set PATH=%GEODE_HOME%\bin;%PATH%
     ```
 
-## Build the App
+## Install the Node.js Client Module
 
 With a current working directory of `node-examples/book-service`,
-build the app:
+install the Node.js client module:
 
 ```bash
 $ npm install gemfire-nodejs-client-2.0.0.tgz
