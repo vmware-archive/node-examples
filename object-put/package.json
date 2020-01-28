@@ -1,0 +1,27 @@
+{
+  "name": "put-get-remove",
+  "version": "1.0.0",
+  "description": "A put-get-remove example.",
+  "main": "index.js",
+  "dependencies": {
+    "gemfire": "file:../../../Downloads/gemfire-nodejs-all-v2.0.0-build.34.tgz"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/gemfire/node-examples.git"
+  },
+  "engines": {
+    "node": "10.16.3"
+  },
+  "author": "",
+  "license": "Apache",
+  "bugs": {
+    "url": "https://github.com/gemfire/node-examples/issues"
+  },
+  "homepage": "https://github.com/gemfire/node-examples#readme"
+}
