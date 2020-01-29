@@ -13,8 +13,6 @@ or a local Apache Geode cluster.
 
 - **npm**, the Node.js package manager
 
-- **Cloud Foundry Command Line Interface (cf CLI)**.  See [Installing the cf CLI](https://docs.cloudfoundry.org/cf-cli/install-go-cli.html).
-
 - **Examples source code**.  Acquire the repository:
 
     ```
@@ -49,31 +47,39 @@ Set `GEODE_HOME` to the GemFire installation directory and add `$GEODE_HOME/bin`
     set PATH=%GEODE_HOME%\bin;%PATH%
     ```
 
-# Install GemFire Node.js Client Module
+# Install the GemFire Node.js Client Module
 
 With a current working directory of `node-examples/authenticate`,
  install the module:
 
 ```bash
-$ npm install gemfire-nodejs-client-2.0.0-beta.tgz
+$ npm install gemfire-nodejs-client-2.0.0.tgz
 $ npm update
 ```
 
 ## Start a GemFire Cluster
 
-There is bash script in the `authenticate/scripts` directory for creating a GemFire cluster. The `startGemFire.sh` script starts up the simplest cluster of one locator and one cache server. The locator provides administration services for the cluster and a discovery service allowing clients and servers to find each other. The server provides storage for data along with computation services.
+There are scripts in the `authenticate/scripts` directory for creating a GemFire cluster. The `startGemFire` script starts up the simplest cluster of one locator and one cache server. The locator provides administration services for the cluster and a discovery service allowing clients and servers to find each other. The server provides storage for data along with computation services.
 
-The script builds and deploys a security manager to the GemFire cluster, so clients must now authenticate prior to accessing or performing any operations on the cluster. The startup script also creates a single Region called "test" that the application uses for storing data in the server (similar to a table in relational databases). A Region is similar to a hashmap and stores all data as key/value pairs.
+The script builds and deploys a security manager to the GemFire cluster, so clients must authenticate prior to accessing or performing any operations on the cluster. The startup script also creates a single region called "test" that the application uses for storing data in the server (similar to a table in relational databases). A region is similar to a hashmap and stores all data as key/value pairs.
 
-The startup script depends on gfsh the administrative utility provided by the GemFire product.  
+The startup script depends on gfsh, the administrative utility provided by the GemFire product.  
 
-With a current working directory of `node-examples/authenticate`:
+With a current working directory of `node-examples/authenticate`, run the `startGemFire` script for your system:
+
+On Mac and Linux:
 
 ```bash
 $ ./scripts/startGemFire.sh
 ```
 
-If you encounter script issues with gfsh, validate that the GEODE_HOME environmental variable is configured and pointing to the GemFire install directory and that the PATH variable includes the bin directory of the GemFire install. Logs and other data for the cluster is stored in directory `node-examples/authenticate/data`
+On Windows:
+
+```cmd
+$ powershell ./scripts/startGemFire.ps1
+```
+
+Logs and other data for the cluster are stored in directory `node-examples/authenticate/data`
 
 Example output:
 
@@ -148,7 +154,7 @@ Changes to configuration for group 'cluster' are persisted.
 
 ```
 
-## Run the example application
+## Run the Example Application
 
 With a current working directory of `node-examples/authenticate`:
 
@@ -156,7 +162,7 @@ With a current working directory of `node-examples/authenticate`:
 $ node index.js
 ```
 
-The application demonstrates configuring the Node.js GemFire client to use a local cluster. Doing a put of a key/value pair, fetching the value with a get using the key and finally deleting the key/value pair from GemFire. The application is not interactive.
+The script builds and deploys a security manager to the GemFire cluster, so clients must authenticate prior to accessing or performing any operations on the cluster. Having established credentials, the application performs a put of a key/value pair, fetching the value with a get using the key and finally deleting the key/value pair from GemFire. The application is not interactive.
 
 Example output:
 
@@ -171,16 +177,16 @@ Do put and get CRUD operations
 Finished
 ```
 
-## Review example code
+## Review Example Code
 Snippets of the example code index.js are captured below.
 
 ### Configuration
 
 This block of code configures the client cache. The log location and metrics are written to the data directory. The PoolFactory configures a connection pool which uses the locator to lookup the servers.
 
-There is a small change from the put-get-remove example configuration, we add the following lines
-which adds a username and password used by the GemFire cluster to authenticate the client. The
-credentials are sent to the cluster with authenticating and authorization handled on the server side.
+There is a small change from the put-get-remove example configuration -- we add the following lines,
+which add a username and password used by the GemFire cluster to authenticate the client. The
+credentials are sent to the cluster with authentication and authorization handled on the server side.
 
 ```javascript
 cacheFactory.setAuthentication((properties, server) => {
@@ -190,7 +196,7 @@ cacheFactory.setAuthentication((properties, server) => {
 })
 ```
 
-The full configuration with the username and password added.
+The full configuration with the username and password added:
 
 ```javascript
 cacheFactory = gemfire.createCacheFactory()
@@ -211,9 +217,11 @@ poolFactory.create('pool')
 ```
 
 ### Security Manager
+
 The provided example security manager (node-examples/authenticate/src/securitymanager/SimpleSecurityManager.java) is very simple and should not be used for production applications. The security manager provides both authentication of the user and authorization of the user actions.  This example security manager supplies three user profiles with different authorization options that can be tried.
 
-#### Bad username or password
+#### Bad Username or Password
+
 Try changing the client application "security-password" property from "root-password"
 to "root-passwordabc" in the index.js file. This is will cause an authentication
 error with the cluster and the client will not be able to connect or perform
@@ -221,6 +229,7 @@ any actions.  Because of retries in the connection logic of the client, the
 error may take a minute or more before it appears.
 
 Example output:
+
 ```
 $ node index.js
 Creating a cache factory
@@ -234,8 +243,8 @@ Finished
 ```
 
 In the client log file (node-examples/authenticate/data/nodeClient.log), a Java
-exception stack will be logged from the GemFire cluster that shows the full error.
-The log shows that the client failed to get authenticated.
+exception stack is logged from the GemFire cluster that shows the full error.
+The log shows that the client failed to authenticate.
 
 ```Java
 [warning 2019/12/19 10:33:18.672628 PST minbari.pivotal.io:63391 123145597251584] Authentication failed in handshake with endpoint[10.118.33.177:40404]: org.apache.geode.security.AuthenticationFailedException: Authentication error. Please check your credentials.
@@ -269,10 +278,10 @@ Caused by: org.apache.geode.security.AuthenticationFailedException: Non-authenti
 	... 16 more
 ```
 
-#### Using a user with insufficient permissions
+#### User with Insufficient Permissions
 
-Lets try changing the "security-username" to "writer" and the "security-password"
-to "writer-password" in file index.js. The user "writer" will be authenticated but
+Try changing the "security-username" to "writer" and the "security-password"
+to "writer-password" in file index.js. The user "writer" will be authenticated
 and can put data into the cache. But user "writer" is not authorized to get data
 from the cache and is blocked trying to get the key "foo".
 
@@ -308,9 +317,9 @@ Caused by: org.apache.shiro.authz.UnauthorizedException: Subject does not have p
 
 Finished
 ```
-The client log file will show a Java exception stack trace from server which shows
-details of the failure. In this case that the authorization of the get operation
-which is a DATA:READ of the "test" region and key "foo" failed as the "writer" user
+The client log file shows a Java exception stack trace from the server which shows
+details of the failure. In this case the authorization of the get operation,
+which is a DATA:READ of the "test" region and key "foo", failed as the user "writer"
 only has permissions to perform DATA:WRITE operations or puts.
 
 ```Java
@@ -336,22 +345,38 @@ Caused by: org.apache.shiro.authz.UnauthorizedException: Subject does not have p
 ) happened at remote server.
 ```
 If one resets the security-username and security-password back to the origin "root"
-and "root-password" the application should work again as it did initially.
+and "root-password", the application should work again as it did initially.
 
 ## Clean Up the Local Development Environment
 
-- When finished with running the example, use the shutdown script to
+When finished running the example, use the shutdown script to
 tear down the GemFire cluster.
 With a current working directory of `node-examples/authenticate`:
 
-    ```bash
+  On Mac and Linux:
+  
+  ```bash
     $ ./scripts/shutdownGemFire.sh
-    ```
+  ```
+  
+  On Windows:
+  
+  ```cmd
+    c:\node-examples\CRUD-ops> powershell ./scripts/shutdownGemFire.ps1
+  ```
 
-- Use the cleanup script to remove the directories and files containing
+Use the cleanup script to remove the directories and files containing
 GemFire logs created for the cluster.
 With a current working directory of `node-examples/authenticate`:
 
-    ```bash
-    $ ./scripts/clearGemFireData.sh
-    ```
+  On Mac and Linux:
+  
+  ```bash
+  $ ./scripts/clearGemFireData.sh
+  ```
+
+  On Windows:
+    
+  ```cmd
+  c:\node-examples\CRUD-ops> powershell ./scripts/clearGemFireData.ps1
+  ```
