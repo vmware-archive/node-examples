@@ -26,7 +26,7 @@ This app has been tested with Cloud Cache version 1.8.1.
     $ git clone git@github.com:gemfire/node-examples.git
     ```
 
-- **Node.js client library**. Acquire the Node.js client library from PivNet under [Pivotal GemFire](https://network.pivotal.io/products/pivotal-gemfire/).
+- **Node.js client library**. Acquire the Node.js client library from PivNet under [Cloud Cache](https://network.pivotal.io/products/p-cloudcache/).
 The file is a compressed tar archive (suffix `.tgz`), and the filename contains the client library version number.
 For example:
 `gemfire-nodejs-client-2.0.0.tgz`.
