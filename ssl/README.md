@@ -1,7 +1,7 @@
 # The SSL-Put-Get Example
 
 This Node.js example demonstrates basic SSL connection of a client with a GemFire
- Cache cluster. This application leverages the put-get-remove example and should
+ Cache cluster. This application leverages the put-get-remove example, which should
  be reviewed prior starting. The example works with either a local Apache Geode
  or Pivotal GemFire cluster.
 
@@ -12,8 +12,6 @@ This Node.js example demonstrates basic SSL connection of a client with a GemFir
 - **Node.js**, minimum version of 10.0
 
 - **npm**, the Node.js package manager
-
-- **Cloud Foundry Command Line Interface (cf CLI)**.  See [Installing the cf CLI](https://docs.cloudfoundry.org/cf-cli/install-go-cli.html).
 
 - **Examples source code**.  Acquire the repository:
 
@@ -42,7 +40,7 @@ Set `GEODE_HOME` to the GemFire installation directory and add `$GEODE_HOME/bin`
     export PATH=$GEODE_HOME/bin:$PATH
     ```
 
-    On Windows:
+    On Windows (standard command prompt):
   
     ```cmd
     set GEODE_HOME=c:\Users\MyGemFire
@@ -56,34 +54,44 @@ With a current working directory of `node-examples/ssl`,
  install the module:
 
 ```bash
-$ npm install gemfire-nodejs-client-2.0.0-beta.tgz
+$ npm install gemfire-nodejs-client-2.0.0.tgz
 $ npm update
 ```
+
 ## Certificates
-There are provided certificates for this example under the keys directory. For additional details on creating certificates the 
+Certificates for this example are provided under the `node-examples/ssl/keys` directory. For additional details on creating certificates the 
 following links may be helpful. 
 
-Certificate generation
-https://jamielinux.com/docs/openssl-certificate-authority/introduction.html
+Certificate generation:
+[https://jamielinux.com/docs/openssl-certificate-authority/introduction.html](https://jamielinux.com/docs/openssl-certificate-authority/introduction.html)
 
-JKS keystore import
-https://blog.codecentric.de/en/2013/01/how-to-use-self-signed-pem-client-certificates-in-java/
+JKS keystore import:
+[https://blog.codecentric.de/en/2013/01/how-to-use-self-signed-pem-client-certificates-in-java/](https://blog.codecentric.de/en/2013/01/how-to-use-self-signed-pem-client-certificates-in-java/)\
+
 
 ## Start a GemFire Cluster
 
-There is bash script in the `ssl/scripts` directory for creating a GemFire cluster. The `startGemFire.sh` script starts up the simplest cluster of one locator and one cache server. The locator provides administration services for the cluster and a discovery service allowing clients and servers to find each other. The server provides storage for data along with computation services.
+There are scripts in the `ssl/scripts` directory for creating a GemFire cluster. The `startGemFire` script starts up the simplest cluster of one locator and one cache server. The locator provides administration services for the cluster and a discovery service allowing clients and servers to find each other. The server provides storage for data along with computation services.
 
- The startup script creates a single Region called "test" that the application uses for storing data in the server (similar to a table in relational databases). A Region is similar to a hashmap and stores all data as key/value pairs.
+The startup script creates a single Region called "test" that the application uses for storing data in the server (similar to a table in relational databases). A region is similar to a hashmap and stores all data as key/value pairs.
 
-The startup script depends on gfsh the administrative utility provided by the GemFire product.  
+The startup script depends on gfsh, the administrative utility provided by the GemFire product.  
 
-With a current working directory of `node-examples/ssl`:
+With a current working directory of `node-examples/ssl`, run the `startGemFire` script for your system:
+
+On Mac and Linux:
 
 ```bash
 $ ./scripts/startGemFire.sh
 ```
 
-If you encounter script issues with gfsh, validate that the GEODE_HOME environmental variable is configured and pointing to the GemFire install directory and that the PATH variable includes the bin directory of the GemFire install. Logs and other data for the cluster is stored in directory `node-examples/ssl/data`
+On Windows (standard command prompt):
+
+```cmd
+$ powershell ./scripts/startGemFire.ps1
+```
+
+Logs and other data for the cluster is stored in directory `node-examples/ssl/data`.
 
 Example output:
 
@@ -149,22 +157,25 @@ server | OK     | Region "/test" created on "server"
 Changes to configuration for group 'cluster' are persisted.
 ```
 
-## Run the example application
+## Run the Example Application
 
 With a current working directory of `node-examples/ssl`:
 
 On Mac and Linux:
+
 ```bash
 $ node index.js
 ```
 
-On Windows:
+On Windows (standard command prompt):
+
 ```cmd
 c:\node-modules\ssl> set PATH=%PATH%;.\node_modules\gemfire\build\Release
 c:\node-modules\ssl> node index.js
 ```
 
-The application demonstrates configuring the Node.js GemFire client to use a local cluster. Doing a put of a key/value pair, fetching the value with a get using the key and finally deleting the key/value pair from GemFire. The application is not interactive.
+The application demonstrates basic SSL connection of a client with a GemFire Cache cluster.
+The application is not interactive.
 
 Example output:
 
@@ -204,22 +215,39 @@ There is a small change from the put-get-remove example configuration. We add th
     cacheFactory.set('ssl-truststore', sslKeyPath + '/client_truststore.pem')
 ```
 
-The example should behave in a similar manner as the CRUD example with secure connections enabled.
+The example should behave in a similar manner to the CRUD example, but with secure connections enabled.
 
 ## Clean Up the Local Development Environment
 
-- When finished with running the example, use a script to
+When finished running the example, use the shutdown script to
 tear down the GemFire cluster.
 With a current working directory of `node-examples/ssl`:
 
-    ```bash
+  On Mac and Linux:
+  
+  ```bash
     $ ./scripts/shutdownGemFire.sh
-    ```
+  ```
+  
+  On Windows (standard command prompt):
+  
+  ```cmd
+    c:\node-examples\CRUD-ops> powershell ./scripts/shutdownGemFire.ps1
+  ```
 
-- Use a script to remove the directories and files containing
+Use the cleanup script to remove the directories and files containing
 GemFire logs created for the cluster.
 With a current working directory of `node-examples/ssl`:
 
-    ```bash
-    $ ./script/clearGemFireData.sh
-    ```
+  On Mac and Linux:
+  
+  ```bash
+  $ ./scripts/clearGemFireData.sh
+  ```
+
+  On Windows (standard command prompt):
+    
+  ```cmd
+  c:\node-examples\CRUD-ops> powershell ./scripts/clearGemFireData.ps1
+  ```
+
