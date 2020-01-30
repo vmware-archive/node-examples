@@ -1,6 +1,6 @@
 {
   "name": "ssl",
-  "version": "1.0.0",
+  "version": "1.1.1",
   "description": "A ssl example.",
   "main": "index.js",
   "dependencies": {
