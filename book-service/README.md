@@ -64,7 +64,7 @@ $ npm install gemfire-nodejs-client-2.0.0.tgz
 $ npm update
 ```
 
-## Run the App Locally
+## Run the Example Locally
 
 The local environment mocks the services binding that would exist
 for a PAS environment.
@@ -84,7 +84,7 @@ On Windows (standard command prompt):
 C:\node-examples\book-service>$env:VCAP_SERVICES='{"p-cloudcache":[{"label":"p-cloudcache","provider":null,"plan":"dev-plan","name":"pcc-dev","tags":["gemfire","cloudcache","database","pivotal"],"instance_name":"pcc-dev","binding_name":null,"credentials":{"distributed_system_id":"0","gfsh_login_string":"connect --url=https://localhost:7070/gemfire/v1 --user=super-user --password=1234567 --skip-ssl-validation","locators":["localhost[10334]"],"urls":{"gfsh":"https://localhost:7070/gemfire/v1","pulse":"https://localhost:7070/pulse"},"users":[{"password":"1234567","roles":["cluster_operator"],"username":"super-user"},{"password":"1234567","roles":["developer"],"username":"app"}],"wan":{"sender_credentials":{"active":{"password":"no-password","username":"no-user"}}}},"syslog_drain_url":null,"volume_mounts":[]}]}'
 ```
 
-## Start a Cluster
+### Start a Cluster
 
 There are shell scripts in the `book-service/scripts` directory.
 The `startGemFire` script starts up two locators and two cache servers.
@@ -106,9 +106,9 @@ On Windows (standard command prompt):
 C:\node-examples\book-service>.\scripts\startGemFire.ps1
 ```
 
-### Run the App
+### Run the Example App
 
-With a current working directory of `node-examples/book-service` and run the app:
+Set your current working directory to `node-examples/book-service` and run the app:
 
 On Mac and Linux:
 
@@ -159,25 +159,27 @@ $ curl -X GET \
 
 ### Clean Up the Local Development Environment
 
-- When finished with running the example locally, use a control-C in the shell running `node` to stop running the app.
+When finished running the example locally,  shut down the client and server processes:
 
-- When finished with running the example locally, use a script to
+1. In the shell running `node`, type `control-C` to stop the example app.
+
+1. Use a script to
 tear down the GemFire cluster.
 With a current working directory of `node-examples/book-service`:
 
-On Mac and Linux:
+ On Mac and Linux:
 
     ```bash
     $ ./scripts/shutdownGemFire.sh
     ```
 
-On Windows (standard command prompt):
+ On Windows (standard command prompt):
 
-```
-C:\node-examples\book-service>.\scripts\shutdownGemFire.ps1
-```
+  ```
+  C:\node-examples\book-service>.\scripts\shutdownGemFire.ps1
+  ```
 
-- Use a script to remove the directories and files containing
+1. Use a script to remove the directories and files containing
 GemFire logs created for the cluster.
 With a current working directory of `node-examples/book-service`:
 
@@ -185,7 +187,7 @@ With a current working directory of `node-examples/book-service`:
     $ ./scripts/clearGemFireData.sh
     ```
 
-- Unset the `VCAP_SERVICES` environment variable
+1. Unset the `VCAP_SERVICES` environment variable
 to avoid interference with running other examples that would
 reference this environment variable if it continues to exist.
 
@@ -204,21 +206,21 @@ This section uses the following names - if your Cloud Cache instance uses differ
 
 ### Create and Configure a Cloud Cache Service Instance
 
-- Use the cf CLI to log in and target your org and space.
+1. Use the cf CLI to log in and target your org and space.
 
-- Create a Cloud Cache service instance that disables TLS encryption. For example:
+1. Create a Cloud Cache service instance that disables TLS encryption. For example:
 
     ```
     $ cf create-service p-cloudcache dev-plan PCC-noTLS  -c '{"tls": false}'
     ```
 
-- Create a Service Key
+1. Create a Service Key
 
    ```
    $ cf create-service-key PCC-noTLS PCC-noTLS-service-key
    ```
 
-- Display the service key, and make note of the gfsh connect command labeled as `gfsh_login_string`:
+1. Display the service key, and make note of the gfsh connect command labeled as `gfsh_login_string`:
 
     ```
     $ cf service-key PCC-noTLS PCC-noTLS-service-key
@@ -232,9 +234,9 @@ This section uses the following names - if your Cloud Cache instance uses differ
 
 ### Create the Region Used by the Book Service
 
-- Run gfsh.
+1. Run gfsh.
 
-- Use the captured gfsh connect command to connect to the Cloud Cache service instance.
+1. Use the captured gfsh connect command to connect to the Cloud Cache service instance.
 Tap the return key to enter empty responses when prompted for keystore and truststore values.
 
     ```bash
@@ -251,7 +253,7 @@ Tap the return key to enter empty responses when prompted for keystore and trust
     Successfully connected to: GemFire Manager HTTP service @ https://cloudcache-999-persianplum.cf-app.com/gemfire/v1
     ```
 
-- Once connected, create the region that the book service expects to find:
+1. Once connected, create the region that the book service expects to find:
 
     ```
     gfsh> create region --name=test --type=PARTITION
@@ -263,11 +265,11 @@ Tap the return key to enter empty responses when prompted for keystore and trust
 
     ```
 
-- Quit gfsh
+1. Quit gfsh
 
-## Push and Run the App
+### Push and Run the App
 
-- View the `manifest.yml` file to verify that the service instance matches the one specified in
+1. View the `manifest.yml` file to verify that the service instance matches the one specified in
 the `cf create-service` command above.  If you have been following these instructions,
 it is `PCC-noTLS`. Edit manifest.yml, if necessary, to make sure it specifies the
 service instance you created.
@@ -277,7 +279,7 @@ service instance you created.
    - PCC-noTLS
     ```
 
-- With a current working directory of `node-examples/book-service`,
+1. With a current working directory of `node-examples/book-service`,
 push the app and make note of the route assigned for the app:
 
     ```
@@ -329,7 +331,7 @@ C:\node-examples\book-service>curl -X PUT  "http://localhost:8080/book/put?isbn=
 The curl command responds with a confirmation: `{"initialized":true}`.
 
 
-## Look Up a Book
+### Look Up a Book
 
 To look up a book in the data service, use a curl command similar to the one
 used when running with a local cluster, specifying the ISBN as a key.
