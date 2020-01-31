@@ -47,7 +47,7 @@ Set `GEODE_HOME` to the GemFire installation directory and add `$GEODE_HOME/bin`
     export PATH=$GEODE_HOME/bin:$PATH
     ```
 
-    On Windows:
+    On Windows (standard command prompt):
   
     ```cmd
     set GEODE_HOME=c:\Users\MyGemFire
@@ -78,7 +78,7 @@ On Mac and Linux:
 $ export VCAP_SERVICES='{"p-cloudcache":[{"label":"p-cloudcache","provider":null,"plan":"dev-plan","name":"pcc-dev","tags":["gemfire","cloudcache","database","pivotal"],"instance_name":"pcc-dev","binding_name":null,"credentials":{"distributed_system_id":"0","gfsh_login_string":"connect --url=https://localhost:7070/gemfire/v1 --user=super-user --password=1234567 --skip-ssl-validation","locators":["localhost[10334]"],"urls":{"gfsh":"https://localhost:7070/gemfire/v1","pulse":"https://localhost:7070/pulse"},"users":[{"password":"1234567","roles":["cluster_operator"],"username":"super-user"},{"password":"1234567","roles":["developer"],"username":"app"}],"wan":{"sender_credentials":{"active":{"password":"no-password","username":"no-user"}}}},"syslog_drain_url":null,"volume_mounts":[]}]}'
 ```
 
-On Windows:
+On Windows (standard command prompt):
 
 ```
 C:\node-examples\book-service>$env:VCAP_SERVICES='{"p-cloudcache":[{"label":"p-cloudcache","provider":null,"plan":"dev-plan","name":"pcc-dev","tags":["gemfire","cloudcache","database","pivotal"],"instance_name":"pcc-dev","binding_name":null,"credentials":{"distributed_system_id":"0","gfsh_login_string":"connect --url=https://localhost:7070/gemfire/v1 --user=super-user --password=1234567 --skip-ssl-validation","locators":["localhost[10334]"],"urls":{"gfsh":"https://localhost:7070/gemfire/v1","pulse":"https://localhost:7070/pulse"},"users":[{"password":"1234567","roles":["cluster_operator"],"username":"super-user"},{"password":"1234567","roles":["developer"],"username":"app"}],"wan":{"sender_credentials":{"active":{"password":"no-password","username":"no-user"}}}},"syslog_drain_url":null,"volume_mounts":[]}]}'
@@ -100,7 +100,7 @@ On Mac and Linux:
 $ ./scripts/startGemFire.sh
 ```
 
-On Windows:
+On Windows (standard command prompt):
 
 ```
 C:\node-examples\book-service>.\scripts\startGemFire.ps1
@@ -116,7 +116,7 @@ On Mac and Linux:
 $ node src/server.js
 ```
 
-On Windows:
+On Windows (standard command prompt):
 
 ```
 C:\node-examples\book-service>node .\src\server.js
@@ -141,7 +141,7 @@ $ curl -X PUT \
 }'
 ```
 
-On Windows:
+On Windows (standard command prompt):
 
 ```
 C:\node-examples\book-service>curl -X PUT  "http://localhost:8080/book/put?isbn=0525565329"  -H "Content-Type: application/json"  -d "{\"FullTitle\": \"The Shining\", \"ISBN\": \"0525565329\", \"MSRP\": \"9.99\", \"Publisher\": \"Anchor\", \"Authors\": \"Stephen King\"}"
@@ -171,7 +171,7 @@ On Mac and Linux:
     $ ./scripts/shutdownGemFire.sh
     ```
 
-On Windows:
+On Windows (standard command prompt):
 
 ```
 C:\node-examples\book-service>.\scripts\shutdownGemFire.ps1
@@ -320,7 +320,7 @@ $ curl -k -X PUT \
 }'
 ```
 
-On Windows:
+On Windows (standard command prompt):
 
 ```
 C:\node-examples\book-service>curl -X PUT  "http://localhost:8080/book/put?isbn=0525565329"  -H "Content-Type: application/json"  -d "{\"FullTitle\": \"The Shining\", \"ISBN\": \"0525565329\", \"MSRP\": \"9.99\", \"Publisher\": \"Anchor\", \"Authors\": \"Stephen King\"}"

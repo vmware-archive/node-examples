@@ -40,7 +40,7 @@ Set `GEODE_HOME` to the GemFire installation directory and add `$GEODE_HOME/bin`
     export PATH=$GEODE_HOME/bin:$PATH
     ```
 
-    On Windows:
+    On Windows (standard command prompt):
   
     ```cmd
     set GEODE_HOME=c:\Users\MyGemFire
@@ -73,7 +73,7 @@ On Mac and Linux:
 $ ./scripts/startGemFire.sh
 ```
 
-On Windows:
+On Windows (standard command prompt):
 
 ```cmd
 $ powershell ./scripts/startGemFire.ps1
@@ -359,7 +359,7 @@ With a current working directory of `node-examples/authenticate`:
     $ ./scripts/shutdownGemFire.sh
   ```
   
-  On Windows:
+  On Windows (standard command prompt):
   
   ```cmd
     c:\node-examples\CRUD-ops> powershell ./scripts/shutdownGemFire.ps1
@@ -375,7 +375,7 @@ With a current working directory of `node-examples/authenticate`:
   $ ./scripts/clearGemFireData.sh
   ```
 
-  On Windows:
+  On Windows (standard command prompt):
     
   ```cmd
   c:\node-examples\CRUD-ops> powershell ./scripts/clearGemFireData.ps1
