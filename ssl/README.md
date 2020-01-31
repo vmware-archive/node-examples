@@ -9,7 +9,7 @@ This Node.js example demonstrates basic SSL connection of a client with a GemFir
 
 - **OpenSSL**, Version 1.1.1
 
-- **Node.js**, minimum version of 10.0
+- **Node.js**, minimum version of 10.16.3
 
 - **npm**, the Node.js package manager
 
