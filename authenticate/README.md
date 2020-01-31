@@ -9,7 +9,7 @@ or a local Apache Geode cluster.
 
 # Prerequisites
 
-- **Node.js**, minimum version of 10.0
+- **Node.js**, minimum version of 10.16.3
 
 - **npm**, the Node.js package manager
 
