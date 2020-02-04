@@ -1,7 +1,7 @@
 {
-  "name": "put-get-remove",
+  "name": "query",
   "version": "1.0.0",
-  "description": "A put-get-remove example.",
+  "description": "A query example.",
   "main": "index.js",
   "dependencies": {
     "gemfire": "file:../../../Downloads/gemfire-nodejs-all-v2.0.0-build.34.tgz"

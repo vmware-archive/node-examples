@@ -1,10 +1,10 @@
 {
-  "name": "put-get-remove",
+  "name": "function-execution",
   "version": "1.0.0",
-  "description": "A put-get-remove example.",
+  "description": "A function-execution example.",
   "main": "index.js",
   "dependencies": {
-    "gemfire": "file:../../../Downloads/gemfire-nodejs-all-v2.0.0-build.34.tgz"
+    "gemfire": "file:../../../Downloads/gemfire-nodejs-all-v2.0.0-build.36.tgz"
   },
   "devDependencies": {},
   "scripts": {
