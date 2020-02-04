@@ -199,7 +199,7 @@ Do a regular getAll operation.
 
 ### Configuration & Region
 
-The configuration client is identical to the put-get-remove example. The region configuration also is identical and uses the 'test' region for managing the data
+The configuration client is identical to the CRUD-ops example. The region configuration also is identical and uses the 'test' region for managing the data
 connection with the server.
 
 ### putAll

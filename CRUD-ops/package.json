@@ -1,5 +1,5 @@
 {
-  "name": "put-get-remove",
+  "name": "CRUD-ops",
   "version": "1.0.0",
   "description": "A put-get-remove example.",
   "main": "index.js",

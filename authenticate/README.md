@@ -184,7 +184,7 @@ Snippets of the example code index.js are captured below.
 
 This block of code configures the client cache. The log location and metrics are written to the data directory. The PoolFactory configures a connection pool which uses the locator to lookup the servers.
 
-There is a small change from the put-get-remove example configuration -- we add the following lines,
+There is a small change from the CRUD-ops example configuration -- we add the following lines,
 which add a username and password used by the GemFire cluster to authenticate the client. The
 credentials are sent to the cluster with authentication and authorization handled on the server side.
 

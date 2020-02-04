@@ -1,7 +1,7 @@
 # The SSL-Put-Get Example
 
 This Node.js example demonstrates basic SSL connection of a client with a GemFire
- Cache cluster. This application leverages the put-get-remove example, which should
+ Cache cluster. This application leverages the CRUD-ops example, which should
  be reviewed prior starting. The example works with either a local Apache Geode
  or Pivotal GemFire cluster.
 

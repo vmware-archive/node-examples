@@ -2,6 +2,7 @@
 */package-lock.json
 *.jar
 *.class
+*.gfs
 
 # Logs
 logs
