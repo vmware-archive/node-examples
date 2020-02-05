@@ -31,8 +31,10 @@ async function init(){
         console.log("Set auth done called!")
     })
 
-    cacheFactory.set('ssl-truststore', '/etc/ssl/certs/ca-certificates.crt')
-    cacheFactory.set("ssl-enabled", "true")
+    if(process.env.NODE_ENV === `production`){
+      cacheFactory.set('ssl-truststore', '/etc/ssl/certs/ca-certificates.crt')
+      cacheFactory.set("ssl-enabled", "true")
+    }
 
     var cache = await cacheFactory.create();
 
