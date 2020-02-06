@@ -206,7 +206,7 @@ Finished
 
 This block of code configures the client cache to use SSL for connecting to . The log location and metrics are written to the data directory. The PoolFactory configures a connection pool which uses the locator to lookup the servers.
 
-There is a small change from the put-get-remove example configuration. We add the following lines which turn on SSL and configure the location of the keys files and keystores. The keystore requires a password as well which is also configured. 
+There is a small change from the CRUD-ops example configuration. We add the following lines which turn on SSL and configure the location of the keys files and keystores. The keystore requires a password as well which is also configured. 
 
 ```javascript
     cacheFactory.set("ssl-enabled", "true")

@@ -1,7 +1,7 @@
 {
   "name": "CRUD-ops",
   "version": "1.0.0",
-  "description": "A put-get-remove example.",
+  "description": "A CRUD operations example.",
   "main": "index.js",
   "dependencies": {
     "gemfire": "file:../../../Downloads/gemfire-nodejs-all-v2.0.0-build.34.tgz"
