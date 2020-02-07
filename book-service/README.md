@@ -48,7 +48,7 @@ Set `GEODE_HOME` to the GemFire installation directory and add `$GEODE_HOME/bin`
     ```
 
     On Windows (standard command prompt):
-  
+
     ```cmd
     set GEODE_HOME=c:\Users\MyGemFire
     set PATH=%GEODE_HOME%\bin;%PATH%
@@ -199,8 +199,8 @@ reference this environment variable if it continues to exist.
 
 This section uses the following names - if your Cloud Cache instance uses different names, substitute as appropriate for these:
 
-- **service-name**: PCC-noTLS
-- **service-key**: PCC-noTLS-service-key
+- **service-name**: PCC-TLS
+- **service-key**: PCC-TLS-service-key
 - **PAS-name**: cloudcache-999-persianplum
 - **app-name**: cloudcache-node-sample
 
@@ -211,19 +211,19 @@ This section uses the following names - if your Cloud Cache instance uses differ
 1. Create a Cloud Cache service instance that disables TLS encryption. For example:
 
     ```
-    $ cf create-service p-cloudcache dev-plan PCC-noTLS  -c '{"tls": false}'
+    $ cf create-service p-cloudcache dev-plan PCC-TLS  -c '{"tls": true}'
     ```
 
 1. Create a Service Key
 
    ```
-   $ cf create-service-key PCC-noTLS PCC-noTLS-service-key
+   $ cf create-service-key PCC-TLS PCC-TLS-service-key
    ```
 
 1. Display the service key, and make note of the gfsh connect command labeled as `gfsh_login_string`:
 
     ```
-    $ cf service-key PCC-noTLS PCC-noTLS-service-key
+    $ cf service-key PCC-TLS PCC-TLS-service-key
     ```
 
     The `gfsh_login_string` will be of the form:
@@ -271,12 +271,12 @@ Tap the return key to enter empty responses when prompted for keystore and trust
 
 1. View the `manifest.yml` file to verify that the service instance matches the one specified in
 the `cf create-service` command above.  If you have been following these instructions,
-it is `PCC-noTLS`. Edit manifest.yml, if necessary, to make sure it specifies the
+it is `PCC-TLS`. Edit manifest.yml, if necessary, to make sure it specifies the
 service instance you created.
 
     ```
   services:
-   - PCC-noTLS
+   - PCC-TLS
     ```
 
 1. With a current working directory of `node-examples/book-service`,
@@ -372,16 +372,16 @@ When done running the app, tear down the app and the Cloud Cache service instanc
    its service key, then delete the service itself:
 
     ```
-    $ cf delete-service-key PCC-noTLS PCC-noTLS-service-key
+    $ cf delete-service-key PCC-TLS PCC-TLS-service-key
 
-    Really delete the service key PCC-noTLS-service-key?> y
-    Deleting key PCC-noTLS-service-key for service instance PCC-noTLS as admin...
+    Really delete the service key PCC-TLS-service-key?> y
+    Deleting key PCC-TLS-service-key for service instance PCC-TLS as admin...
     OK
-    $ cf delete-service PCC-noTLS
+    $ cf delete-service PCC-TLS
 
-    Really delete the service PCC-noTLS?> y
-    Deleting service PCC-noTLS in org test_org / space test_space as admin...
+    Really delete the service PCC-TLS?> y
+    Deleting service PCC-TLS in org test_org / space test_space as admin...
     OK
 
-    Delete in progress. Use 'cf services' or 'cf service PCC-noTLS' to check operation status.
+    Delete in progress. Use 'cf services' or 'cf service PCC-TLS' to check operation status.
     ```
