@@ -132,8 +132,8 @@ Answer 'Y' when prompted for confirmation:
 
 This section uses the following names - if your Cloud Cache instance uses different names, substitute as appropriate for these:
 
-- **service-name**: PCC-noTLS
-- **service-key**: PCC-noTLS-service-key
+- **service-name**: PCC-TLS
+- **service-key**: PCC-TLS-service-key
 - **PAS-name**: ultramarineblue
 - **app-name**: cloudcache-node-sample
 
@@ -146,18 +146,18 @@ that disables TLS encryption.
 Complete directions are available at [Create or Delete a Service Instance](https://docs.pivotal.io/p-cloud-cache/create-instance.html).
 
     ```
-    $ cf create-service p-cloudcache dev-plan PCC-noTLS  -c '{"tls": false}'
+    $ cf create-service p-cloudcache dev-plan PCC-TLS  -c '{"tls": true}'
     ```
 ### Build and Push the App
 
 1. View the `manifest.yml` file to verify that the service instance matches the one specified in
 the `cf create-service` command above.  If you have been following these instructions,
-it is `PCC-noTLS`. Edit manifest.yml, if necessary, to make sure it specifies the
+it is `PCC-TLS`. Edit manifest.yml, if necessary, to make sure it specifies the
 service instance you created.
 
     ```
   services:
-   - PCC-noTLS
+   - PCC-TLS
     ```
 
 1. With a current working directory of `node-examples/nextjs-page-counter`,
@@ -209,12 +209,20 @@ When done running the app, tear down the app and the Cloud Cache service instanc
      $ cf delete nextjs-page-counter -r -f
     ```
     
-1. If the Cloud Cache service instance is no longer needed,
-    delete it,
-    replacing `INSTANCE-NAME` with your service instance's name:
+1. If the Cloud Cache service instance is no longer needed, first delete
+   its service key, then delete the service itself:
 
     ```
-    $ cf delete-service INSTANCE-NAME
+    $ cf delete-service-key PCC-TLS PCC-TLS-service-key
+
+    Really delete the service key PCC-TLS-service-key?> y
+    Deleting key PCC-TLS-service-key for service instance PCC-TLS as admin...
+    OK
+    $ cf delete-service PCC-TLS
+
+    Really delete the service PCC-TLS?> y
+    Deleting service PCC-TLS in org test_org / space test_space as admin...
+    OK
+
+    Delete in progress. Use 'cf services' or 'cf service PCC-TLS' to check operation status.
     ```
-
-
