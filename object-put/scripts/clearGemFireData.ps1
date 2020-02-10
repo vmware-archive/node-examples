@@ -1,3 +1,3 @@
 $APP_HOME = pwd
 
-Remove-Item -recurse –path $APP_HOME/data/*
+Remove-Item -recurse -Path $APP_HOME/data/*
