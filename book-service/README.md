@@ -275,8 +275,8 @@ it is `PCC-TLS`. Edit manifest.yml, if necessary, to make sure it specifies the
 service instance you created.
 
     ```
-  services:
-   - PCC-TLS
+    services:
+     - PCC-TLS
     ```
 
 1. With a current working directory of `node-examples/book-service`,
