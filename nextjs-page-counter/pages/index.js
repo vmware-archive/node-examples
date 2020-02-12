@@ -57,6 +57,13 @@ async function initCacheFactory() {
   /* Create a cacheFactory with authentication to connect to PCC */
   cacheFactory = gemfire.createCacheFactory()
   cacheFactory.set('log-level', 'none')
+/*
+* Un-comment the two following lines if running against a PCC instance with TLS enabled
+*/
+/*
+  cacheFactory.set('ssl-truststore', '/etc/ssl/certs/ca-certificates.crt')
+  cacheFactory.set('ssl-enabled', 'true')
+*/
   cacheFactory.set('log-file', 'gemfire.log')
   cacheFactory.setAuthentication((properties, server) => {
       properties['security-username'] = username
