@@ -19,7 +19,7 @@
     "node": "10.16.3"
   },
   "author": "",
-  "license": "Apache",
+  "license": "Apache-2.0",
   "bugs": {
     "url": "https://github.com/gemfire/node-examples/issues"
   },
