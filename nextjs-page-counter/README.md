@@ -148,6 +148,19 @@ Complete directions are available at [Create or Delete a Service Instance](https
     ```
     $ cf create-service p-cloudcache dev-plan PCC-TLS  -c '{"tls": true}'
     ```
+
+3. Edit the file `pages/index.js` to un-comment the two lines that enable ssl on the client:
+
+    ```
+    /*                                                                                                                                                                                   
+* Un-comment the two following lines if running against a PCC instance with TLS enabled                                                                                              
+*/                                                                                                                                                                                
+  cacheFactory.set('ssl-truststore', '/etc/ssl/certs/ca-certificates.crt')                                                                                                           
+  cacheFactory.set('ssl-enabled', 'true')                                                                                                                                            
+    ```
+    
+    Save the changes and exit your editor.
+
 ### Build and Push the App
 
 1. View the `manifest.yml` file to verify that the service instance matches the one specified in
