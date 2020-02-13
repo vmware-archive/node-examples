@@ -62,6 +62,8 @@ $ npm install gemfire-nodejs-client-2.0.0.tgz
 $ npm update
 ```
 
+At this point, you can *Run the Example Locally* or *Run the Example with Cloud Cache as the Data Service*.
+
 ## Run the Example Locally
 
 To run the example locally,
