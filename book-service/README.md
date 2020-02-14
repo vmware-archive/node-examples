@@ -64,6 +64,8 @@ $ npm install gemfire-nodejs-client-2.0.0.tgz
 $ npm update
 ```
 
+At this point, you can choose to *Run the Example Locally* or *Run the Example with Cloud Cache as the Data Service*.
+
 ## Run the Example Locally
 
 The local environment mocks the services binding that would exist
@@ -210,8 +212,16 @@ This section uses the following names - if your Cloud Cache instance uses differ
 
 1. Create a Cloud Cache service instance that disables TLS encryption. For example:
 
+    On Mac and Linux:
+
     ```
     $ cf create-service p-cloudcache dev-plan PCC-TLS  -c '{"tls": true}'
+    ```
+
+    On Windows (standard command prompt) you must escape the inner quotes:
+
+    ```
+    $ cf create-service p-cloudcache dev-plan PCC-TLS  -c "{\"tls\": true}"
     ```
 
 1. Create a Service Key
@@ -368,15 +378,9 @@ When done running the app, tear down the app and the Cloud Cache service instanc
     OK
     ```
 
-1. If the Cloud Cache service instance is no longer needed, first delete
-   its service key, then delete the service itself:
+1. If the Cloud Cache service instance is no longer needed, delete the service:
 
     ```
-    $ cf delete-service-key PCC-TLS PCC-TLS-service-key
-
-    Really delete the service key PCC-TLS-service-key?> y
-    Deleting key PCC-TLS-service-key for service instance PCC-TLS as admin...
-    OK
     $ cf delete-service PCC-TLS
 
     Really delete the service PCC-TLS?> y
