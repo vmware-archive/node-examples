@@ -62,7 +62,7 @@ $ npm install gemfire-nodejs-client-2.0.0.tgz
 $ npm update
 ```
 
-At this point, you can *Run the Example Locally* or *Run the Example with Cloud Cache as the Data Service*.
+At this point, you can choose to *Run the Example Locally* or *Run the Example with Cloud Cache as the Data Service*.
 
 ## Run the Example Locally
 
@@ -118,7 +118,7 @@ When finished running the example locally, shut down the client and server proce
 1. In the shell running `npm run dev`, type `control-C` to stop the client app.
 
 1. In the shell
-running gfsh, use gfsh commands to tear down the cluster.
+running gfsh, use the gfsh `shutdown` command to tear down the cluster.
 Answer 'Y' when prompted for confirmation:
 
     ```
@@ -147,8 +147,16 @@ This section uses the following names - if your Cloud Cache instance uses differ
 that disables TLS encryption.
 Complete directions are available at [Create or Delete a Service Instance](https://docs.pivotal.io/p-cloud-cache/create-instance.html).
 
+    On Mac and Linux:
+
     ```
     $ cf create-service p-cloudcache dev-plan PCC-TLS  -c '{"tls": true}'
+    ```
+
+    On Windows (standard command prompt) you must escape the inner quotes:
+
+    ```
+    $ cf create-service p-cloudcache dev-plan PCC-TLS  -c "{\"tls\": true}"
     ```
 
 3. Edit the file `pages/index.js` to un-comment the two lines that enable ssl on the client:
@@ -224,15 +232,9 @@ When done running the app, tear down the app and the Cloud Cache service instanc
      $ cf delete nextjs-page-counter -r -f
     ```
     
-1. If the Cloud Cache service instance is no longer needed, first delete
-   its service key, then delete the service itself:
+1. If the Cloud Cache service instance is no longer needed, delete the service:
 
     ```
-    $ cf delete-service-key PCC-TLS PCC-TLS-service-key
-
-    Really delete the service key PCC-TLS-service-key?> y
-    Deleting key PCC-TLS-service-key for service instance PCC-TLS as admin...
-    OK
     $ cf delete-service PCC-TLS
 
     Really delete the service PCC-TLS?> y
