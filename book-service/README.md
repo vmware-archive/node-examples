@@ -143,7 +143,7 @@ $ curl -X PUT \
 }'
 ```
 
-On Windows (standard command prompt):
+On Windows (standard command prompt) you must escape the nested quotes with backslashes:
 
 ```
 C:\node-examples\book-service>curl -X PUT  "http://localhost:8080/book/put?isbn=0525565329"  -H "Content-Type: application/json"  -d "{\"FullTitle\": \"The Shining\", \"ISBN\": \"0525565329\", \"MSRP\": \"9.99\", \"Publisher\": \"Anchor\", \"Authors\": \"Stephen King\"}"
@@ -155,8 +155,7 @@ To look up a book in the data service, use a curl command,
 specifying the ISBN as a key:
 
 ```
-$ curl -X GET \
-  'http://localhost:8080/book/get?isbn=0525565329'
+$ curl -X GET 'http://localhost:8080/book/get?isbn=0525565329'
 ```
 
 ### Clean Up the Local Development Environment
@@ -178,24 +177,39 @@ With a current working directory of `node-examples/book-service`:
  On Windows (standard command prompt):
 
   ```
-  C:\node-examples\book-service>.\scripts\shutdownGemFire.ps1
+  C:\node-examples\book-service>powershell .\scripts\shutdownGemFire.ps1
   ```
 
 1. Use a script to remove the directories and files containing
 GemFire logs created for the cluster.
 With a current working directory of `node-examples/book-service`:
 
+ On Mac and Linux:
+
     ```bash
     $ ./scripts/clearGemFireData.sh
     ```
+On Windows (standard command prompt):
+
+  ```
+  C:\node-examples\book-service>powershell .\scripts\clearGemFire.ps1
+  ```
 
 1. Unset the `VCAP_SERVICES` environment variable
 to avoid interference with running other examples that would
 reference this environment variable if it continues to exist.
 
-    ```
+ On Mac and Linux:
+
+    ```bash
     $ unset VCAP_SERVICES
     ```
+
+On Windows (standard command prompt):
+
+  ```
+  C:\node-examples\book-service>set VCAP_SERVICES=""
+  ```
 
 ## Run the App with Cloud Cache as the Data Service
 
@@ -210,7 +224,7 @@ This section uses the following names - if your Cloud Cache instance uses differ
 
 1. Use the cf CLI to log in and target your org and space.
 
-1. Create a Cloud Cache service instance that disables TLS encryption. For example:
+1. Create a Cloud Cache service instance that enables TLS encryption. For example:
 
     On Mac and Linux:
 
@@ -221,7 +235,7 @@ This section uses the following names - if your Cloud Cache instance uses differ
     On Windows (standard command prompt) you must escape the inner quotes:
 
     ```
-    $ cf create-service p-cloudcache dev-plan PCC-TLS  -c "{\"tls\": true}"
+    C:\node-examples\book-service> cf create-service p-cloudcache dev-plan PCC-TLS  -c "{\"tls\": true}"
     ```
 
 1. Create a Service Key
