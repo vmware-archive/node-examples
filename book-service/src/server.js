@@ -12,30 +12,31 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and
 // limitations under the License.
-var gemfire = require('gemfire');
-const {JSONPath} = require('jsonpath-plus');
-var express = require('express');
-var app = express();
-var region = null;
+var gemfire = require('gemfire')
+const {JSONPath} = require('jsonpath-plus')
+var express = require('express')
+var app = express()
+var region
+var cache
 
 app.use(express.json())
 
 const vcap = JSON.parse(process.env.VCAP_SERVICES)
 
 // The queries for PCF to grab connection details
-const jsonPathLocators = "$.p-cloudcache[0].credentials.locators";
-const jsonPathPassword = "$.p-cloudcache[0].credentials.users[?(@.roles == 'developer')].password";
-const jsonPathUsername = "$.p-cloudcache[0].credentials.users[?(@.roles == 'developer')].username";
+const jsonPathLocators = "$.p-cloudcache[0].credentials.locators"
+const jsonPathPassword = "$.p-cloudcache[0].credentials.users[?(@.roles == 'developer')].password"
+const jsonPathUsername = "$.p-cloudcache[0].credentials.users[?(@.roles == 'developer')].username"
 
 async function init(){
-    var username = JSONPath({path: jsonPathUsername, json: vcap});
-    var password = JSONPath({path: jsonPathPassword, json: vcap});
-    var locators = JSONPath({path: jsonPathLocators, json: vcap})[0];
+    var username = JSONPath({path: jsonPathUsername, json: vcap})
+    var password = JSONPath({path: jsonPathPassword, json: vcap})
+    var locators = JSONPath({path: jsonPathLocators, json: vcap})[0]
 
     console.log("username - >" + username + "< password - >" + password + "<")
     console.log("locators - " + locators)
 
-    cacheFactory = gemfire.createCacheFactory();
+    cacheFactory = gemfire.createCacheFactory()
     cacheFactory.setAuthentication((properties, server) => {
         console.log("Set auth called!")
         console.log("username - >" + username + "< password - >" + password + "<")
@@ -50,15 +51,15 @@ async function init(){
       cacheFactory.set("ssl-enabled", "true")
     }
 
-    var cache = await cacheFactory.create();
+    cache = await cacheFactory.create()
 
     var poolFactory = await cache.getPoolManager().createFactory()
-    poolFactory.setPRSingleHopEnabled(false);
+    poolFactory.setPRSingleHopEnabled(false)
     for (i = 0; i < locators.length; i++) {
         console.log(locators[i])
-        var serverPort = locators[i].split(/[[\]]/);
+        var serverPort = locators[i].split(/[[\]]/)
         console.log("server " + serverPort[1] + " port - " + serverPort[1])
-       poolFactory.addLocator(serverPort[0], parseInt(serverPort[1]));
+       poolFactory.addLocator(serverPort[0], parseInt(serverPort[1]))
     }
     poolFactory.create("pool")
 
@@ -66,35 +67,37 @@ async function init(){
 }
 
 app.get("/book/get", async (req, res) => {
-    var result = await region.get(req.query.isbn);
-    res.json(result);
-});
+    var result = await region.get(req.query.isbn)
+    res.json(result)
+})
 
 app.put(['/book/put'], async (req, res) => {
 
-    console.log("isbn = " + req.query.isbn);
-    console.log("body " + JSON.stringify(req.body));
+    console.log("isbn = " + req.query.isbn)
+    console.log("body " + JSON.stringify(req.body))
     await region.put(req.query.isbn, req.body)
     res.json({
         initialized: true
-    });
-});
+    })
+})
+
 app.put(['/book/removeall'], async (req, res) => {
 
-    var keys = await region.keys();
+    var keys = await region.keys()
     await region.removeAll(keys)
     res.json({
         initialized: true
-    });
-});
+    })
+})
+
 app.get('/env', (req, res) => {
-    res.json(process.env);
-});
+    res.json(process.env)
+})
 
-app.set("port", process.env.PORT || 8080);
+app.set("port", process.env.PORT || 8080)
 
-init();
+init()
 
 app.listen(app.get("port"), () => {
-    console.log(`Hello from NodeFire test app.`);
-});
+    console.log(`Hello from NodeFire test app.`)
+})
