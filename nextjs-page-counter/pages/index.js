@@ -47,7 +47,7 @@ function initCloudFoundryConfig(){
     locatorPort = Number(locatorStringParts[1]);
 
     /* Default to the first p-cloudcache user's credentials */
-    for(i=0;i<vcap_pcc.credentials.users.length;i++){
+    for(let i=0;i<vcap_pcc.credentials.users.length;i++){
       if(vcap_pcc.credentials.users[i].username.startsWith("cluster_operator_")){
         username = vcap_pcc.credentials.users[i].username;
         password = vcap_pcc.credentials.users[i].password;
