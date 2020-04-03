@@ -47,8 +47,13 @@ function initCloudFoundryConfig(){
     locatorPort = Number(locatorStringParts[1]);
 
     /* Default to the first p-cloudcache user's credentials */
-    username = vcap_pcc.credentials.users[0].username;
-    password = vcap_pcc.credentials.users[0].password;
+    for(i=0;i<vcap_pcc.credentials.users.length;i++){
+      if(vcap_pcc.credentials.users[i].username.startsWith("cluster_operator_")){
+        username = vcap_pcc.credentials.users[i].username;
+        password = vcap_pcc.credentials.users[i].password;
+        break;
+      }
+    }
     console.log("Found PCC Credentials for user: " + username)
   }
 }
