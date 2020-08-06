@@ -392,8 +392,20 @@ When done running the app, tear down the app and the Cloud Cache service instanc
     OK
     ```
 
-1. If the Cloud Cache service instance is no longer needed, delete the service:
+1. If the Cloud Cache service instance is no longer needed, delete the service-key and then the service. 
 
+    First the service-key:
+
+    ```
+    $ cf delete-service-key PCC-TLS PCC-TLS-service-key
+
+    Really delete the service key PCC-TLS-service-key?> y
+    Deleting key PCC-TLS-service-key for service instance PCC-TLS as admin...
+    OK
+    ```
+    
+    Then the service:
+    
     ```
     $ cf delete-service PCC-TLS
 
