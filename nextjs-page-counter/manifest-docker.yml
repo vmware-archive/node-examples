@@ -1,0 +1,8 @@
+---
+applications:
+- name: nextjs-page-counter-docker
+  memory: 512M
+  instances: 1
+  timeout: 180
+  services:
+   - PCC-TLS
