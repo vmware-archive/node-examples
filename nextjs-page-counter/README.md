@@ -163,10 +163,10 @@ Complete directions are available at [Create or Delete a Service Instance](https
 
     ```
     /*                                                                                                                                                                                   
-* Un-comment the two following lines if running against a PCC instance with TLS enabled                                                                                              
-*/                                                                                                                                                                                
-  cacheFactory.set('ssl-truststore', '/etc/ssl/certs/ca-certificates.crt')                                                                                                           
-  cacheFactory.set('ssl-enabled', 'true')                                                                                                                                            
+    * Un-comment the two following lines if running against a PCC instance with TLS enabled                                                                                              
+    */                                                                                                                                                                                
+    cacheFactory.set('ssl-truststore', '/etc/ssl/certs/ca-certificates.crt')                                                                                                           
+    cacheFactory.set('ssl-enabled', 'true')                                                                                                                                            
     ```
     
     Save the changes and exit your editor.
@@ -178,10 +178,10 @@ the `cf create-service` command above.  If you have been following these instruc
 it is `PCC-TLS`. Edit manifest.yml, if necessary, to make sure it specifies the
 service instance you created.
 
-    ```
+```
   services:
    - PCC-TLS
-    ```
+```
 
 1. With a current working directory of `node-examples/nextjs-page-counter`,
 build and push the app and make note of the route assigned for the app:    
