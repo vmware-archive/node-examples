@@ -9,6 +9,8 @@ COPY gemfire-nodejs-client-2.0.1.tgz gemfire-nodejs-client.tgz
 COPY package.json package.json
 COPY pages pages
 
+ENV LOCATOR_HOST="geodecluster-locator-0.geodecluster-locator.geode-system"
+
 RUN npm install /usr/src/app/gemfire-nodejs-client.tgz
 RUN npm install
 RUN npm run build

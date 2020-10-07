@@ -1,0 +1,13 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: my-pod
+spec:
+  containers:
+  - name: my-app
+    image: mynextjs:latest
+    ports:
+    - containerPort: 3000
+    env:
+    - name: LOCATOR_HOST
+      value: "geodecluster-locator-1.geodecluster-locator.geode-system"

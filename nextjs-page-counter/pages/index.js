@@ -30,6 +30,10 @@ let regionName = "example_partition_region"
 function initGemfire() {
   gemfire = eval('require("gemfire")')
   cfenv = eval('require("cfenv")')
+
+  if(process.env.LOCATOR_HOST !== undefined) {
+    locatorServer = process.env.LOCATOR_HOST
+  }
   initCloudFoundryConfig()
   initCacheFactory()
 }
