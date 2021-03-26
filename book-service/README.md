@@ -5,12 +5,12 @@ which uses the data service as a system of record.
 REST endpoints allow an app user to look up books by ISBN
 or put new books into the service.
 
-This app can be run with a local Apache Geode or Pivotal GemFire cluster,
-or with a Cloud Cache service instance.
+This app can be run with a local Apache Geode or Tanzu GemFire cluster,
+or with a Tanzu GemFire for VMs service instance.
 A common development path runs locally first to iterate quickly on feature
-development prior to pushing the app to a PAS environment to run with
-Cloud Cache.
-This app has been tested with Cloud Cache version 1.8.1.
+development prior to pushing the app to a TAS environment to run with
+Tanzu GemFire for VMs cluster.
+This app has been tested with Tanzu GemFire for VMs version 1.8.1.
 
 ## Prerequisites
 
@@ -20,22 +20,22 @@ This app has been tested with Cloud Cache version 1.8.1.
 
 - **Cloud Foundry Command Line Interface (cf CLI)**.  See [Installing the cf CLI](https://docs.cloudfoundry.org/cf-cli/install-go-cli.html).
 
-- **Examples source code**.  Acquire the repository:
+- **This examples source code repository**.  Acquire the repository:
 
     ```
     $ git clone git@github.com:gemfire/node-examples.git
     ```
 
-- **Node.js client library**. Acquire the Node.js client library from PivNet under [Cloud Cache](https://network.pivotal.io/products/p-cloudcache/).
-The file is a compressed tar archive (suffix `.tgz`), and the filename contains the client library version number.
+- **Node.js client library**. Acquire the Node.js client library (NodeJS-Client-2.0.1) from Tanzu Network at [VMware Tanzu GemFire for VMs](https://network.pivotal.io/products/tanzu-gemfire-for-vms/).
+The file is a compressed tar archive (suffix `.tgz`), and the file name contains the client library version number.
 For example:
-`gemfire-nodejs-client-2.0.0.tgz`.
+`gemfire-nodejs-client-2.0.1.tgz`.
 
 
 - **Pivotal GemFire**.
-Acquire Pivotal GemFire from PivNet at [Pivotal GemFire](https://network.pivotal.io/products/pivotal-gemfire/). Be sure to install GemFire's prerequisite Java JDK 1.8.X, which is needed to support gfsh, the GemFire command line interface.
-Choose your GemFire version based on the version of Cloud Cache in your PAS environment.
-See the [Product Snapshot](https://docs.pivotal.io/p-cloud-cache/product-snapshot.html) for your Cloud Cache version.
+Acquire Tanzu GemFire from Tanzu Network at [Tanzu GemFire](https://network.pivotal.io/products/pivotal-gemfire/). Be sure to install GemFire's prerequisite Java JDK 1.8.X, which is needed to support gfsh, the command line interface.
+Choose your GemFire version based on the version of Tanzu GemFire for VMs in your TAS environment.
+See the [Product Snapshot](https://docs.pivotal.io/p-cloud-cache/product-snapshot.html) for your Tanzu GemFire for VMs version.
 
 - **Configure environment variables**.
 Set `GEODE_HOME` to the GemFire installation directory and add `$GEODE_HOME/bin` to your `PATH`. For example
@@ -64,13 +64,13 @@ $ npm install gemfire-nodejs-client-2.0.0.tgz
 $ npm update
 ```
 
-At this point, you can choose to *Run the Example Locally* or *Run the Example with Cloud Cache as the Data Service*.
+At this point, you can choose to *Run the Example Locally* or *Run the Example with Tanzu GemFire for VMs as the Data Service*.
 
 ## Run the Example Locally
 
 The local environment mocks the services binding that would exist
-for a PAS environment.
-A PAS environment injects the services binding through a `VCAP_SERVICES`
+for a TAS environment.
+A TAS environment injects the services binding through a `VCAP_SERVICES`
 environment variable.
 Set this environment variable:
 
@@ -88,7 +88,7 @@ C:\node-examples\book-service>$env:VCAP_SERVICES='{"p-cloudcache":[{"label":"p-c
 
 ### Start a Cluster
 
-There are shell scripts in the `book-service/scripts` directory.
+There are scripts in the `book-service/scripts` directory.
 The `startGemFire` script starts up two locators and two cache servers.
 The locators allow clients to find the cache servers.
 To simplify local development,
@@ -110,7 +110,7 @@ C:\node-examples\book-service>.\scripts\startGemFire.ps1
 
 ### Run the Example App
 
-Set your current working directory to `node-examples/book-service` and run the app:
+With a current working directory to `node-examples/book-service`, run the app:
 
 On Mac and Linux:
 
@@ -161,7 +161,7 @@ $ curl -X GET \
 
 ### Clean Up the Local Development Environment
 
-When finished running the example locally,  shut down the client and server processes:
+When finished running the example locally,  shut down the app and the cluster:
 
 1. In the shell running `node`, type `control-C` to stop the example app.
 
@@ -182,7 +182,7 @@ With a current working directory of `node-examples/book-service`:
   ```
 
 1. Use a script to remove the directories and files containing
-GemFire logs created for the cluster.
+logs created for the cluster.
 With a current working directory of `node-examples/book-service`:
 
     ```bash
@@ -197,20 +197,20 @@ reference this environment variable if it continues to exist.
     $ unset VCAP_SERVICES
     ```
 
-## Run the App with Cloud Cache as the Data Service
+## Run the Example with Tanzu GemFire for VMs as the Data Service
 
-This section uses the following names - if your Cloud Cache instance uses different names, substitute as appropriate for these:
+This section uses the following names - if your Tanzu GemFire for VMs service instance uses different names, substitute as appropriate for these:
 
 - **service-name**: PCC-TLS
 - **service-key**: PCC-TLS-service-key
 - **PAS-name**: cloudcache-999-persianplum
 - **app-name**: cloudcache-node-sample
 
-### Create and Configure a Cloud Cache Service Instance
+### Create and Configure a Tanzu GemFire for VMs Service Instance
 
 1. Use the cf CLI to log in and target your org and space.
 
-1. Create a Cloud Cache service instance that disables TLS encryption. For example:
+1. Create a Tanzu GemFire for VMs service instance that disables TLS encryption. For example:
 
     On Mac and Linux:
 
@@ -239,14 +239,14 @@ This section uses the following names - if your Cloud Cache instance uses differ
     The `gfsh_login_string` will be of the form:
 
     ```
-    connect --url=https://PAS-name.cf-app.com/gemfire/v1 --user=cluster_operator_XXX --password=YYY --skip-ssl-validation
+    connect --url=https://TAS-name.cf-app.com/gemfire/v1 --user=cluster_operator_XXX --password=YYY --skip-ssl-validation
     ```
 
 ### Create the Region Used by the Book Service
 
 1. Run gfsh.
 
-1. Use the captured gfsh connect command to connect to the Cloud Cache service instance.
+1. Use the captured gfsh connect command to connect to the Tanzu GemFire for VMs service instance.
 Tap the return key to enter empty responses when prompted for keystore and truststore values.
 
     ```bash
@@ -358,9 +358,9 @@ The curl command responds with the requested data:
 {"FullTitle":"The Shining","ISBN":"0525565329","MSRP":"9.99","Publisher":"Anchor","Authors":"Stephen King"}
 ```
 
-### Clean Up the Cloud Cache Environment
+### Clean Up the Tanzu GemFire Environment
 
-When done running the app, tear down the app and the Cloud Cache service instance:
+When done running the app, tear down the app and the Tanzu GemFire for VMs service instance:
 
 1. Stop the running app:
 
@@ -378,7 +378,7 @@ When done running the app, tear down the app and the Cloud Cache service instanc
     OK
     ```
 
-1. If the Cloud Cache service instance is no longer needed, delete the service:
+1. If the Tanzu GemFire for VMs service instance is no longer needed, delete the service:
 
     ```
     $ cf delete-service PCC-TLS
