@@ -110,7 +110,7 @@ C:\node-examples\book-service>.\scripts\startGemFire.ps1
 
 ### Run the Example App
 
-With a current working directory to `node-examples/book-service`, run the app:
+With a current working directory of `node-examples/book-service`, run the app:
 
 On Mac and Linux:
 
