@@ -10,7 +10,7 @@ or with a Tanzu GemFire for VMs service instance.
 A common development path runs locally first to iterate quickly on feature
 development prior to pushing the app to a TAS environment to run with
 Tanzu GemFire for VMs cluster.
-This app has been tested with Tanzu GemFire for VMs version 1.8.1.
+This app has been tested with Tanzu GemFire for VMs version 1.13.
 
 ## Prerequisites
 
@@ -29,28 +29,29 @@ This app has been tested with Tanzu GemFire for VMs version 1.8.1.
 - **Node.js client library**. Acquire the Node.js client library (NodeJS-Client-2.0.1) from Tanzu Network at [VMware Tanzu GemFire for VMs](https://network.pivotal.io/products/tanzu-gemfire-for-vms/).
 The file is a compressed tar archive (suffix `.tgz`), and the file name contains the client library version number.
 For example:
-`gemfire-nodejs-client-2.0.1.tgz`.
+`gemfire-nodejs-client-2.0.1-build.33.tgz`.
 
 
-- **Pivotal GemFire**.
-Acquire Tanzu GemFire from Tanzu Network at [Tanzu GemFire](https://network.pivotal.io/products/pivotal-gemfire/). Be sure to install GemFire's prerequisite Java JDK 1.8.X, which is needed to support gfsh, the command line interface.
-Choose your GemFire version based on the version of Tanzu GemFire for VMs in your TAS environment.
-See the [Product Snapshot](https://docs.pivotal.io/p-cloud-cache/product-snapshot.html) for your Tanzu GemFire for VMs version.
+- **Apache Geode**.
+Apache Geode is preferred for development that will run an app
+with a Tanzu GemFire for VMs cluster.
+Acquire the most recent Geode compressed TAR file from [https://geode.apache.org/releases/](https://geode.apache.org/releases/). Be sure to install Geode's prerequisite Java JDK 1.8.X, which is needed to support gfsh, the command line interface.
+Uncompress and untar the file. 
 
 - **Configure environment variables**.
-Set `GEODE_HOME` to the GemFire installation directory and add `$GEODE_HOME/bin` to your `PATH`. For example
+Set `GEODE_HOME` to the Geode installation directory and add `$GEODE_HOME/bin` to your `PATH`. For example
 
     On Mac and Linux:
 
     ```bash
-    export GEODE_HOME=/Users/MyGemFire
+    export GEODE_HOME=/Users/MyGeode
     export PATH=$GEODE_HOME/bin:$PATH
     ```
 
     On Windows (standard command prompt):
 
     ```cmd
-    set GEODE_HOME=c:\Users\MyGemFire
+    set GEODE_HOME=c:\Users\MyGeode
     set PATH=%GEODE_HOME%\bin;%PATH%
     ```
 
@@ -60,7 +61,7 @@ With a current working directory of `node-examples/book-service`,
 install the Node.js client module:
 
 ```bash
-$ npm install gemfire-nodejs-client-2.0.0.tgz
+$ npm install PATH/TO/gemfire-nodejs-client-2.0.0.tgz
 $ npm update
 ```
 
@@ -69,7 +70,7 @@ At this point, you can choose to *Run the Example Locally* or *Run the Example w
 ## Run the Example Locally
 
 The local environment mocks the services binding that would exist
-for a TAS environment.
+for a Tanzu Application Service (TAS) environment.
 A TAS environment injects the services binding through a `VCAP_SERVICES`
 environment variable.
 Set this environment variable:
@@ -89,10 +90,11 @@ C:\node-examples\book-service>$env:VCAP_SERVICES='{"p-cloudcache":[{"label":"p-c
 ### Start a Cluster
 
 There are scripts in the `book-service/scripts` directory.
-The `startGemFire` script starts up two locators and two cache servers.
+The `startGemFire` script starts up a cluster with two locators
+and two cache servers.
 The locators allow clients to find the cache servers.
 To simplify local development,
-the script also creates the single region that the app uses.
+the script also creates the single region (called 'test') that the app uses.
 
 With a current working directory of `node-examples/book-service`:
 
@@ -126,7 +128,8 @@ C:\node-examples\book-service>node .\src\server.js
 
 ### Add a Book to the Book Service
 
-To add a book to the data service, open a separate shell and issue a curl command:
+To add a book to the data service,
+open a separate shell and issue a curl command:
 
 On Mac and Linux:
 
@@ -166,7 +169,7 @@ When finished running the example locally,  shut down the app and the cluster:
 1. In the shell running `node`, type `control-C` to stop the example app.
 
 1. Use a script to
-tear down the GemFire cluster.
+tear down the cluster.
 With a current working directory of `node-examples/book-service`:
 
  On Mac and Linux:
@@ -199,7 +202,8 @@ reference this environment variable if it continues to exist.
 
 ## Run the Example with Tanzu GemFire for VMs as the Data Service
 
-This section uses the following names - if your Tanzu GemFire for VMs service instance uses different names, substitute as appropriate for these:
+This section uses the following names - use appropriate substitutes for
+your Tanzu GemFire for VMs service instance:
 
 - **service-name**: PCC-TLS
 - **service-key**: PCC-TLS-service-key
@@ -210,7 +214,8 @@ This section uses the following names - if your Tanzu GemFire for VMs service in
 
 1. Use the cf CLI to log in and target your org and space.
 
-1. Create a Tanzu GemFire for VMs service instance that disables TLS encryption. For example:
+1. Create a Tanzu GemFire for VMs service instance that enables TLS encryption.
+For example:
 
     On Mac and Linux:
 
