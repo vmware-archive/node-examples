@@ -10,7 +10,8 @@ or with a Tanzu GemFire for VMs service instance.
 A common development path runs locally first to iterate quickly on feature
 development prior to pushing the app to a TAS environment to run with
 Tanzu GemFire for VMs cluster.
-This app has been tested with Tanzu GemFire for VMs version 1.13.
+This app has been tested with a local Geode cluster and with
+Tanzu GemFire for VMs version 1.13.
 
 ## Prerequisites
 
@@ -58,10 +59,10 @@ Set `GEODE_HOME` to the Geode installation directory and add `$GEODE_HOME/bin` t
 ## Install the Node.js Client Module
 
 With a current working directory of `node-examples/book-service`,
-install the Node.js client module:
+install the Node.js Client module:
 
 ```bash
-$ npm install PATH/TO/gemfire-nodejs-client-2.0.0.tgz
+$ npm install PATH/TO/gemfire-nodejs-client-2.0.1-build.33.tgz
 $ npm update
 ```
 
@@ -73,7 +74,7 @@ The local environment mocks the services binding that would exist
 for a Tanzu Application Service (TAS) environment.
 A TAS environment injects the services binding through a `VCAP_SERVICES`
 environment variable.
-Set this environment variable:
+Set this environment variable to match what the app expects:
 
 On Mac and Linux:
 
@@ -87,14 +88,14 @@ On Windows (standard command prompt):
 C:\node-examples\book-service>$env:VCAP_SERVICES='{"p-cloudcache":[{"label":"p-cloudcache","provider":null,"plan":"dev-plan","name":"pcc-dev","tags":["gemfire","cloudcache","database","pivotal"],"instance_name":"pcc-dev","binding_name":null,"credentials":{"distributed_system_id":"0","gfsh_login_string":"connect --url=https://localhost:7070/gemfire/v1 --user=super-user --password=1234567 --skip-ssl-validation","locators":["localhost[10334]"],"urls":{"gfsh":"https://localhost:7070/gemfire/v1","pulse":"https://localhost:7070/pulse"},"users":[{"password":"1234567","roles":["cluster_operator"],"username":"super-user"},{"password":"1234567","roles":["developer"],"username":"app"}],"wan":{"sender_credentials":{"active":{"password":"no-password","username":"no-user"}}}},"syslog_drain_url":null,"volume_mounts":[]}]}'
 ```
 
-### Start a Cluster
+### Start a Local Cluster
 
 There are scripts in the `book-service/scripts` directory.
 The `startGemFire` script starts up a cluster with two locators
 and two cache servers.
 The locators allow clients to find the cache servers.
 To simplify local development,
-the script also creates the single region (called 'test') that the app uses.
+the script also creates the single region (called `test`) that the app uses.
 
 With a current working directory of `node-examples/book-service`:
 
@@ -152,6 +153,8 @@ On Windows (standard command prompt):
 C:\node-examples\book-service>curl -X PUT  "http://localhost:8080/book/put?isbn=0525565329"  -H "Content-Type: application/json"  -d "{\"FullTitle\": \"The Shining\", \"ISBN\": \"0525565329\", \"MSRP\": \"9.99\", \"Publisher\": \"Anchor\", \"Authors\": \"Stephen King\"}"
 ```
 
+The app responds by putting the book into the `test` region.
+
 ### Look Up a Book
 
 To look up a book in the data service, use a curl command,
@@ -164,7 +167,7 @@ $ curl -X GET \
 
 ### Clean Up the Local Development Environment
 
-When finished running the example locally,  shut down the app and the cluster:
+When finished running the example locally, shut down the app and the cluster:
 
 1. In the shell running `node`, type `control-C` to stop the example app.
 
@@ -212,7 +215,8 @@ your Tanzu GemFire for VMs service instance:
 
 ### Create and Configure a Tanzu GemFire for VMs Service Instance
 
-1. Use the cf CLI to log in and target your org and space.
+1. Use the cf CLI to log in and target the org and space where the service
+instance will run.
 
 1. Create a Tanzu GemFire for VMs service instance that enables TLS encryption.
 For example:
@@ -229,7 +233,7 @@ For example:
     $ cf create-service p-cloudcache dev-plan PCC-TLS  -c "{\"tls\": true}"
     ```
 
-1. Create a Service Key
+1. Create a service key for the service instance.
 
    ```
    $ cf create-service-key PCC-TLS PCC-TLS-service-key
@@ -255,7 +259,7 @@ For example:
 Tap the return key to enter empty responses when prompted for keystore and truststore values.
 
     ```bash
-    gfsh>connect --url=https://cloudcache-999-persianplum.cf-app.com/gemfire/v1 --user=cluster_operator_BhKM --password=xucZ --skip-ssl-validation
+    gfsh>connect --url=https://cloudcache-999-persianplum.cf-app.com/gemfire/v1 --user=cluster_operator_xxxx --password=yyyy --skip-ssl-validation
     key-store:
     key-store-password:
     key-store-type(default: JKS):
@@ -284,9 +288,10 @@ Tap the return key to enter empty responses when prompted for keystore and trust
 
 ### Push and Run the App
 
-1. View the `manifest.yml` file to verify that the service instance matches the one specified in
-the `cf create-service` command above.  If you have been following these instructions,
-it is `PCC-TLS`. Edit manifest.yml, if necessary, to make sure it specifies the
+1. View or edit the `manifest.yml` file to make sure that the service instance
+matches the one specified in the `cf create-service` command.
+If you have been following using the names in these instructions,
+it is `PCC-TLS`.
 service instance you created.
 
     ```
@@ -300,7 +305,7 @@ push the app and make note of the route assigned for the app:
     ```
     $ cf push
     Pushing from manifest to org test_org / space test_space as admin...
-    Using manifest file /Users/dbarnes/Repo/node-examples/book-service/manifest.yml
+    Using manifest file /Users/node-examples/book-service/manifest.yml
     ...
 
     Waiting for app to start...
@@ -313,7 +318,8 @@ push the app and make note of the route assigned for the app:
     #0   running   2020-01-22T18:40:54Z   0.0%   0 of 512M   0 of 1G
     ```
 
-Note the app route (labeled "routes:") in the output of the `cf push` command. In the above example,
+Note the app route (labeled "routes:") in the output of the `cf push` command.
+In this example,
 it is "cloudcache-node-sample.apps.persianplum.cf-app.com".
 
 ### Add a Book to the Book Service
@@ -321,6 +327,7 @@ it is "cloudcache-node-sample.apps.persianplum.cf-app.com".
 To add a book to the data service, use a curl command similar to the one
 used when running with a local cluster, specifying the app route assigned
 in the `cf push` step, above.
+Note that the target of the curl command is going to an HTTPS endpoint.
 
 On Mac and Linux:
 
@@ -343,14 +350,15 @@ On Windows (standard command prompt):
 C:\node-examples\book-service>curl -X PUT  "http://localhost:8080/book/put?isbn=0525565329"  -H "Content-Type: application/json"  -d "{\"FullTitle\": \"The Shining\", \"ISBN\": \"0525565329\", \"MSRP\": \"9.99\", \"Publisher\": \"Anchor\", \"Authors\": \"Stephen King\"}"
 ```
 
-The curl command responds with a confirmation: `{"initialized":true}`.
+With a successful add of a book,
+the curl command responds with a confirmation: `{"initialized":true}`.
 
 
 ### Look Up a Book
 
 To look up a book in the data service, use a curl command similar to the one
 used when running with a local cluster, specifying the ISBN as a key.
-Use the app route assigned in the `cf push` step, above.
+Use the captured app route.
 
 ```
 $ curl -k -X GET \
@@ -383,9 +391,11 @@ When done running the app, tear down the app and the Tanzu GemFire for VMs servi
     OK
     ```
 
-1. If the Tanzu GemFire for VMs service instance is no longer needed, delete the service:
+1. If the Tanzu GemFire for VMs service instance is no longer needed,
+delete the service key and then the service instance:
 
     ```
+    $ cf delete-service-key PCC-TLS PCC-TLS-service-key
     $ cf delete-service PCC-TLS
 
     Really delete the service PCC-TLS?> y
