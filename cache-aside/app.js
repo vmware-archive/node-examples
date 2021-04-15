@@ -4,13 +4,14 @@ var express = require('express')
 var app = express()
 var region
 var cache
+var connection
 
 app.use(express.json())
 
 async function init(){
 
     // Establish connection to MySQL
-	const connection = mysql.createConnection({
+	connection = mysql.createConnection({
   		host: 'localhost',
   		user: 'diane',
   		password: 'easypass',
@@ -40,16 +41,14 @@ async function init(){
 app.get("/book/get", async (req, res) => {
     var Isbn = req.query.isbn
     // Look up book in GemFire cache
-	try {
-    		var result = await region.get(Isbn)
-	} catch(error) { 
+   	var result = await region.get(Isbn)
+	if(!result) { 
    		console.log('Cache miss');
 		//If not in cache, get book from MySQL table
-		connection.query('select * from books where ISBN = ${Isbn}', (err,result) => {
-   			if(err) throw err;
-			console.log('Entry received from MySQL:');
-			console.log(result);
-		});
+		result = await connection.query('select * from books where ISBN = ?', [Isbn])
+		console.log('Entry received from MySQL:');
+		console.log(result);
+
 		// Add book to GemFire cache
 		try {
 			await region.put(Isbn, result)
