@@ -42,26 +42,32 @@ app.get("/book/get", async (req, res) => {
     var Isbn = req.query.isbn
     // Look up book in GemFire cache
    	var result = await region.get(Isbn)
-	if(!result) { 
+	if(result) { 
+		res.json(result)
+	} else {
    		console.log('Cache miss');
 		//If not in cache, get book from MySQL table
-		result = await connection.query('select * from books where ISBN = ?', [Isbn])
-		console.log('Entry received from MySQL:');
-		console.log(result);
+		//result = await connection.query('select * from books where ISBN = ?', [Isbn])
 
-		// Add book to GemFire cache
-		try {
-			await region.put(Isbn, result)
-		} catch(error) { 
-			console.log("Unable to add ISBN: " + Isbn + " to GemFire cache")
-			console.error(error)
-			//process.exit(1)
-		}
-   		console.log("Added to GemFire cache ISBN: " + Isbn);
-		console.log("Body " + JSON.stringify(result));
+		await connection.query('select * from books where isbn = ?', [Isbn], (err,result) => {
+   			if(err) throw err;
+
+			// Convert row to JSON string
+			result = JSON.stringify(result);
+			console.log('Data received from Db:');
+   			console.log(result);
+
+			// Add book to GemFire cache
+			region.put(Isbn, result)
+   			console.log("Added to GemFire cache ISBN: " + Isbn);
+			console.log("Body " + result);
+
+			// Return the result
+			res.json(result);
+		});
     }
 	// Send result
-    res.json(result)
+    //res.json(result)
 })
 
 app.set("port", process.env.PORT || 8080)
