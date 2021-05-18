@@ -33,20 +33,20 @@ Choose your GemFire version based on the version of Tanzu GemFire for VMs in you
 See the [Product Snapshot](https://docs.pivotal.io/p-cloud-cache/product-snapshot.html) for your Tanzu GemFire for VMs version.
 
 - **Configure environment variables**.
-Set `GEODE_HOME` to the GemFire installation directory and add `$GEODE_HOME/bin` to your `PATH`. For example
+Set `GEMFIRE_HOME` to the GemFire installation directory and add `$GEMFIRE_HOME/bin` to your `PATH`. For example
 
     On Mac and Linux:
 
     ```bash
-    export GEODE_HOME=/Users/MyGemFire
-    export PATH=$GEODE_HOME/bin:$PATH
+    export GEMFIRE_HOME=/Users/MyGemFire
+    export PATH=$GEMFIRE_HOME/bin:$PATH
     ```
 
     On Windows (standard command prompt):
 
     ```cmd
-    set GEODE_HOME=c:\Users\MyGemFire
-    set PATH=%GEODE_HOME%\bin;%PATH%
+    set GEMFIRE_HOME=c:\Users\MyGemFire
+    set PATH=%GEMFIRE_HOME%\bin;%PATH%
     ```
 
 ## Create MySQL database and load data
