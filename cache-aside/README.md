@@ -27,7 +27,7 @@ For example:
 `gemfire-nodejs-client-2.0.1.tgz`.
 
 
-- **Pivotal GemFire**.
+- **Tanzu GemFire**.
 Acquire Tanzu GemFire from Tanzu Network at [Tanzu GemFire](https://network.pivotal.io/products/pivotal-gemfire/). Be sure to install GemFire's prerequisite Java JDK 1.8.X, which is needed to support gfsh, the command line interface.
 Choose your GemFire version based on the version of Tanzu GemFire for VMs in your TAS environment.
 See the [Product Snapshot](https://docs.pivotal.io/p-cloud-cache/product-snapshot.html) for your Tanzu GemFire for VMs version.
