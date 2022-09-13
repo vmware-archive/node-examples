@@ -19,7 +19,7 @@
     "url": "git+https://github.com/gemfire/node-examples.git"
   },
   "engines": {
-    "node": "^10"
+    "node": "^14"
   },
   "author": "",
   "license": "Apache-2.0",
