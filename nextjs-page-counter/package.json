@@ -7,6 +7,9 @@
     "build": "next build",
     "start": "next start"
   },
+  "engines": {
+    "node": "^14"
+  },
   "dependencies": {
     "cfenv": "^1.2.2",
     "next": "9.3.2",
