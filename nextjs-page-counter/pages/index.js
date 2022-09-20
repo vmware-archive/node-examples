@@ -59,9 +59,10 @@ function initCloudFoundryConfig(){
 }
 
 async function initCacheFactory() {
+  console.log("initCacheFactory")
   /* Create a cacheFactory with authentication to connect to PCC */
   cacheFactory = gemfire.createCacheFactory()
-  cacheFactory.set('log-level', 'none')
+  cacheFactory.set('log-level', '')
 /*
 * Un-comment the two following lines if running against a PCC instance with TLS enabled
 */
@@ -69,7 +70,7 @@ async function initCacheFactory() {
   cacheFactory.set('ssl-truststore', '/etc/ssl/certs/ca-certificates.crt')
   cacheFactory.set('ssl-enabled', 'true')
 */
-  cacheFactory.set('log-file', '/home/vcap/logs/gemfire.log')
+  cacheFactory.set('log-file', '')
   cacheFactory.setAuthentication((properties, server) => {
       properties['security-username'] = username
       properties['security-password'] = password
