@@ -69,7 +69,7 @@ async function initCacheFactory() {
   cacheFactory.set('ssl-truststore', '/etc/ssl/certs/ca-certificates.crt')
   cacheFactory.set('ssl-enabled', 'true')
 */
-  cacheFactory.set('log-file', 'gemfire.log')
+  cacheFactory.set('log-file', '/home/vcap/logs/gemfire.log')
   cacheFactory.setAuthentication((properties, server) => {
       properties['security-username'] = username
       properties['security-password'] = password
